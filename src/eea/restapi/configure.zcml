@@ -17,6 +17,10 @@
 
   <include file="permissions.zcml" />
 
+  <adapter factory=".api.DexterityContentSerializer" />
+  <adapter factory=".api.DexterityContainerSerializer" />
+  <adapter factory=".api.SerializeSiteRootToJson" />
+
   <genericsetup:registerProfile
       name="default"
       title="eea.restapi"
