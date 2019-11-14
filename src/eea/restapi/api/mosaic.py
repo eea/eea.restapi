@@ -1,4 +1,4 @@
-from forests.theme.interfaces import IMosaicSettings
+from eea.restapi.interfaces import IMosaicSettings
 from plone.registry.interfaces import IRegistry
 from plone.restapi.services import Service
 from zope.component import getUtility  # adapter, getMultiAdapter

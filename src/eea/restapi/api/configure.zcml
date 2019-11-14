@@ -11,6 +11,8 @@
 
   <adapter factory=".localnavigation.LocalNavigation" name="localnavigation"/>
 
+  <adapter name="connector-data" factory=".dataconnector.ConnectorData" />
+
   <plone:service
     method="GET"
     for="zope.interface.Interface"
