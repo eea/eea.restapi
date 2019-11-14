@@ -1,0 +1,6 @@
+[report]
+include =
+    src/eea/*
+omit =
+    */test*
+    */upgrades/*
