@@ -43,4 +43,36 @@
   <!-- -*- extra stuff goes here -*- -->
   <interface interface=".interfaces.ILocalSectionMarker" />
 
+  <adapter factory=".behavior.DataProviderForConnectors" />
+
+  <plone:behavior
+    name="discodata.connector"
+    title="Discodata connector behavior"
+    description="Adds discodata connector query execution"
+    provides=".interfaces.IDataConnector"
+    factory=".behavior.DataConnector"
+    for="plone.dexterity.interfaces.IDexterityContent"
+    marker=".interfaces.IConnectorDataProvider"
+    />
+
+  <plone:behavior
+    name="dataprovider.files"
+    title="Data provider for files"
+    description="Allows Files to provide remote data"
+    provides=".interfaces.IDataProvider"
+    factory=".behavior.DataProviderForFiles"
+    for="plone.dexterity.interfaces.IDexterityContent"
+    marker=".interfaces.IFileDataProvider"
+    />
+
+  <plone:behavior
+    name="eea.restapi.visualization"
+    title="Visualization behavior"
+    description="Allows creating a visualization."
+    provides=".interfaces.IDataVisualization"
+    factory=".behavior.DataVisualization"
+    for="plone.dexterity.interfaces.IDexterityContent"
+    marker=".interfaces.IDataVisualization"
+    />
+
 </configure>

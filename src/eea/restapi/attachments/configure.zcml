@@ -1,0 +1,111 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:browser="http://namespaces.zope.org/browser"
+  xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
+  xmlns:plone="http://namespaces.plone.org/plone"
+  xmlns:i18n="http://namespaces.zope.org/i18n"
+  i18n_domain="forests.content">
+
+  <plone:service
+    method="POST"
+    for="Products.CMFCore.interfaces.IFolderish"
+    factory=".restapi.AttachmentsPOST"
+    permission="cmf.ModifyPortalContent"
+    name="@attachments"
+    />
+
+  <plone:service
+    method="GET"
+    for="Products.CMFCore.interfaces.IFolderish"
+    factory=".restapi.AttachmentsGET"
+    permission="zope2.View"
+    name="@attachments"
+    />
+
+  <plone:behavior
+    name="slider-images"
+    title="Restapi based slider images"
+    description="Provides a slider with images"
+    provides=".interfaces.IHasSliderImages"
+    marker=".interfaces.IHasSliderImages"
+    for="plone.dexterity.interfaces.IDexterityContent"
+    />
+
+  <plone:behavior
+    name="restapi.attachments"
+    title="Restapi based file attachments"
+    description="Provides embedding file attachments (images, etc) to content"
+    provides=".interfaces.IHasAttachments"
+    marker=".interfaces.IHasAttachments"
+    for="plone.dexterity.interfaces.IDexterityContent"
+    />
+
+  <adapter factory=".storage.slides_annotation_storage" />
+  <adapter factory=".storage.attachments_annotation_storage" locate="True"/>
+
+  <adapter factory=".deserializer.DeserializeFromJson" />
+
+  <adapter factory=".serializer.SerializeAttachmentToJson" />
+  <adapter factory=".serializer.SerializeStorageToJson" />
+  <adapter factory=".serializer.SerializeAttachmentFolderToJson" />
+
+  <adapter
+    name="attachment"
+    for=".interfaces.IHasAttachments zope.publisher.interfaces.IRequest"
+    provides="zope.traversing.interfaces.ITraversable"
+    factory=".traversing.AttachmentTraversing"
+    />
+
+  <adapter
+    name="attachment"
+    for="plone.rest.traverse.RESTWrapper zope.publisher.interfaces.IRequest"
+    provides="zope.traversing.interfaces.ITraversable"
+    factory=".traversing.RestAttachmentTraversing"
+    />
+
+  <class class=".content.Attachment">
+    <implements interface="plone.namedfile.interfaces.IImageScaleTraversable" />
+    <implements interface="zope.annotation.interfaces.IAttributeAnnotatable" />
+  </class>
+
+    <!-- Field Deserializers -->
+  <adapter factory="plone.restapi.deserializer.dxfields.DefaultFieldDeserializer"
+    for="zope.schema.interfaces.IField .interfaces.IAttachment zope.interface.Interface" />
+  <adapter factory="plone.restapi.deserializer.dxfields.TextLineFieldDeserializer"
+    for="zope.schema.interfaces.ITextLine .interfaces.IAttachment zope.interface.Interface" />
+  <adapter factory="plone.restapi.deserializer.dxfields.DatetimeFieldDeserializer"
+    for="zope.schema.interfaces.IDatetime .interfaces.IAttachment zope.interface.Interface" />
+  <adapter factory="plone.restapi.deserializer.dxfields.ChoiceFieldDeserializer"
+    for="zope.schema.interfaces.IChoice .interfaces.IAttachment zope.interface.Interface" />
+  <adapter factory="plone.restapi.deserializer.dxfields.CollectionFieldDeserializer"
+    for="zope.schema.interfaces.ICollection .interfaces.IAttachment zope.interface.Interface" />
+  <adapter factory="plone.restapi.deserializer.dxfields.DictFieldDeserializer"
+    for="zope.schema.interfaces.IDict .interfaces.IAttachment zope.interface.Interface" />
+  <adapter factory="plone.restapi.deserializer.dxfields.TimeFieldDeserializer"
+    for="zope.schema.interfaces.ITime .interfaces.IAttachment zope.interface.Interface" />
+  <adapter factory="plone.restapi.deserializer.dxfields.TimedeltaFieldDeserializer"
+    for="zope.schema.interfaces.ITimedelta .interfaces.IAttachment zope.interface.Interface" />
+  <adapter factory="plone.restapi.deserializer.dxfields.RichTextFieldDeserializer"
+    for="plone.app.textfield.interfaces.IRichText .interfaces.IAttachment zope.interface.Interface" />
+
+  <adapter factory="plone.restapi.deserializer.dxfields.NamedFieldDeserializer"
+    for="plone.namedfile.interfaces.INamedField .interfaces.IAttachment zope.interface.Interface" />
+
+    <!-- Field Serializers -->
+  <adapter factory="plone.restapi.serializer.dxfields.DefaultFieldSerializer"
+    for="zope.schema.interfaces.IField .interfaces.IAttachment zope.interface.Interface" />
+  <adapter factory="plone.restapi.serializer.dxfields.ChoiceFieldSerializer"
+    for="zope.schema.interfaces.IChoice .interfaces.IAttachment zope.interface.Interface" />
+  <adapter factory="plone.restapi.serializer.dxfields.CollectionFieldSerializer"
+    for="zope.schema.interfaces.ICollection .interfaces.IAttachment zope.interface.Interface" />
+  <adapter factory="plone.restapi.serializer.dxfields.RichttextFieldSerializer"
+    for="plone.app.textfield.interfaces.IRichText .interfaces.IAttachment zope.interface.Interface" />
+  <adapter factory=".serializer.AttachmentFieldSerializer" />
+  <adapter factory=".serializer.AttachmentFieldSerializer"
+    for="plone.namedfile.interfaces.INamedImageField .interfaces.IAttachment zope.interface.Interface" />
+
+    <!-- Other compatibility -->
+  <adapter factory="plone.restapi.serializer.converters.RichtextDXContextConverter"
+    for="plone.app.textfield.interfaces.IRichTextValue .interfaces.IAttachment" />
+
+</configure>
