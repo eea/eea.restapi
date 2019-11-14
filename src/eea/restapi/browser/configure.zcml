@@ -18,4 +18,11 @@
       directory="static"
       />
 
+  <browser:page
+    name="mosaic-settings"
+    for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+    permission="cmf.ManagePortal"
+    class=".controlpanel.MosaicSettingsView"
+    />
+
 </configure>

@@ -1,0 +1,39 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser"
+    xmlns:plone="http://namespaces.plone.org/plone"
+    i18n_domain="eea.restapi">
+
+  <adapter factory=".provides.DexterityContentSerializer" />
+  <adapter factory=".provides.DexterityContainerSerializer" />
+
+  <adapter factory=".site.SerializeSiteRootToJson" />
+
+  <adapter factory=".localnavigation.LocalNavigation" name="localnavigation"/>
+
+  <plone:service
+    method="GET"
+    for="zope.interface.Interface"
+    factory=".localnavigation.LocalNavigationGet"
+    name="@localnavigation"
+    permission="zope2.View"
+    />
+
+  <browser:page
+    for="*"
+    name="localtabs_view"
+    class=".localnavigation.CatalogNavigationTabs"
+    permission="zope.Public"
+    allowed_attributes="topLevelTabs"
+    />
+
+  <plone:service
+    method="GET"
+    accept="application/json"
+    for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+    factory=".mosaic.MosaicSettingsGet"
+    name="@mosaic-settings"
+    permission="zope2.View"
+    />
+
+</configure>

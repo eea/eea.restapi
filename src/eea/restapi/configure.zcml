@@ -17,10 +17,6 @@
 
   <include file="permissions.zcml" />
 
-  <adapter factory=".api.DexterityContentSerializer" />
-  <adapter factory=".api.DexterityContainerSerializer" />
-  <adapter factory=".api.SerializeSiteRootToJson" />
-
   <genericsetup:registerProfile
       name="default"
       title="eea.restapi"
@@ -45,5 +41,6 @@
       />
 
   <!-- -*- extra stuff goes here -*- -->
+  <interface interface=".interfaces.ILocalSectionMarker" />
 
 </configure>
