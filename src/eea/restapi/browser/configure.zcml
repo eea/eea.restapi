@@ -8,7 +8,7 @@
   <include package="z3c.jbot" file="meta.zcml" />
   <browser:jbot
       directory="overrides"
-      layer="eea.restapi.interfaces.IEeaRestapiLayer"
+      layer="eea.restapi.interfaces.IEEARestapiLayer"
       />
 
   <!-- Publish static files -->

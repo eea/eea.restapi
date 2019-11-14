@@ -22,6 +22,7 @@ class TestSetup(unittest.TestCase):
     def setUp(self):
         """Custom shared utility setup for tests."""
         self.portal = self.layer['portal']
+
         if get_installer:
             self.installer = get_installer(self.portal, self.layer['request'])
         else:
@@ -33,12 +34,12 @@ class TestSetup(unittest.TestCase):
             'eea.restapi'))
 
     def test_browserlayer(self):
-        """Test that IEeaRestapiLayer is registered."""
+        """Test that IEEARestapiLayer is registered."""
         from eea.restapi.interfaces import (
-            IEeaRestapiLayer)
+            IEEARestapiLayer)
         from plone.browserlayer import utils
         self.assertIn(
-            IEeaRestapiLayer,
+            IEEARestapiLayer,
             utils.registered_layers())
 
 
@@ -48,6 +49,7 @@ class TestUninstall(unittest.TestCase):
 
     def setUp(self):
         self.portal = self.layer['portal']
+
         if get_installer:
             self.installer = get_installer(self.portal, self.layer['request'])
         else:
@@ -63,10 +65,10 @@ class TestUninstall(unittest.TestCase):
             'eea.restapi'))
 
     def test_browserlayer_removed(self):
-        """Test that IEeaRestapiLayer is removed."""
+        """Test that IEEARestapiLayer is removed."""
         from eea.restapi.interfaces import \
-            IEeaRestapiLayer
+            IEEARestapiLayer
         from plone.browserlayer import utils
         self.assertNotIn(
-            IEeaRestapiLayer,
+            IEEARestapiLayer,
             utils.registered_layers())

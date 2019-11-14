@@ -10,7 +10,7 @@ from plone.testing import z2
 import eea.restapi
 
 
-class EeaRestapiLayer(PloneSandboxLayer):
+class EEARestapiLayer(PloneSandboxLayer):
 
     defaultBases = (PLONE_APP_CONTENTTYPES_FIXTURE,)
 
@@ -26,18 +26,18 @@ class EeaRestapiLayer(PloneSandboxLayer):
         applyProfile(portal, 'eea.restapi:default')
 
 
-EEA_RESTAPI_FIXTURE = EeaRestapiLayer()
+EEA_RESTAPI_FIXTURE = EEARestapiLayer()
 
 
 EEA_RESTAPI_INTEGRATION_TESTING = IntegrationTesting(
     bases=(EEA_RESTAPI_FIXTURE,),
-    name='EeaRestapiLayer:IntegrationTesting',
+    name='EEARestapiLayer:IntegrationTesting',
 )
 
 
 EEA_RESTAPI_FUNCTIONAL_TESTING = FunctionalTesting(
     bases=(EEA_RESTAPI_FIXTURE,),
-    name='EeaRestapiLayer:FunctionalTesting',
+    name='EEARestapiLayer:FunctionalTesting',
 )
 
 
@@ -47,5 +47,5 @@ EEA_RESTAPI_ACCEPTANCE_TESTING = FunctionalTesting(
         REMOTE_LIBRARY_BUNDLE_FIXTURE,
         z2.ZSERVER_FIXTURE,
     ),
-    name='EeaRestapiLayer:AcceptanceTesting',
+    name='EEARestapiLayer:AcceptanceTesting',
 )

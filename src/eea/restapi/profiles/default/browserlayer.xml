@@ -2,6 +2,6 @@
 <layers>
   <layer
       name="eea.restapi"
-      interface="eea.restapi.interfaces.IEeaRestapiLayer"
+      interface="eea.restapi.interfaces.IEEARestapiLayer"
       />
 </layers>
