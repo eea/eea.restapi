@@ -25,4 +25,12 @@
     class=".controlpanel.MosaicSettingsView"
     />
 
+  <browser:page
+    name="mosaic_tiles_view"
+    for="*"
+    template="pt/mosaic_tiles_view.pt"
+    permission="zope2.View"
+    class=".mosaic.MosaicTilesView"
+    />
+
 </configure>
