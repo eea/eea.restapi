@@ -11,7 +11,7 @@
       <h1 class="documentFirstHeading" tal:content="context/Title">Title</h1>
 
       <strong>Query:</strong>
-      <pre tal:content="context/query">Query definition here</pre>
+      <pre tal:content="context/sql_query">Query definition here</pre>
 
       <div tal:replace="structure context/@@provided_data" />
 

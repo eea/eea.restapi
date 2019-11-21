@@ -47,7 +47,10 @@ class DataProviderForConnectors(object):
             res = req.json()
         except Exception:
             logger.exception("Error in requestion data")
-            res = {'result': []}
+            res = {'results': []}
+
+        if 'errors' in res:
+            return {'results': []}
 
         return res
 
