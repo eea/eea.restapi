@@ -38,4 +38,12 @@
     permission="zope2.View"
     />
 
+  <plone:service
+    method="POST"
+    for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+    factory=".catalog.IndexValues"
+    name="@index-values"
+    permission="zope2.View"
+    />
+
 </configure>
