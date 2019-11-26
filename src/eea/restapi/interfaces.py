@@ -98,3 +98,21 @@ class IDataVisualization(model.Schema):
     visualization = JSONField(title=u"Visualization", required=False,
                               default={},
                               schema=VIZ_SCHEMA)
+
+
+FACETED_SCHEMA = json.dumps({'type': 'list'})
+
+
+@provider(IFormFieldProvider)
+class IFacetedCollection(model.Schema):
+    """ Can specify indexes to be shown as facets on a collection
+    """
+
+    facets = JSONField(
+        title=_(u'Facets'),
+        description=u"Facets configuration",
+        schema=FACETED_SCHEMA,
+        # value_type=schema.Choice(
+        #     vocabulary='plone.app.contenttypes.metadatafields'),
+        required=False,
+    )

@@ -6,7 +6,7 @@ from zope.component import getMultiAdapter
 
 
 class IndexValues(Service):
-    """Returns the querystring search results given a p.a.querystring data.
+    """ Returns the querystring search results given a p.a.querystring data.
     """
 
     def reply(self):

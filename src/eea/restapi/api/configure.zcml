@@ -1,5 +1,6 @@
 <configure
     xmlns="http://namespaces.zope.org/zope"
+    xmlns:zcml="http://namespaces.zope.org/zope"
     xmlns:browser="http://namespaces.zope.org/browser"
     xmlns:plone="http://namespaces.plone.org/plone"
     i18n_domain="eea.restapi">
@@ -10,6 +11,11 @@
   <adapter factory=".site.SerializeSiteRootToJson" />
 
   <adapter factory=".localnavigation.LocalNavigation" name="localnavigation"/>
+
+  <adapter
+    factory=".defaultpage.DefaultPageExpansion"
+    for="Products.CMFDynamicViewFTI.interfaces.ISelectableBrowserDefault eea.restapi.interfaces.IEEARestapiLayer"
+    name="defaultpage"/>
 
   <adapter name="connector-data" factory=".dataconnector.ConnectorData" />
 
@@ -45,5 +51,9 @@
     name="@index-values"
     permission="zope2.View"
     />
+
+  <configure zcml:condition="installed plone.app.contenttypes">
+    <adapter factory=".collection.SerializeCollectionToJson" />
+  </configure>
 
 </configure>

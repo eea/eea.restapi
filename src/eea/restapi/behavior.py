@@ -2,6 +2,7 @@ from .interfaces import IConnectorDataProvider
 from .interfaces import IDataConnector
 from .interfaces import IDataProvider
 from .interfaces import IDataVisualization
+from .interfaces import IFacetedCollection
 from .interfaces import IFileDataProvider
 from collections import defaultdict
 from io import StringIO
@@ -122,3 +123,10 @@ class DataVisualization(MetadataBase):
     """
 
     visualization = DCFieldProperty(IDataVisualization['visualization'])
+
+
+class FacetedCollection(MetadataBase):
+    """ Facetes based on indexes for collections
+    """
+
+    facets = DCFieldProperty(IFacetedCollection['facets'])

@@ -77,4 +77,14 @@
     marker=".interfaces.IDataVisualization"
     />
 
+  <plone:behavior
+    name="eea.restapi.collection-facets"
+    title="Facets for Collections"
+    description="Allows navigation by facets for collections"
+    provides=".interfaces.IFacetedCollection"
+    factory=".behavior.FacetedCollection"
+    for="plone.app.contenttypes.interfaces.ICollection"
+    marker=".interfaces.IFacetedCollection"
+    />
+
 </configure>
