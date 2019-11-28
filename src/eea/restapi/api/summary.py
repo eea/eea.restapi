@@ -18,7 +18,7 @@ class DefaultJSONSummarySerializer(summary.DefaultJSONSummarySerializer):
         res = super(DefaultJSONSummarySerializer, self).__call__()
 
         if self.request.get('is_search'):
-            adapter = getMultiAdapter((self.context, self.request),
+            adapter = getMultiAdapter((self.context.getObject(), self.request),
                                       IExpandableElement, name='breadcrumbs')
 
             if '@components' not in res:
