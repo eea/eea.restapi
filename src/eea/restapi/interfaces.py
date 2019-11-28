@@ -116,3 +116,12 @@ class IFacetedCollection(model.Schema):
         #     vocabulary='plone.app.contenttypes.metadatafields'),
         required=False,
     )
+
+
+@provider(IFormFieldProvider)
+class ISimpleFacetedCollection(model.Schema):
+    filter = schema.Choice(
+        title=u"Collection facet",
+        vocabulary='plone.app.contenttypes.metadatafields',
+        required=False,
+    )

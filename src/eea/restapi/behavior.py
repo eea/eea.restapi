@@ -4,6 +4,7 @@ from .interfaces import IDataProvider
 from .interfaces import IDataVisualization
 from .interfaces import IFacetedCollection
 from .interfaces import IFileDataProvider
+from .interfaces import ISimpleFacetedCollection
 from collections import defaultdict
 from io import StringIO
 from plone.app.dexterity.behaviors.metadata import DCFieldProperty
@@ -130,3 +131,10 @@ class FacetedCollection(MetadataBase):
     """
 
     facets = DCFieldProperty(IFacetedCollection['facets'])
+
+
+class SimpleFacetedCollection(MetadataBase):
+    """
+    """
+
+    filter = DCFieldProperty(ISimpleFacetedCollection['filter'])

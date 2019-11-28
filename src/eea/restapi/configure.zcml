@@ -87,4 +87,14 @@
     marker=".interfaces.IFacetedCollection"
     />
 
+  <plone:behavior
+    name="eea.restapi.collection-simplefacetfilter"
+    title="Simple Facet Filter for Collections"
+    description="A simple facet filter for collection results"
+    provides=".interfaces.ISimpleFacetedCollection"
+    factory=".behavior.SimpleFacetedCollection"
+    for="plone.app.contenttypes.interfaces.ICollection"
+    marker=".interfaces.ISimpleFacetedCollection"
+    />
+
 </configure>
