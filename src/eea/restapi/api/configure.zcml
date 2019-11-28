@@ -9,6 +9,7 @@
   <adapter factory=".provides.DexterityContainerSerializer" />
 
   <adapter factory=".site.SerializeSiteRootToJson" />
+  <adapter factory=".summary.DefaultJSONSummarySerializer" />
 
   <adapter factory=".localnavigation.LocalNavigation" name="localnavigation"/>
 
@@ -55,5 +56,14 @@
   <configure zcml:condition="installed plone.app.contenttypes">
     <adapter factory=".collection.SerializeCollectionToJson" />
   </configure>
+
+  <plone:service
+    method="GET"
+    for="zope.interface.Interface"
+    factory=".search.SearchGet"
+    name="@search"
+    permission="zope2.View"
+    layer="eea.restapi.interfaces.IEEARestapiLayer"
+    />
 
 </configure>
