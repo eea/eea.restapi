@@ -28,8 +28,9 @@ class SerializeCollectionToJson(SerializeToJson):
 
         results = collection_metadata
 
-        if not self.request.form.get("fullobjects"):
-            results["@id"] = batch.canonical_url
+        # if not self.request.form.get("fullobjects"):
+        #     results["@id"] = batch.canonical_url
+
         results["items_total"] = batch.items_total
 
         if batch.links:
