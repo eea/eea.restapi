@@ -1,4 +1,5 @@
 from eea.restapi.interfaces import IEEARestapiLayer
+from plone.app.contentlisting.interfaces import IContentListingObject
 from plone.restapi.interfaces import IExpandableElement
 from plone.restapi.interfaces import ISerializeToJsonSummary
 from plone.restapi.serializer import summary
@@ -17,7 +18,8 @@ class DefaultJSONSummarySerializer(summary.DefaultJSONSummarySerializer):
     def __call__(self):
         res = super(DefaultJSONSummarySerializer, self).__call__()
 
-        if self.request.get('is_search'):
+        if self.request.get('is_search') and \
+                IContentListingObject.providedBy(self.context):
             adapter = getMultiAdapter((self.context.getObject(), self.request),
                                       IExpandableElement, name='breadcrumbs')
 
