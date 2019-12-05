@@ -66,4 +66,12 @@
     layer="eea.restapi.interfaces.IEEARestapiLayer"
     />
 
+  <plone:service
+    method="GET"
+    for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+    factory=".controlpanel.ControlpanelFallbackGet"
+    name="@controlpanels-fallbacks"
+    permission="plone.app.controlpanel.Overview"
+    />
+
 </configure>
