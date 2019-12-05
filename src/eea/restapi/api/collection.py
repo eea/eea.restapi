@@ -28,6 +28,8 @@ class SerializeCollectionToJson(SerializeToJson):
 
         results = collection_metadata
 
+        # This is a bug in plone.restapi. See
+        # https://github.com/plone/plone.restapi/issues/837
         # if not self.request.form.get("fullobjects"):
         #     results["@id"] = batch.canonical_url
 

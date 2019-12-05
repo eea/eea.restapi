@@ -14,6 +14,7 @@
   <!--<includeDependencies package="." />-->
 
   <include package="Products.CMFCore" file="permissions.zcml" />
+  <include package="plone.restapi" />
   <include file="permissions.zcml" />
 
   <include package=".browser" />
