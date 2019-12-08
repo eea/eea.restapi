@@ -5,8 +5,8 @@
     xmlns:plone="http://namespaces.plone.org/plone"
     i18n_domain="eea.restapi">
 
-  <adapter factory=".provides.DexterityContentSerializer" />
-  <adapter factory=".provides.DexterityContainerSerializer" />
+  <!-- <adapter factory=".provides.DexterityContentSerializer" /> -->
+  <!-- <adapter factory=".provides.DexterityContainerSerializer" /> -->
 
   <adapter factory=".site.SerializeSiteRootToJson" />
   <adapter factory=".summary.DefaultJSONSummarySerializer" />

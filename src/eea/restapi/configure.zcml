@@ -15,10 +15,13 @@
 
   <include package="Products.CMFCore" file="permissions.zcml" />
   <include package="plone.restapi" />
+
   <include file="permissions.zcml" />
 
-  <include package=".browser" />
+  <include package=".compositepage" />
   <include package=".api" />
+  <include package=".attachments" />
+  <include package=".browser" />
 
   <genericsetup:registerProfile
       name="default"

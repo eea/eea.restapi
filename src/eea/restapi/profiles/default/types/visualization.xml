@@ -32,9 +32,7 @@
   <element value="plone.locking"/>
   <element
      value="Products.CMFPlone.interfaces.constrains.ISelectableConstrainTypes"/>
-  <element value="forests.optionalmetadata"/>
-  <element value="forests.metadata"/>
-  <element value="forests.visualization"/>
+  <element value="eea.restapi.visualization"/>
  </property>
  <property name="schema"></property>
  <property name="model_source"></property>

@@ -51,11 +51,16 @@ class SerializeSiteRootToJson(object):
             "parent": {},
             "is_folderish": True,
             "description": self.context.description,
-            "blocks": json.loads(getattr(self.context, "blocks", "{}")),
-            "blocks_layout": json.loads(
-                getattr(self.context, "blocks_layout", "{}")
-            ),  # noqa
         }
+
+        # this is also changed, it may improve the cases where we don't want to
+        # have the site root editable by Composite Editor
+
+        if hasattr(self.context, 'blocks'):
+            result['blocks'] = json.loads(self.context.blocks)
+            result['blocks_layout'] = json.loads(
+                    getattr(self.context, "blocks_layout", "{}")
+                )  # noqa
 
         # this is the place where the code is change from the original.
         # We want to expose the layout property

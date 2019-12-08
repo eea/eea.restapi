@@ -15,6 +15,13 @@ class DexterityContentSerializer(SerializeToJson):
         res['@provides'] = ['{}.{}'.format(I.__module__, I.__name__)
                             for I in providedBy(self.context)]
 
+        if self.context.getLayout() != 'blocks_layout_view':
+            if 'blocks' in res:
+                del res['blocks']
+
+            if 'blocks_layout' in res:
+                del res['blocks_layout']
+
         return res
 
 
@@ -25,5 +32,12 @@ class DexterityContainerSerializer(SerializeFolderToJson):
                                                                  include_items)
         res['@provides'] = ['{}.{}'.format(I.__module__, I.__name__)
                             for I in providedBy(self.context)]
+
+        if self.context.getLayout() != 'blocks_layout_view':
+            if 'blocks' in res:
+                del res['blocks']
+
+            if 'blocks_layout' in res:
+                del res['blocks_layout']
 
         return res
