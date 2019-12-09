@@ -21,8 +21,12 @@ class SerializeToJson(dxcontent.SerializeToJson):
             res['@provides'] = ['{}.{}'.format(I.__module__, I.__name__)
                                 for I in providedBy(self.context)]
 
-        import pdb
-        pdb.set_trace()
+        if self.context.getLayout() != 'blocks_layout_view':
+            if 'blocks' in res:
+                del res['blocks']
+
+            if 'blocks_layout' in res:
+                del res['blocks_layout']
 
         return res
 
@@ -34,11 +38,15 @@ class SerializeFolderToJson(dxcontent.SerializeFolderToJson):
         res = super(SerializeFolderToJson, self).__call__(
             version, include_items)
 
-        import pdb
-        pdb.set_trace()
-
         if "fullobjects" in self.request.form:
             res['@provides'] = ['{}.{}'.format(I.__module__, I.__name__)
                                 for I in providedBy(self.context)]
+
+        if self.context.getLayout() != 'compositepage_view':
+            if 'blocks' in res:
+                del res['blocks']
+
+            if 'blocks_layout' in res:
+                del res['blocks_layout']
 
         return res
