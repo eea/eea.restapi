@@ -21,7 +21,7 @@ class SerializeToJson(dxcontent.SerializeToJson):
             res['@provides'] = ['{}.{}'.format(I.__module__, I.__name__)
                                 for I in providedBy(self.context)]
 
-        if self.context.getLayout() != 'blocks_layout_view':
+        if self.context.getLayout() != 'compositepage_view':
             if 'blocks' in res:
                 del res['blocks']
 

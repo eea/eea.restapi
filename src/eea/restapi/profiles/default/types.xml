@@ -2,4 +2,5 @@
 <object name="portal_types" meta_type="Plone Types Tool">
   <object name="discodataconnector" meta_type="Dexterity FTI" />
   <object name="visualization" meta_type="Dexterity FTI" />
+  <object name="CompositePage" meta_type="Dexterity FTI" />
 </object>
