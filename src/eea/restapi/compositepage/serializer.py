@@ -21,12 +21,12 @@ class SerializeToJson(dxcontent.SerializeToJson):
         #     res['@provides'] = ['{}.{}'.format(I.__module__, I.__name__)
         #                         for I in providedBy(self.context)]
 
-        if self.context.getLayout() != 'compositepage_view':
-            if 'blocks' in res:
-                del res['blocks']
-
-            if 'blocks_layout' in res:
-                del res['blocks_layout']
+        # if self.context.getLayout() != 'compositepage_view':
+        #     if 'blocks' in res:
+        #         del res['blocks']
+        #
+        #     if 'blocks_layout' in res:
+        #         del res['blocks_layout']
 
         return res
 
@@ -42,11 +42,11 @@ class SerializeFolderToJson(dxcontent.SerializeFolderToJson):
         #     res['@provides'] = ['{}.{}'.format(I.__module__, I.__name__)
         #                         for I in providedBy(self.context)]
 
-        if self.context.getLayout() != 'compositepage_view':
-            if 'blocks' in res:
-                del res['blocks']
-
-            if 'blocks_layout' in res:
-                del res['blocks_layout']
+        # if self.context.getLayout() != 'compositepage_view':
+        #     if 'blocks' in res:
+        #         del res['blocks']
+        #
+        #     if 'blocks_layout' in res:
+        #         del res['blocks_layout']
 
         return res
