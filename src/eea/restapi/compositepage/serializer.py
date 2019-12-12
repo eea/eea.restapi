@@ -17,9 +17,9 @@ class SerializeToJson(dxcontent.SerializeToJson):
     def __call__(self, version=None, include_items=True):
         res = super(SerializeToJson, self).__call__(version, include_items)
 
-        if "fullobjects" in self.request.form:
-            res['@provides'] = ['{}.{}'.format(I.__module__, I.__name__)
-                                for I in providedBy(self.context)]
+        # if "fullobjects" in self.request.form:
+        #     res['@provides'] = ['{}.{}'.format(I.__module__, I.__name__)
+        #                         for I in providedBy(self.context)]
 
         if self.context.getLayout() != 'compositepage_view':
             if 'blocks' in res:
@@ -38,9 +38,9 @@ class SerializeFolderToJson(dxcontent.SerializeFolderToJson):
         res = super(SerializeFolderToJson, self).__call__(
             version, include_items)
 
-        if "fullobjects" in self.request.form:
-            res['@provides'] = ['{}.{}'.format(I.__module__, I.__name__)
-                                for I in providedBy(self.context)]
+        # if "fullobjects" in self.request.form:
+        #     res['@provides'] = ['{}.{}'.format(I.__module__, I.__name__)
+        #                         for I in providedBy(self.context)]
 
         if self.context.getLayout() != 'compositepage_view':
             if 'blocks' in res:
