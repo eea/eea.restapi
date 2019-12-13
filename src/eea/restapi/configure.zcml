@@ -101,4 +101,14 @@
     marker=".interfaces.ISimpleFacetedCollection"
     />
 
+  <plone:behavior
+    name="eea.restapi.embed"
+    title="Embedded field"
+    description="Adds an embed field, for embedded content"
+    provides=".interfaces.IHTMLEmbed"
+    factory=".behavior.HTMLEmbed"
+    for="plone.dexterity.interfaces.IDexterityContent"
+    marker=".interfaces.IHTMLEmbed"
+    />
+
 </configure>

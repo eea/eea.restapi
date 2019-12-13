@@ -4,6 +4,7 @@ from .interfaces import IDataProvider
 from .interfaces import IDataVisualization
 from .interfaces import IFacetedCollection
 from .interfaces import IFileDataProvider
+from .interfaces import IHTMLEmbed
 from .interfaces import ISimpleFacetedCollection
 from collections import defaultdict
 from io import StringIO
@@ -138,3 +139,10 @@ class SimpleFacetedCollection(MetadataBase):
     """
 
     filter = DCFieldProperty(ISimpleFacetedCollection['filter'])
+
+
+class HTMLEmbed(MetadataBase):
+    """
+    """
+
+    embed_code = DCFieldProperty(IHTMLEmbed['embed_code'])

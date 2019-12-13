@@ -125,3 +125,15 @@ class ISimpleFacetedCollection(model.Schema):
         vocabulary='plone.app.contenttypes.metadatafields',
         required=False,
     )
+
+
+@provider(IFormFieldProvider)
+class IHTMLEmbed(model.Schema):
+    """ A generic HTML embed field
+    """
+
+    embed_code = schema.Text(
+        title=u"Embed code",
+        description=u"Any HTML code, typically an IFRAME tag",
+        required=True,
+    )
