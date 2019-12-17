@@ -5,11 +5,13 @@
     xmlns:plone="http://namespaces.plone.org/plone"
     i18n_domain="eea.restapi">
 
-  <!-- <adapter factory=".provides.DexterityContentSerializer" /> -->
-  <!-- <adapter factory=".provides.DexterityContainerSerializer" /> -->
-
   <adapter factory=".site.SerializeSiteRootToJson" />
   <adapter factory=".summary.DefaultJSONSummarySerializer" />
+
+  <!-- <adapter factory=".provides.DexterityContentSerializer" /> -->
+  <!-- <adapter factory=".provides.DexterityContainerSerializer" /> -->
+  <!-- <adapter factory=".serialize.SerializeToJson" /> -->
+  <!-- <adapter factory=".serialize.SerializeFolderToJson" /> -->
 
   <adapter factory=".localnavigation.LocalNavigation" name="localnavigation"/>
 
@@ -72,6 +74,16 @@
     factory=".controlpanel.ControlpanelFallbackGet"
     name="@controlpanels-fallbacks"
     permission="plone.app.controlpanel.Overview"
+    />
+
+  <adapter factory=".siblings.Siblings" name="siblings"/>
+
+  <plone:service
+    method="GET"
+    for="zope.interface.Interface"
+    factory=".siblings.SiblingsGet"
+    name="@siblings"
+    permission="zope2.View"
     />
 
 </configure>

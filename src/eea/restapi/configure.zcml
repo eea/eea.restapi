@@ -18,7 +18,7 @@
 
   <include file="permissions.zcml" />
 
-  <include package=".compositepage" />
+  <!-- <include package=".compositepage" /> -->
   <include package=".api" />
   <include package=".attachments" />
   <include package=".browser" />

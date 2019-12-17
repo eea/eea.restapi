@@ -1,3 +1,5 @@
+NOTE: this is in project phase, it's not used
+
 We introduce and enforce the concept of "Composite Page".
 
 The Composite Page is a universal container.
@@ -14,4 +16,3 @@ presence of properties with names that end with "blocks" and decides the Edit
 form implementation based on this. To override this mechanism, we override the
 serialization of DX Content and remove these properties if the context doesn't
 have the composite layout view.
-
