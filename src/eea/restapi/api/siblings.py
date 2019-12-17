@@ -1,31 +1,11 @@
 # -*- coding: utf-8 -*-
-from Acquisition import aq_inner
+
 from plone import api
-from plone.app.layout.navigation.interfaces import INavigationQueryBuilder
-from plone.app.layout.navigation.interfaces import INavtreeStrategy
-from plone.app.layout.navigation.navtree import buildFolderTree
 from plone.restapi.interfaces import IExpandableElement
 from plone.restapi.services import Service
-from plone.restapi.services.navigation.get import CustomNavtreeStrategy
-from plone.restapi.services.navigation.get import NavigationTreeQueryBuilder
-from Products.CMFPlone.browser.navtree import NavtreeQueryBuilder
 from zope.component import adapter
-from zope.component import getMultiAdapter
 from zope.interface import implementer
 from zope.interface import Interface
-
-
-# class NavigationTreeQueryBuilder(NavtreeQueryBuilder):
-#     """Build a folder tree query
-#     """
-#
-#     def __init__(self, context, depth):
-#         NavtreeQueryBuilder.__init__(self, context)
-#         self.query["path"] = {
-#             "query": "/".join(context.getPhysicalPath()),
-#             "navtree_start": 1,
-#             "depth": depth - 1,
-#         }
 
 
 @implementer(IExpandableElement)
