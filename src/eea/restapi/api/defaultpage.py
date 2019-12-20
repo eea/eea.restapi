@@ -2,13 +2,13 @@ from plone.restapi.interfaces import IExpandableElement
 from plone.restapi.interfaces import ISerializeToJson
 from Products.CMFDynamicViewFTI.interfaces import ISelectableBrowserDefault
 from zope.component import getMultiAdapter
-from zope.interface import implements
+from zope.interface import implementer
 
 
+@implementer(IExpandableElement)
 class DefaultPageExpansion(object):
     """ A data expansion for default page information
     """
-    implements(IExpandableElement)
 
     def __init__(self, context, request):
         self.context = context

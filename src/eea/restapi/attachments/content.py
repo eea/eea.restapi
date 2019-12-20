@@ -1,4 +1,4 @@
-from zope.interface import implements
+from zope.interface import implementer
 from zope.schema.fieldproperty import FieldProperty
 
 from Acquisition import Implicit
@@ -10,35 +10,35 @@ from .interfaces import (IAttachedFile, IAttachedImage, IAttachment,
                          IAttachmentFolder)
 
 
+@implementer(IAttachment, IContentish)
 class Attachment(SimpleItem):
     """ Attachment implementation
     """
-    implements(IAttachment, IContentish)
 
     file = FieldProperty(IAttachment['file'])
     text = FieldProperty(IAttachment['text'])
 
 
+@implementer(IAttachedFile)
 class AttachedFile(Attachment):
     """ Attachment implementation
     """
-    implements(IAttachedFile)
 
     file = FieldProperty(IAttachedFile['file'])
 
 
+@implementer(IAttachedImage)
 class AttachedImage(Attachment):
     """ Attachment implementation
     """
-    implements(IAttachedImage)
 
     file = FieldProperty(IAttachedImage['file'])
 
 
+@implementer(IAttachmentFolder)
 class AttachmentFolder(OrderedFolder, Implicit):
     """
     """
-    implements(IAttachmentFolder)
 
     def getPhysicalPath(self):
         # override, to be able to provide a fake name for the physical path
