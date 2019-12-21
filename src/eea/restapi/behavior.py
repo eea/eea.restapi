@@ -1,3 +1,4 @@
+from .interfaces import IConnectorDataParameters
 from .interfaces import IConnectorDataProvider
 from .interfaces import IDataConnector
 from .interfaces import IDataProvider
@@ -146,3 +147,10 @@ class HTMLEmbed(MetadataBase):
     """
 
     embed_code = DCFieldProperty(IHTMLEmbed['embed_code'])
+
+
+class ConnectorDataParameters(MetadataBase):
+    """ Provide predefined connector data for parameters
+    """
+
+    parameters = DCFieldProperty(IConnectorDataParameters['parameters'])

@@ -111,4 +111,14 @@
     marker=".interfaces.IHTMLEmbed"
     />
 
+  <plone:behavior
+    name="eea.restapi.parameters"
+    title="Parameters for data connections"
+    description="Allow content to preset parameters for connector data"
+    provides=".interfaces.IConnectorDataParameters"
+    factory=".behavior.ConnectorDataParameters"
+    for="plone.dexterity.interfaces.IDexterityContent"
+    marker=".interfaces.IConnectorDataParameters"
+    />
+
 </configure>

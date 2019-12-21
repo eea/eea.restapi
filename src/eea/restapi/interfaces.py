@@ -100,7 +100,7 @@ class IDataVisualization(model.Schema):
                               schema=VIZ_SCHEMA)
 
 
-FACETED_SCHEMA = json.dumps({'type': 'list'})
+GENERIC_LIST_SCHEMA = json.dumps({'type': 'list'})
 
 
 @provider(IFormFieldProvider)
@@ -111,7 +111,7 @@ class IFacetedCollection(model.Schema):
     facets = JSONField(
         title=_(u'Facets'),
         description=u"Facets configuration",
-        schema=FACETED_SCHEMA,
+        schema=GENERIC_LIST_SCHEMA,
         # value_type=schema.Choice(
         #     vocabulary='plone.app.contenttypes.metadatafields'),
         required=False,
@@ -136,4 +136,17 @@ class IHTMLEmbed(model.Schema):
         title=u"Embed code",
         description=u"Any HTML code, typically an IFRAME tag",
         required=True,
+    )
+
+
+@provider(IFormFieldProvider)
+class IConnectorDataParameters(model.Schema):
+    """ Allow content to preset parameters for connector data
+    """
+
+    parameters = JSONField(
+        title=_(u'Paramter values'),
+        description=u"Predefined parameter values",
+        schema=GENERIC_LIST_SCHEMA,
+        required=False,
     )
