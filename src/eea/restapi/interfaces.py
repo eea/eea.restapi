@@ -144,7 +144,7 @@ class IConnectorDataParameters(model.Schema):
     """ Allow content to preset parameters for connector data
     """
 
-    parameters = JSONField(
+    data_parameters = JSONField(
         title=_(u'Paramter values'),
         description=u"Predefined parameter values",
         schema=GENERIC_LIST_SCHEMA,

@@ -153,4 +153,5 @@ class ConnectorDataParameters(MetadataBase):
     """ Provide predefined connector data for parameters
     """
 
-    parameters = DCFieldProperty(IConnectorDataParameters['parameters'])
+    data_parameters = DCFieldProperty(
+        IConnectorDataParameters['data_parameters'])
