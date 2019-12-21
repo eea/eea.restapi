@@ -4,9 +4,14 @@
 from eea.restapi.interfaces import IBasicDataProvider
 from eea.restapi.interfaces import IDataProvider
 from plone.restapi.interfaces import IExpandableElement
+from plone.restapi.services import Service
 from zope.component import adapter
 from zope.interface import implementer
 from zope.interface import Interface
+
+
+def filter_data(data, filters):
+    return data
 
 
 @implementer(IExpandableElement)
@@ -27,6 +32,14 @@ class ConnectorData(object):
             return result
 
         connector = IDataProvider(self.context)
-        result['connector-data']["data"] = connector.provided_data
+        result['connector-data']["data"] = filter_data(connector.provided_data,
+                                                       self.request.form)
 
         return result
+
+
+class ConnectorDataGet(Service):
+    def reply(self):
+        actions = ConnectorData(self.context, self.request)
+
+        return actions(expand=True)["connector-data"]
