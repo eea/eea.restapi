@@ -79,4 +79,12 @@
     permission="plone.app.controlpanel.Overview"
     />
 
+  <!-- <plone:service -->
+  <!--   method="GET" -->
+  <!--   for="Products.CMFPlone.interfaces.IPloneSiteRoot" -->
+  <!--   factory=".dataquerystring.DataQuerystringGet" -->
+  <!--   name="@dataquerystring" -->
+  <!--   permission="zope2.View" -->
+  <!--   /> -->
+
 </configure>

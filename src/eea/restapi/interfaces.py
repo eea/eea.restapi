@@ -2,6 +2,7 @@
 """Module where all interfaces, events and exceptions live."""
 
 from eea.restapi import _
+from plone.app.z3cform.widget import QueryStringFieldWidget
 from plone.autoform import directives as form
 from plone.autoform.interfaces import IFormFieldProvider
 from plone.schema import JSONField
@@ -144,9 +145,19 @@ class IConnectorDataParameters(model.Schema):
     """ Allow content to preset parameters for connector data
     """
 
-    data_parameters = JSONField(
-        title=_(u'Paramter values'),
-        description=u"Predefined parameter values",
-        schema=GENERIC_LIST_SCHEMA,
+    # data_parameters = JSONField(
+    #     title=_(u'Parameter values'),
+    #     description=u"Predefined parameter values",
+    #     schema=GENERIC_LIST_SCHEMA,
+    #     required=False,
+    # )
+
+    data_query = schema.List(
+        title=u'Data query parameters',
+        description=u'Define the data query parameters',
+        value_type=schema.Dict(value_type=schema.Field(),
+                               key_type=schema.TextLine()),
         required=False,
+        missing_value=[]
     )
+    form.widget('data_query', QueryStringFieldWidget)
