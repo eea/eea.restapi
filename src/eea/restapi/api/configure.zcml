@@ -17,9 +17,10 @@
 
   <adapter name="connector-data" factory=".dataconnector.ConnectorData" />
 
+	<!-- TODO: this should be eea.restapi.interfaces.IBasicDataProvider -->
   <plone:service
     method="GET"
-    for="eea.restapi.interfaces.IBasicDataProvider"
+    for="*"
     factory=".dataconnector.ConnectorDataGet"
     name="@connector-data"
     permission="zope2.View"

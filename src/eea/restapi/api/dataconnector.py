@@ -40,8 +40,6 @@ class ConnectorData(object):
 
 class ConnectorDataGet(Service):
     def reply(self):
-        import pdb
-        pdb.set_trace()
         data = ConnectorData(self.context, self.request)
 
         return data(expand=True)["connector-data"]
