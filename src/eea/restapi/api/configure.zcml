@@ -21,7 +21,7 @@
     method="GET"
     for="eea.restapi.interfaces.IDataProvider"
     factory=".dataconnector.ConnectorDataGet"
-    name="@data-connector"
+    name="@connector-data"
     permission="zope2.View"
     />
 

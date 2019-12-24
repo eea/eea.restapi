@@ -157,7 +157,7 @@ class IConnectorDataParameters(model.Schema):
         description=u'Define the data query parameters',
         value_type=schema.Dict(value_type=schema.Field(),
                                key_type=schema.TextLine()),
-        required=False,
+        required=True,
         missing_value=[]
     )
     form.widget('data_query', QueryStringFieldWidget)
