@@ -47,7 +47,7 @@ class DataProviderForConnectors(object):
 
         try:
             req = requests.post(self.context.endpoint_url,
-                                data={'sql': self.context.sql_query})
+                                data={'query': self.context.sql_query})
             res = req.json()
         except Exception:
             logger.exception("Error in requestion data")

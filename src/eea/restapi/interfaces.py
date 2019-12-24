@@ -54,11 +54,13 @@ class IDataConnector(model.Schema):
 
     endpoint_url = schema.TextLine(
         title=u"Discodata endpoint URL", required=True,
-        default=u"http://discomap.eea.europa.eu/App/SqlEndpoint/query"
+        # default=u"http://discomap.eea.europa.eu/App/SqlEndpoint/query"
+        default=u"https://discodata.eea.europa.eu/sql"
     )
     sql_query = schema.Text(
         title=u"SQL Query",
         required=True,
+        default=u"Select top 10000 * from [FISE].[v1].[CLC]"
     )
 
     # directives.fieldset('dataconnector', label="Data connector", fields=[

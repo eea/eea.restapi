@@ -19,7 +19,7 @@
 
   <plone:service
     method="GET"
-    for="eea.restapi.interfaces.IDataProvider"
+    for="eea.restapi.interfaces.IBasicDataProvider"
     factory=".dataconnector.ConnectorDataGet"
     name="@connector-data"
     permission="zope2.View"
