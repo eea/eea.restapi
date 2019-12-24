@@ -3,6 +3,7 @@
 
 from eea.restapi.interfaces import IBasicDataProvider
 from eea.restapi.interfaces import IDataProvider
+from plone.restapi.deserializer import json_body
 from plone.restapi.interfaces import IExpandableElement
 from plone.restapi.services import Service
 from zope.component import adapter
@@ -32,8 +33,7 @@ class ConnectorData(object):
             return result
 
         connector = IDataProvider(self.context)
-        result['connector-data']["data"] = filter_data(connector.provided_data,
-                                                       self.request.form)
+        result['connector-data']["data"] = connector.provided_data
 
         return result
 
@@ -43,3 +43,16 @@ class ConnectorDataGet(Service):
         data = ConnectorData(self.context, self.request)
 
         return data(expand=True)["connector-data"]
+
+
+class ConnectorDataPost(Service):
+    def reply(self):
+        cd = ConnectorData(self.context, self.request)
+        qs = json_body(self.request)['query']
+
+        raw_data = cd(expand=True)
+
+        data = filter_data(raw_data["connector-data"]['data'], qs)
+        cd['connector-data']['data'] = data
+
+        return cd

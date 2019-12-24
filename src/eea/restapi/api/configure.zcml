@@ -27,6 +27,14 @@
     />
 
   <plone:service
+    method="POST"
+    for="*"
+    factory=".dataconnector.ConnectorDataPost"
+    name="@connector-data"
+    permission="zope2.View"
+    />
+
+  <plone:service
     method="GET"
     for="zope.interface.Interface"
     factory=".localnavigation.LocalNavigationGet"
