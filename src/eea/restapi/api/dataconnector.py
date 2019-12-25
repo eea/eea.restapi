@@ -106,4 +106,4 @@ class ConnectorDataPost(Service):
         data = filter_data(result["connector-data"]['data'], qs)
         result['connector-data']['data'] = data
 
-        return result
+        return result['connector-data']
