@@ -69,7 +69,7 @@ class DataProviderForConnectors(object):
 
         keys = data[0].keys()
 
-        # in-memory built, should optimize
+        # TODO: in-memory built, should optimize
 
         for k in keys:
             res[k] = [row[k] for row in data]
