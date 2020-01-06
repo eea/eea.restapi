@@ -96,4 +96,14 @@
   <!--   permission="zope2.View" -->
   <!--   /> -->
 
+  <adapter factory=".siblings.Siblings" name="siblings"/>
+
+  <plone:service
+    method="GET"
+    for="zope.interface.Interface"
+    factory=".siblings.SiblingsGet"
+    name="@siblings"
+    permission="zope2.View"
+    />
+
 </configure>
