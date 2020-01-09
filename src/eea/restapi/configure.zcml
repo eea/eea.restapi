@@ -22,9 +22,12 @@
   <include file="permissions.zcml" />
   <include file="behavior.zcml" />
   <include file="profiles.zcml" />
+  <include file="upgrades.zcml" />
 
   <include package=".api" />
   <include package=".attachments" />
   <include package=".browser" />
+
+  <adapter name="lead_image" factory=".indexers.lead_image" />
 
 </configure>

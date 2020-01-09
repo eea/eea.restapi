@@ -1,0 +1,25 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser"
+    xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
+    i18n_domain="plone.restapi">
+
+  <!-- <genericsetup:registerProfile -->
+  <!--     name="1001" -->
+  <!--     title="eea.restapi.upgrades.1001" -->
+  <!--     description="" -->
+  <!--     directory="profiles/1001" -->
+  <!--     for="Products.CMFPlone.interfaces.IMigratingPloneSiteRoot" -->
+  <!--     provides="Products.GenericSetup.interfaces.EXTENSION" -->
+  <!--     /> -->
+
+  <genericsetup:upgradeStep
+    title="Create catalog indexes and metadata"
+    description=""
+    source="1000"
+    destination="1001"
+    handler=".upgrades.to1001.run_upgrade"
+    profile="eea.restapi:default"
+    />
+
+</configure>
