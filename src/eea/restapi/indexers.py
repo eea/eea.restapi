@@ -40,21 +40,41 @@ def transform_text(text, portal_transforms=None):
     return converted or ''
 
 
+def _extract_text(block):
+    result = ""
+
+    for paragraph in block.get("text", {}).get("blocks", []):
+        text = paragraph["text"]
+
+        if six.PY2:
+            if isinstance(text, six.text_type):
+                text = text.encode("utf-8", "replace")
+
+            if text:
+                result = " ".join((result, text))
+        else:
+            result = " ".join((result, text))
+
+    return result
+
+
 @indexer(IBlocks)
 def custom_SearchableText_blocks(obj):
-    blocks = [b for b in obj.blocks.values() if b.get('@type') == u'cktext']
+
+    std_text = SearchableText(obj)
     portal_transforms = api.portal.get_tool(name='portal_transforms')
 
-    try:
-        searchable_text = SearchableText_blocks(obj)()
-    except:
-        searchable_text = ''
+    obj = obj.aq_inner.aq_self
+    ck_blocks = [transform_text(b.get('cktext', ''), portal_transforms)
+                 for b in obj.blocks.values()
 
-    blocks_text = [searchable_text] + [
-        transform_text(b.get('cktext', ''), portal_transforms)
+                 if b and b.get('@type') == u'cktext']
+    txt_blocks = [_extract_text(b)
+                  for b in obj.blocks.values()
 
-        for b in blocks
-    ]
+                  if b and b.get('@type') == u'text']
+
+    blocks_text = [std_text] + ck_blocks + txt_blocks
 
     text = " ".join([get_bytestring(t) for t in blocks_text])
 
