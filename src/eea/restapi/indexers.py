@@ -3,6 +3,7 @@ from plone.app.contenttypes.behaviors.leadimage import ILeadImage
 from plone.app.contenttypes.indexers import SearchableText
 from plone.indexer.decorator import indexer
 from plone.restapi.behaviors import IBlocks
+from plone.restapi.indexers import SearchableText_blocks
 
 import logging
 import six
@@ -40,18 +41,18 @@ def transform_text(text, portal_transforms=None):
 
 
 @indexer(IBlocks)
-def SearchableText_blocks(obj):
-    std_text = SearchableText(obj)
+def custom_SearchableText_blocks(obj):
     blocks = [b for b in obj.blocks.values() if b.get('@type') == u'cktext']
     portal_transforms = api.portal.get_tool(name='portal_transforms')
 
-    blocks_text = [
+    searchable_text = SearchableText_blocks(obj)
+
+    blocks_text = [searchable_text] + [
         transform_text(b.get('cktext', ''), portal_transforms)
 
         for b in blocks
     ]
 
-    blocks_text.append(std_text)
     text = " ".join([get_bytestring(t) for t in blocks_text])
 
     return text
