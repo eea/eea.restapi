@@ -45,7 +45,10 @@ def custom_SearchableText_blocks(obj):
     blocks = [b for b in obj.blocks.values() if b.get('@type') == u'cktext']
     portal_transforms = api.portal.get_tool(name='portal_transforms')
 
-    searchable_text = SearchableText_blocks(obj)
+    try:
+        searchable_text = SearchableText_blocks(obj)()
+    except:
+        searchable_text = ''
 
     blocks_text = [searchable_text] + [
         transform_text(b.get('cktext', ''), portal_transforms)
