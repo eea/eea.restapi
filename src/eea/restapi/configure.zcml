@@ -13,102 +13,21 @@
   -->
   <!--<includeDependencies package="." />-->
 
+  <!-- -*- extra stuff goes here -*- -->
+
   <include package="Products.CMFCore" file="permissions.zcml" />
   <include package="plone.restapi" />
 
-  <include file="permissions.zcml" />
-
   <!-- <include package=".compositepage" /> -->
+  <include file="permissions.zcml" />
+  <include file="behavior.zcml" />
+  <include file="profiles.zcml" />
+  <include file="upgrades.zcml" />
+
   <include package=".api" />
   <include package=".attachments" />
   <include package=".browser" />
 
-  <genericsetup:registerProfile
-      name="default"
-      title="eea.restapi"
-      directory="profiles/default"
-      description="Installs the eea.restapi add-on."
-      provides="Products.GenericSetup.interfaces.EXTENSION"
-      post_handler=".setuphandlers.post_install"
-      />
-
-  <genericsetup:registerProfile
-      name="uninstall"
-      title="eea.restapi (uninstall)"
-      directory="profiles/uninstall"
-      description="Uninstalls the eea.restapi add-on."
-      provides="Products.GenericSetup.interfaces.EXTENSION"
-      post_handler=".setuphandlers.uninstall"
-      />
-
-  <utility
-      factory=".setuphandlers.HiddenProfiles"
-      name="eea.restapi-hiddenprofiles"
-      />
-
-  <!-- -*- extra stuff goes here -*- -->
-  <interface interface=".interfaces.ILocalSectionMarker" />
-
-  <adapter factory=".behavior.DataProviderForConnectors" />
-
-  <plone:behavior
-    name="discodata.connector"
-    title="Discodata connector behavior"
-    description="Adds discodata connector query execution"
-    provides=".interfaces.IDataConnector"
-    factory=".behavior.DataConnector"
-    for="plone.dexterity.interfaces.IDexterityContent"
-    marker=".interfaces.IConnectorDataProvider"
-    />
-
-  <plone:behavior
-    name="dataprovider.files"
-    title="Data provider for files"
-    description="Allows Files to provide remote data"
-    provides=".interfaces.IDataProvider"
-    factory=".behavior.DataProviderForFiles"
-    for="plone.dexterity.interfaces.IDexterityContent"
-    marker=".interfaces.IFileDataProvider"
-    />
-
-  <plone:behavior
-    name="eea.restapi.visualization"
-    title="Visualization behavior"
-    description="Allows creating a visualization."
-    provides=".interfaces.IDataVisualization"
-    factory=".behavior.DataVisualization"
-    for="plone.dexterity.interfaces.IDexterityContent"
-    marker=".interfaces.IDataVisualization"
-    />
-
-  <plone:behavior
-    name="eea.restapi.collection-facets"
-    title="Facets for Collections"
-    description="Allows navigation by facets for collections"
-    provides=".interfaces.IFacetedCollection"
-    factory=".behavior.FacetedCollection"
-    for="plone.app.contenttypes.interfaces.ICollection"
-    marker=".interfaces.IFacetedCollection"
-    />
-
-  <plone:behavior
-    name="eea.restapi.collection-simplefacetfilter"
-    title="Simple Facet Filter for Collections"
-    description="A simple facet filter for collection results"
-    provides=".interfaces.ISimpleFacetedCollection"
-    factory=".behavior.SimpleFacetedCollection"
-    for="plone.app.contenttypes.interfaces.ICollection"
-    marker=".interfaces.ISimpleFacetedCollection"
-    />
-
-  <plone:behavior
-    name="eea.restapi.embed"
-    title="Embedded field"
-    description="Adds an embed field, for embedded content"
-    provides=".interfaces.IHTMLEmbed"
-    factory=".behavior.HTMLEmbed"
-    for="plone.dexterity.interfaces.IDexterityContent"
-    marker=".interfaces.IHTMLEmbed"
-    />
+  <adapter name="lead_image" factory=".indexers.lead_image" />
 
 </configure>

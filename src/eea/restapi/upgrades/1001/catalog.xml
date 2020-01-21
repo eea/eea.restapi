@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<object name="portal_catalog" meta_type="Plone Catalog Tool">
+<!--  <index name="lead_image" meta_type="FieldIndex"> -->
+<!--   <indexed_attr value="lead_image"/> -->
+<!--  </index> -->
+ <column value="lead_image"/>
+</object>

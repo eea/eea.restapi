@@ -2,6 +2,7 @@
 """Module where all interfaces, events and exceptions live."""
 
 from eea.restapi import _
+from plone.app.z3cform.widget import QueryStringFieldWidget
 from plone.autoform import directives as form
 from plone.autoform.interfaces import IFormFieldProvider
 from plone.schema import JSONField
@@ -53,11 +54,13 @@ class IDataConnector(model.Schema):
 
     endpoint_url = schema.TextLine(
         title=u"Discodata endpoint URL", required=True,
-        default=u"http://discomap.eea.europa.eu/App/SqlEndpoint/query"
+        # default=u"http://discomap.eea.europa.eu/App/SqlEndpoint/query"
+        default=u"https://discodata.eea.europa.eu/sql"
     )
     sql_query = schema.Text(
         title=u"SQL Query",
         required=True,
+        default=u"Select top 10000 * from [FISE].[v1].[CLC]"
     )
 
     # directives.fieldset('dataconnector', label="Data connector", fields=[
@@ -100,7 +103,7 @@ class IDataVisualization(model.Schema):
                               schema=VIZ_SCHEMA)
 
 
-FACETED_SCHEMA = json.dumps({'type': 'list'})
+GENERIC_LIST_SCHEMA = json.dumps({'type': 'list'})
 
 
 @provider(IFormFieldProvider)
@@ -111,7 +114,7 @@ class IFacetedCollection(model.Schema):
     facets = JSONField(
         title=_(u'Facets'),
         description=u"Facets configuration",
-        schema=FACETED_SCHEMA,
+        schema=GENERIC_LIST_SCHEMA,
         # value_type=schema.Choice(
         #     vocabulary='plone.app.contenttypes.metadatafields'),
         required=False,
@@ -137,3 +140,26 @@ class IHTMLEmbed(model.Schema):
         description=u"Any HTML code, typically an IFRAME tag",
         required=True,
     )
+
+
+@provider(IFormFieldProvider)
+class IConnectorDataParameters(model.Schema):
+    """ Allow content to preset parameters for connector data
+    """
+
+    # data_parameters = JSONField(
+    #     title=_(u'Parameter values'),
+    #     description=u"Predefined parameter values",
+    #     schema=GENERIC_LIST_SCHEMA,
+    #     required=False,
+    # )
+
+    data_query = schema.List(
+        title=u'Data query parameters',
+        description=u'Define the data query parameters',
+        value_type=schema.Dict(value_type=schema.Field(),
+                               key_type=schema.TextLine()),
+        required=True,
+        missing_value=[]
+    )
+    form.widget('data_query', QueryStringFieldWidget)

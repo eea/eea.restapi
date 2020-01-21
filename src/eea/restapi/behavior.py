@@ -1,3 +1,4 @@
+from .interfaces import IConnectorDataParameters
 from .interfaces import IConnectorDataProvider
 from .interfaces import IDataConnector
 from .interfaces import IDataProvider
@@ -7,10 +8,12 @@ from .interfaces import IFileDataProvider
 from .interfaces import IHTMLEmbed
 from .interfaces import ISimpleFacetedCollection
 from collections import defaultdict
+from eea.restapi.utils import timing
 from io import StringIO
 from plone.app.dexterity.behaviors.metadata import DCFieldProperty
 from plone.app.dexterity.behaviors.metadata import MetadataBase
 from plone.dexterity.interfaces import IDexterityContent
+from plone.memoize import ram
 from plone.rfc822.interfaces import IPrimaryFieldInfo
 from zope.component import adapter
 from zope.interface import implementer
@@ -41,12 +44,13 @@ class DataProviderForConnectors(object):
     def __init__(self, context):
         self.context = context
 
+    @timing
     def _get_data(self):
         # query = urllib.parse.quote_plus(self.query)
 
         try:
             req = requests.post(self.context.endpoint_url,
-                                data={'sql': self.context.sql_query})
+                                data={'query': self.context.sql_query})
             res = req.json()
         except Exception:
             logger.exception("Error in requestion data")
@@ -65,21 +69,26 @@ class DataProviderForConnectors(object):
 
         keys = data[0].keys()
 
-        # in-memory built, should optimize
+        # TODO: in-memory built, should optimize
 
         for k in keys:
             res[k] = [row[k] for row in data]
 
         return res
 
-    @property
-    def provided_data(self):
+    # TODO: persistent caching, periodical refresh, etc
+    @ram.cache(lambda func, self: self.context.modified())
+    def _provided_data(self):
         if not self.context.sql_query:
             return []
 
         data = self._get_data()
 
         return self.change_orientation(data['results'])
+
+    @property
+    def provided_data(self):
+        return self._provided_data()
 
 
 @implementer(IDataProvider)
@@ -146,3 +155,13 @@ class HTMLEmbed(MetadataBase):
     """
 
     embed_code = DCFieldProperty(IHTMLEmbed['embed_code'])
+
+
+class ConnectorDataParameters(MetadataBase):
+    """ Provide predefined connector data for parameters
+    """
+
+    # data_parameters = DCFieldProperty(
+    #     IConnectorDataParameters['data_parameters'])
+    data_query = DCFieldProperty(
+        IConnectorDataParameters['data_query'])

@@ -8,11 +8,6 @@
   <adapter factory=".site.SerializeSiteRootToJson" />
   <adapter factory=".summary.DefaultJSONSummarySerializer" />
 
-  <!-- <adapter factory=".provides.DexterityContentSerializer" /> -->
-  <!-- <adapter factory=".provides.DexterityContainerSerializer" /> -->
-  <!-- <adapter factory=".serialize.SerializeToJson" /> -->
-  <!-- <adapter factory=".serialize.SerializeFolderToJson" /> -->
-
   <adapter factory=".localnavigation.LocalNavigation" name="localnavigation"/>
 
   <adapter
@@ -21,6 +16,23 @@
     name="defaultpage"/>
 
   <adapter name="connector-data" factory=".dataconnector.ConnectorData" />
+
+	<!-- TODO: this should be eea.restapi.interfaces.IBasicDataProvider -->
+  <plone:service
+    method="GET"
+    for="*"
+    factory=".dataconnector.ConnectorDataGet"
+    name="@connector-data"
+    permission="zope2.View"
+    />
+
+  <plone:service
+    method="POST"
+    for="*"
+    factory=".dataconnector.ConnectorDataPost"
+    name="@connector-data"
+    permission="zope2.View"
+    />
 
   <plone:service
     method="GET"
@@ -75,6 +87,14 @@
     name="@controlpanels-fallbacks"
     permission="plone.app.controlpanel.Overview"
     />
+
+  <!-- <plone:service -->
+  <!--   method="GET" -->
+  <!--   for="Products.CMFPlone.interfaces.IPloneSiteRoot" -->
+  <!--   factory=".dataquerystring.DataQuerystringGet" -->
+  <!--   name="@dataquerystring" -->
+  <!--   permission="zope2.View" -->
+  <!--   /> -->
 
   <adapter factory=".siblings.Siblings" name="siblings"/>
 
