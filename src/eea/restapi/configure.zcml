@@ -30,4 +30,9 @@
 
   <adapter name="lead_image" factory=".indexers.lead_image" />
 
+  <subscriber
+    for=".interfaces.IClonedBlocks
+         zope.lifecycleevent.interfaces.IObjectAddedEvent"
+    handler=".handlers.handle_clonedblock_content_added" />
+
 </configure>
