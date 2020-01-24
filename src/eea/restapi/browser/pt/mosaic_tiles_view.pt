@@ -10,7 +10,7 @@
     <metal:main fill-slot="main">
       <!-- <pre tal:content="view/tiles"></pre> -->
 
-      <ul tal:define="tiles view/tiles">
+      <ul tal:define="tiles view/blocks">
         <li tal:repeat="tileid tiles">
           <strong tal:content="tileid"></strong>
           <div tal:content="python: tiles[tileid]" />

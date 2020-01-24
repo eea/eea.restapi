@@ -50,6 +50,7 @@ class CreateCloneTemplate(Service):
             del props['factory']
 
         props['title'] = type_title
+        props['global_allow'] = True
         props['add_view_expr'] = props['add_view_expr'].replace(
             base,
             type_id
@@ -57,4 +58,6 @@ class CreateCloneTemplate(Service):
         fti = DexterityFTI(type_id, **props)
         types_tool._setObject(fti.id, fti)
 
-        return {}
+        id = '{}/@types/{}'.format(api.portal.get().portal_url(), fti.id)
+
+        return {'name': type_title, '@id': id}
