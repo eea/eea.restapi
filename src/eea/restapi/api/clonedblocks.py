@@ -49,8 +49,7 @@ class CreateCloneTemplate(Service):
                 self.request, plone.protect.interfaces.IDisableCSRFProtection)
 
         type_title = json_body(self.request)['typeName'].strip().capitalize()
-        type_id = six.ensure_binary(
-            type_title.lower().strip().replace(' ', '_'))
+        type_id = str(type_title.lower().strip().replace(' ', '_'))
         types_tool = api.portal.get_tool('portal_types')
         base = 'clonable_type'
         base_fti = types_tool._getOb(base)
@@ -65,7 +64,7 @@ class CreateCloneTemplate(Service):
         props['global_allow'] = True
         props['add_view_expr'] = props['add_view_expr'].replace(
             base,
-            type_id
+            str(type_id)
         )
         fti = DexterityFTI(type_id, **props)
         types_tool._setObject(fti.id, fti)
@@ -75,7 +74,7 @@ class CreateCloneTemplate(Service):
         uid = self.context.UID()
 
         registry = api.portal.get_tool('portal_registry')
-        record = Record(field.BytesLine(title=u"UID"), uid)
+        record = Record(field.TextLine(title=u"UID"), uid)
         registry.records['eea.clonedblocks.' + fti.id] = record
 
         return {'name': type_title, '@id': id}
