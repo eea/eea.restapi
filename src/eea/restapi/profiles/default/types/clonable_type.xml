@@ -31,7 +31,7 @@
   <element value="plone.versioning"/>
   <element value="plone.tableofcontents"/>
   <element value="plone.locking"/>
-  <element value="eea.restapi.cloneblocks"/>
+  <element value="eea.restapi.clonedblocks"/>
   <element
      value="Products.CMFPlone.interfaces.constrains.ISelectableConstrainTypes"/>
  </property>
