@@ -8,8 +8,10 @@ class HiddenProfiles(object):
 
     def getNonInstallableProfiles(self):
         """Hide uninstall profile from site-creation and quickinstaller."""
+
         return [
             'eea.restapi:uninstall',
+            # 'eea.restapi:upgrade_1002',
         ]
 
 

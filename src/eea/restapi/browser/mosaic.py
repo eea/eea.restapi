@@ -7,5 +7,7 @@ class MosaicTilesView(BrowserView):
     """ A fallback view for mosaic pages
     """
 
-    def tiles(self):
-        return json.loads(getattr(self.context, 'tiles', {}))
+    def blocks(self):
+        blocks = getattr(self.context.aq_inner.aq_self, 'blocks', '{}')
+
+        return json.loads(blocks)

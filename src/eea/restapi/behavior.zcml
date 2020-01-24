@@ -81,4 +81,15 @@
     marker=".interfaces.IHTMLEmbed"
     />
 
+  <plone:behavior
+    name="eea.restapi.clonedblocks"
+    title="Clones blocks from a content item"
+    description="Volto blocks will be cloned from a specified content"
+    for="plone.dexterity.interfaces.IDexterityContent"
+    marker=".interfaces.IClonedBlocks"
+    provides=".interfaces.IClonedBlocks"
+    />
+
+  <interface interface=".interfaces.IClonedBlocks" />
+
 </configure>

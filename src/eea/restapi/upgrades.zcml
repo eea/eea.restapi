@@ -4,21 +4,30 @@
     xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
     i18n_domain="plone.restapi">
 
-  <!-- <genericsetup:registerProfile -->
-  <!--     name="1001" -->
-  <!--     title="eea.restapi.upgrades.1001" -->
-  <!--     description="" -->
-  <!--     directory="profiles/1001" -->
-  <!--     for="Products.CMFPlone.interfaces.IMigratingPloneSiteRoot" -->
-  <!--     provides="Products.GenericSetup.interfaces.EXTENSION" -->
-  <!--     /> -->
-
   <genericsetup:upgradeStep
     title="Create catalog indexes and metadata"
     description=""
     source="1000"
     destination="1001"
     handler=".upgrades.to1001.run_upgrade"
+    profile="eea.restapi:default"
+    />
+
+  <genericsetup:registerProfile
+      name="upgrade_1002"
+      title="eea.restapi"
+      directory="upgrades/1002"
+      description="Installs the cloned_type type."
+      for="Products.CMFPlone.interfaces.IMigratingPloneSiteRoot"
+      provides="Products.GenericSetup.interfaces.EXTENSION"
+      />
+
+  <genericsetup:upgradeStep
+    title="Import cloned_type type profile"
+    description=""
+    source="*"
+    destination="1002"
+    handler=".upgrades.to1002.run_upgrade"
     profile="eea.restapi:default"
     />
 

@@ -4,6 +4,7 @@
 from eea.restapi.interfaces import IEEARestapiLayer
 from plone.dexterity.interfaces import IDexterityContainer
 from plone.dexterity.interfaces import IDexterityContent
+from plone.restapi.deserializer import json_body
 from plone.restapi.interfaces import ISerializeToJson
 from plone.restapi.serializer import dxcontent
 from zope.component import adapter
