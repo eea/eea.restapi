@@ -14,12 +14,10 @@ logger = logging.getLogger('eea.restapi')
 
 def handle_clonedblock_content_added(obj, event):
 
-    import pdb
-    pdb.set_trace()
     portal_type = obj.portal_type
     uid = api.portal.get_registry_record(
         'eea.clonedblocks.' + portal_type, default=None)
-    source = api.content.get(uid=uid)
+    source = api.content.get(UID=uid)
     intids = getUtility(IIntIds)
 
     source_id = ensure_intid(source, intids)

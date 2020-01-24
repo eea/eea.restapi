@@ -30,7 +30,7 @@ class SerializeClonedBlocksToJson(SerializeToJson):
             'eea.clonedblocks.' + portal_type, default=None)
 
         if uid:
-            source = api.content.get(uid=uid)
+            source = api.content.get(UID=uid)
             res['cloned_blocks'] = source.blocks
             res['cloned_blocks_layout'] = source.blocks_layout
 
