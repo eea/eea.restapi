@@ -12,8 +12,12 @@ from zope.component import adapter
 from zope.interface import alsoProvides
 from zope.interface import implementer
 
+import logging
 import plone.protect.interfaces
 import six
+
+
+logger = logging.getLogger('eea.restapi')
 
 
 @implementer(ISerializeToJson)
@@ -31,8 +35,13 @@ class SerializeClonedBlocksToJson(SerializeToJson):
 
         if uid:
             source = api.content.get(UID=uid)
-            res['cloned_blocks'] = source.blocks
-            res['cloned_blocks_layout'] = source.blocks_layout
+
+            if source is not None:
+                res['cloned_blocks'] = source.blocks
+                res['cloned_blocks_layout'] = source.blocks_layout
+            else:
+                logger.error('Could not find clone source for %r, %r', uid,
+                             self.context)
 
         return res
 
