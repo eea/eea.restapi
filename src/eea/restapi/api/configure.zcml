@@ -28,6 +28,14 @@
     />
 
   <plone:service
+    method="GET"
+    for="*"
+    factory=".field.FieldGet"
+    name="@field"
+    permission="zope2.View"
+    />
+
+  <plone:service
     method="POST"
     for="*"
     factory=".dataconnector.ConnectorDataPost"
