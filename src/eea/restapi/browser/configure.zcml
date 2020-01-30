@@ -64,7 +64,7 @@
     />
 
   <browser:page
-    name="download"
+    name="download-provider-data"
     for="eea.restapi.interfaces.IBasicDataProvider"
     permission="zope2.View"
     class=".dataprovider.DataProviderDownload"

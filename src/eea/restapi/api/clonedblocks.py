@@ -11,6 +11,7 @@ from plone.restapi.services import Service
 from zope.component import adapter
 from zope.interface import alsoProvides
 from zope.interface import implementer
+from zope.security import checkPermission
 
 import logging
 import plone.protect.interfaces
@@ -39,6 +40,12 @@ class SerializeClonedBlocksToJson(SerializeToJson):
             if source is not None:
                 res['cloned_blocks'] = source.blocks
                 res['cloned_blocks_layout'] = source.blocks_layout
+                res['@components']['cloned_source'] = {
+                    '@id': source.absolute_url()
+                }
+
+                if checkPermission('cmf.ModifyPortalContent', source):
+                    res['@components']['cloned_source']['can_edit'] = True
             else:
                 logger.error('Could not find clone source for %r, %r', uid,
                              self.context)
