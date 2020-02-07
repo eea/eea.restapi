@@ -103,8 +103,8 @@ class LocalNavigation(object):
         return original
 
     def __call__(self, expand=False):
-        if self.request.form.get("expand.navigation.depth", False):
-            self.depth = int(self.request.form["expand.navigation.depth"])
+        if self.request.form.get("expand.localnavigation.depth", False):
+            self.depth = int(self.request.form["expand.localnavigation.depth"])
         else:
             self.depth = 1
 
