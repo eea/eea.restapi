@@ -12,7 +12,7 @@ Changelog
   [tiberiuichim]
 
 
-1.0a1 (unreleased)
+1.0a1 (2020-02-13)
 ------------------
 
 - Initial release.
