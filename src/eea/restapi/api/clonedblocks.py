@@ -15,7 +15,6 @@ from zope.security import checkPermission
 
 import logging
 import plone.protect.interfaces
-import six
 
 
 logger = logging.getLogger('eea.restapi')
