@@ -1,7 +1,6 @@
 from plone import api
 from plone.app.linkintegrity.handlers import updateReferences
 from plone.app.linkintegrity.utils import ensure_intid
-from plone.app.linkintegrity.utils import referencedRelationship
 from z3c.relationfield import RelationValue
 from zope.component import getUtility
 from zope.intid.interfaces import IIntIds

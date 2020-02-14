@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 """Installer for the eea.restapi package."""
 
+from os.path import join
 from setuptools import find_packages
 from setuptools import setup
 
@@ -11,11 +12,15 @@ long_description = '\n\n'.join([
     open('CHANGES.rst').read(),
 ])
 
+NAME = 'eea.restapi'
+PATH = ['src'] + NAME.split('.') + ['version.txt']
+VERSION = open(join(*PATH)).read().strip()
 
 setup(
-    name='eea.restapi',
-    version='1.0a1',
+    name=NAME,
+    version=VERSION,
     description="plone.restapi for EEA websites",
+    long_description_content_type="text/x-rst",
     long_description=long_description,
     # Get more from https://pypi.org/classifiers/
     classifiers=[

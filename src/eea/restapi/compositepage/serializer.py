@@ -8,7 +8,6 @@ from plone.restapi.interfaces import ISerializeToJson
 from plone.restapi.serializer import dxcontent
 from zope.component import adapter
 from zope.interface import implementer
-from zope.interface import providedBy
 
 
 @implementer(ISerializeToJson)

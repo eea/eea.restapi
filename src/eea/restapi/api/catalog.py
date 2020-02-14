@@ -1,8 +1,6 @@
 from plone.api import portal
 from plone.restapi.deserializer import json_body
-from plone.restapi.interfaces import ISerializeToJson
 from plone.restapi.services import Service
-from zope.component import getMultiAdapter
 
 
 class IndexValues(Service):

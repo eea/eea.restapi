@@ -3,7 +3,6 @@ from plone.app.contenttypes.behaviors.leadimage import ILeadImage
 from plone.app.contenttypes.indexers import SearchableText
 from plone.indexer.decorator import indexer
 from plone.restapi.behaviors import IBlocks
-from plone.restapi.indexers import SearchableText_blocks
 
 import logging
 import six
