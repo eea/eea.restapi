@@ -1,8 +1,13 @@
+# from plone.app.linkintegrity.utils import referencedRelationship
+
+from .interfaces import IBlockValidator
+from Acquisition import aq_base
 from plone import api
 from plone.app.linkintegrity.handlers import updateReferences
 from plone.app.linkintegrity.utils import ensure_intid
 from z3c.relationfield import RelationValue
 from zope.component import getUtility
+from zope.component import queryAdapter
 from zope.intid.interfaces import IIntIds
 
 import logging
@@ -25,3 +30,27 @@ def handle_clonedblock_content_added(obj, event):
     updateReferences(obj, [relation])
 
     logger.info("Added clone relationship for %r ", obj)
+
+
+_marker = object()
+
+
+def validate_blocks(obj, event):
+
+    base = aq_base(obj)
+    blocks = getattr(base, 'blocks', _marker)
+
+    if blocks is _marker:
+        return
+
+    res = {}
+
+    for k, v in blocks.items():
+        validator = queryAdapter(obj, IBlockValidator, name=v.get('@type', ''))
+
+        if validator is not None:
+            res[k] = validator.clean(v)
+        else:
+            res[k] = v
+
+    obj.blocks = res
