@@ -35,4 +35,21 @@
          zope.lifecycleevent.interfaces.IObjectAddedEvent"
     handler=".handlers.handle_clonedblock_content_added" />
 
+  <subscriber
+    for="Products.CMFCore.interfaces.IContentish
+         zope.lifecycleevent.interfaces.IObjectAddedEvent"
+    handler=".handlers.validate_blocks" />
+
+  <subscriber
+    for="Products.CMFCore.interfaces.IContentish
+         zope.lifecycleevent.interfaces.IObjectModifiedEvent"
+    handler=".handlers.validate_blocks" />
+
+  <adapter
+    factory=".cleanup.HTMLBlockCleanup"
+    for="Products.CMFCore.interfaces.IContentish"
+    provides=".interfaces.IBlockValidator"
+    name="html"
+    />
+
 </configure>

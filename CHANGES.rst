@@ -1,6 +1,11 @@
 Changelog
 =========
 
+1.1 - (unreleased)
+------------------
+* Feature: implemented a IBlockValidator adapter to automatically cleanup
+  blocks [tiberiuichim]
+
 1.0 - (2020-02-13)
 ---------------------------
 * Change: Implement automatic release with gitflow  [valentinab25]

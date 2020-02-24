@@ -192,3 +192,10 @@ class IClonedBlocks(Interface):
 
     cloned_blocks = Attribute(u"Cloned blocks property")
     cloned_blocks_layout = Attribute(u"Cloned blocks_layout property")
+
+
+class IBlockValidator(Interface):
+
+    def clean(value):
+        """ Returns a cleaned value
+        """
