@@ -3,6 +3,8 @@ Changelog
 
 1.2-dev0 - (unreleased)
 ---------------------------
+* Feature: updated Jenkins pipeline
+  [alecghica refs #110159]
 
 1.1 - (2020-02-24)
 ---------------------------
@@ -10,7 +12,7 @@ Changelog
   [tiberiuichim]
 
 1.1 - (2020-02-24)
-------------------
+---------------------------
 * Feature: implemented a IBlockValidator adapter to automatically cleanup
   blocks [tiberiuichim]
 
@@ -18,15 +20,12 @@ Changelog
 ---------------------------
 * Change: Implement automatic release with gitflow  [valentinab25]
 
-1.0a2
------
-
-- Use expand.localnavigation.depth for locationavigation endpoint
+1.0a2 - (2020-02-13)
+---------------------------
+* Use expand.localnavigation.depth for locationavigation endpoint
   [tiberiuichim]
 
-
 1.0a1 (2020-02-13)
-------------------
-
-- Initial release.
+---------------------------
+* Initial release.
   [tiberiuichim]

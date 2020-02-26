@@ -16,10 +16,8 @@ pipeline {
           "JS Hint": {
             node(label: 'docker') {
               script {
-                try {
+                catchError(buildResult: 'SUCCESS', stageResult: 'UNSTABLE') {
                   sh '''docker run -i --rm --name="$BUILD_TAG-jshint" -e GIT_SRC="https://github.com/eea/$GIT_NAME.git" -e GIT_NAME="$GIT_NAME" -e GIT_BRANCH="$BRANCH_NAME" -e GIT_CHANGE_ID="$CHANGE_ID" eeacms/jshint'''
-                } catch (err) {
-                  echo "Unstable: ${err}"
                 }
               }
             }
@@ -28,10 +26,8 @@ pipeline {
           "CSS Lint": {
             node(label: 'docker') {
               script {
-                try {
+                catchError(buildResult: 'SUCCESS', stageResult: 'UNSTABLE') {
                   sh '''docker run -i --rm --name="$BUILD_TAG-csslint" -e GIT_SRC="https://github.com/eea/$GIT_NAME.git" -e GIT_NAME="$GIT_NAME" -e GIT_BRANCH="$BRANCH_NAME" -e GIT_CHANGE_ID="$CHANGE_ID" eeacms/csslint'''
-                } catch (err) {
-                  echo "Unstable: ${err}"
                 }
               }
             }
@@ -40,10 +36,8 @@ pipeline {
           "PEP8": {
             node(label: 'docker') {
               script {
-                try {
+                catchError(buildResult: 'SUCCESS', stageResult: 'UNSTABLE') {
                   sh '''docker run -i --rm --name="$BUILD_TAG-pep8" -e GIT_SRC="https://github.com/eea/$GIT_NAME.git" -e GIT_NAME="$GIT_NAME" -e GIT_BRANCH="$BRANCH_NAME" -e GIT_CHANGE_ID="$CHANGE_ID" eeacms/pep8'''
-                } catch (err) {
-                  echo "Unstable: ${err}"
                 }
               }
             }
@@ -52,10 +46,8 @@ pipeline {
           "PyLint": {
             node(label: 'docker') {
               script {
-                try {
+                catchError(buildResult: 'SUCCESS', stageResult: 'UNSTABLE') {
                   sh '''docker run -i --rm --name="$BUILD_TAG-pylint" -e GIT_SRC="https://github.com/eea/$GIT_NAME.git" -e GIT_NAME="$GIT_NAME" -e GIT_BRANCH="$BRANCH_NAME" -e GIT_CHANGE_ID="$CHANGE_ID" eeacms/pylint'''
-                } catch (err) {
-                  echo "Unstable: ${err}"
                 }
               }
             }
@@ -78,10 +70,8 @@ pipeline {
           "JS Lint": {
             node(label: 'docker') {
               script {
-                try {
+                catchError(buildResult: 'SUCCESS', stageResult: 'UNSTABLE') {
                   sh '''docker run -i --rm --name="$BUILD_TAG-jslint" -e GIT_SRC="https://github.com/eea/$GIT_NAME.git" -e GIT_NAME="$GIT_NAME" -e GIT_BRANCH="$BRANCH_NAME" -e GIT_CHANGE_ID="$CHANGE_ID" eeacms/jslint4java'''
-                } catch (err) {
-                  echo "Unstable: ${err}"
                 }
               }
             }
@@ -100,6 +90,14 @@ pipeline {
       steps {
         parallel(
 
+          "PloneSaaS": {
+            node(label: 'docker') {
+              catchError(buildResult: 'SUCCESS', stageResult: 'UNSTABLE') {
+                sh '''docker run -i --rm --name="$BUILD_TAG-plonesaas" -e GIT_NAME="$GIT_NAME" -e GIT_BRANCH="$BRANCH_NAME" -e GIT_CHANGE_ID="$CHANGE_ID" eeacms/plonesaas-devel /debug.sh bin/test --test-path /plone/instance/src/$GIT_NAME -v -vv -s $GIT_NAME'''
+              }
+            }
+          },
+
           "Plone4": {
             node(label: 'docker') {
               catchError(buildResult: 'SUCCESS', stageResult: 'UNSTABLE') {
@@ -109,18 +107,18 @@ pipeline {
 
           },
 
-          "Plone5": {
+          "Plone5 & Python2": {
             node(label: 'docker') {
               catchError(buildResult: 'SUCCESS', stageResult: 'UNSTABLE') {
-                sh '''docker run -i --rm --name="$BUILD_TAG-plone5" -e GIT_BRANCH="$BRANCH_NAME" -e ADDONS="$GIT_NAME" -e DEVELOP="src/$GIT_NAME" -e GIT_CHANGE_ID="$CHANGE_ID" eeacms/plone-test:5 -v -vv -s $GIT_NAME'''
+                sh '''docker run -i --rm --name="$BUILD_TAG-plone5py2" -e GIT_BRANCH="$BRANCH_NAME" -e ADDONS="$GIT_NAME" -e DEVELOP="src/$GIT_NAME" -e GIT_CHANGE_ID="$CHANGE_ID" eeacms/plone-test:5 -v -vv -s $GIT_NAME'''
              }
              }
           },
 
-          "Python3": {
+          "Plone5 & Python3": {
             node(label: 'docker') {
               catchError(buildResult: 'SUCCESS', stageResult: 'UNSTABLE') {
-                sh '''docker run -i --rm --name="$BUILD_TAG-python3" -e GIT_BRANCH="$BRANCH_NAME" -e ADDONS="$GIT_NAME" -e DEVELOP="src/$GIT_NAME" -e GIT_CHANGE_ID="$CHANGE_ID" eeacms/plone-test:5-python3 -v -vv -s $GIT_NAME'''
+                sh '''docker run -i --rm --name="$BUILD_TAG-plone5py3" -e GIT_BRANCH="$BRANCH_NAME" -e ADDONS="$GIT_NAME" -e DEVELOP="src/$GIT_NAME" -e GIT_CHANGE_ID="$CHANGE_ID" eeacms/plone-test:5-python3 -v -vv -s $GIT_NAME'''
                }
             }
           }
