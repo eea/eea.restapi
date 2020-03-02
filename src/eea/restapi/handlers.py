@@ -1,8 +1,10 @@
 # from plone.app.linkintegrity.utils import referencedRelationship
 
+import json
 from .interfaces import IBlockValidator
 from Acquisition import aq_base
 from plone import api
+from plone.api.exc import CannotGetPortalError
 from plone.app.linkintegrity.handlers import updateReferences
 from plone.app.linkintegrity.utils import ensure_intid
 from z3c.relationfield import RelationValue
@@ -45,11 +47,19 @@ def validate_blocks(obj, event):
 
     res = {}
 
+    try:
+        # blocks is *sometimes* a json encoded string
+        blocks = json.loads(blocks)
+    except Exception:
+        pass
     for k, v in blocks.items():
         validator = queryAdapter(obj, IBlockValidator, name=v.get('@type', ''))
 
         if validator is not None:
-            res[k] = validator.clean(v)
+            try:
+                res[k] = validator.clean(v)
+            except CannotGetPortalError:
+                res[k] = v
         else:
             res[k] = v
 

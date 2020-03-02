@@ -3,6 +3,7 @@ Changelog
 
 1.3-dev0 - (unreleased)
 ---------------------------
+* fix for importing from zexp [dumitval refs #113196]
 
 1.2 - (2020-02-26)
 ---------------------------
