@@ -6,10 +6,10 @@
 eea.restapi
 ===========
 
-.. image:: https://ci.eionet.europa.eu/buildStatus/icon?job=Eionet/eea.restapi/develop&status=develop
+.. image:: https://ci.eionet.europa.eu/buildStatus/icon?job=Eionet/eea.restapi/develop&subject=develop
   :target: https://ci.eionet.europa.eu/job/Eionet/job/eea.restapi/job/develop/display/redirect
   :alt: Develop
-.. image:: https://ci.eionet.europa.eu/buildStatus/icon?job=Eionet/eea.restapi/master&status=master
+.. image:: https://ci.eionet.europa.eu/buildStatus/icon?job=Eionet/eea.restapi/master&subject=master
   :target: https://ci.eionet.europa.eu/job/Eionet/job/eea.restapi/job/master/display/redirect
   :alt: Master
 .. image:: https://img.shields.io/github/v/release/eea/eea.restapi
