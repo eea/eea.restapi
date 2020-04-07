@@ -55,7 +55,6 @@ setup(
         # -*- Extra requirements: -*-
         'z3c.jbot',
         'collective.folderishtypes',
-        'collective.folderishtypes.dx',
         'plone.api>=1.8.4',
         'plone.restapi',
         'plone.app.dexterity',
