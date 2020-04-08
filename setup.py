@@ -58,7 +58,6 @@ setup(
         'plone.api>=1.8.4',
         'plone.restapi',
         'plone.app.dexterity',
-        'plone.app.z3cform',
         'requests',
         'xlsxwriter',
     ],

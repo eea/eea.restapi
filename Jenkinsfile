@@ -90,15 +90,6 @@ pipeline {
       steps {
         parallel(
 
-          "Plone4": {
-            node(label: 'docker') {
-              catchError(buildResult: 'SUCCESS', stageResult: 'UNSTABLE') {
-                sh '''docker run -i --rm --name="$BUILD_TAG-plone4" -e GIT_BRANCH="$BRANCH_NAME" -e ADDONS="$GIT_NAME[test]" -e DEVELOP="src/$GIT_NAME" -e GIT_CHANGE_ID="$CHANGE_ID" eeacms/plone-test:4 -v -vv -s $GIT_NAME'''
-              }
-             }
-
-          },
-
           "Plone5 & Python2": {
             node(label: 'docker') {
               catchError(buildResult: 'SUCCESS', stageResult: 'UNSTABLE') {
