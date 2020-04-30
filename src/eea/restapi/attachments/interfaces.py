@@ -1,3 +1,4 @@
+''' interfaces module '''
 from zope.interface import Interface
 
 from plone.app.textfield import RichText
@@ -30,26 +31,21 @@ class IAttachmentStorage(Interface):
 
 
 class IAttachmentFolder(Interface):
-    """
-    """
+    """IAttachmentFolder."""
 
 
 class IAttachment(model.Schema):
-    """
-    """
-
+    """IAttachment."""
     file = NamedBlobFile(title=u'Attached file',
                          description=u'', required=True)
     text = RichText(title=u"Text", description=u'', required=False)
 
 
 class IAttachedImage(IAttachment):
-    """
-    """
+    """IAttachedImage."""
     file = NamedBlobImage(title=u'Attached file',
                           description=u'', required=True)
 
 
 class IAttachedFile(IAttachment):
-    """
-    """
+    """IAttachedFile."""
