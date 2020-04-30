@@ -336,6 +336,10 @@ class CatalogNavigationTabs(BrowserView):
         rawresult = catalog.searchResults(query)
 
         def _get_url(item):
+            """_get_url.
+
+            :param item:
+            """
             if item.getRemoteUrl and not member == item.Creator:
                 return (get_id(item), item.getRemoteUrl)
 

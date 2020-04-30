@@ -22,6 +22,7 @@ class SerializeSiteRootToJson(object):
         self.request = request
 
     def _build_query(self):
+        """_build_query."""
         path = "/".join(self.context.getPhysicalPath())
         query = {
             "path": {"depth": 1, "query": path},

@@ -43,6 +43,10 @@ def transform_text(text, portal_transforms=None):
 
 
 def _extract_text(block):
+    """_extract_text.
+
+    :param block:
+    """
     result = ""
 
     for paragraph in block.get("text", {}).get("blocks", []):

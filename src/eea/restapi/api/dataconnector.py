@@ -56,7 +56,8 @@ def handle_filter(data, _filter):
 
 
 def filter_data(data, query):
-    ''' this is a simple, uncomplete and limited implementation of a query parser
+    '''this is a simple, uncomplete and limited implementation of a query
+    parser.
     See plone.app.querystring.queryparser for some details on querystrings '''
 
     if not query:

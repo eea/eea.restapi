@@ -49,6 +49,7 @@ class DataProviderForConnectors(object):
 
     @timing
     def _get_data(self):
+        """_get_data."""
         # query = urllib.parse.quote_plus(self.query)
 
         try:

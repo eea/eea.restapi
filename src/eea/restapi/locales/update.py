@@ -45,6 +45,7 @@ def locale_folder_setup():
 
 
 def _rebuild():
+    """_rebuild"""
     cmd = ('{i18ndude} rebuild-pot --pot {locale_path}/{domain}.pot --exclude '
            '{excludes} --create {domain} {target_path}'.format(
                i18ndude=i18ndude,
@@ -61,6 +62,7 @@ def _rebuild():
 
 
 def _sync():
+    """_sync."""
     cmd = '{0} sync --pot {1}/{2}.pot {3}*/LC_MESSAGES/{4}.po'.format(
         i18ndude,
         locale_path,
