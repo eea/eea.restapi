@@ -1,3 +1,4 @@
+''' content module '''
 from zope.interface import implementer
 from zope.schema.fieldproperty import FieldProperty
 
@@ -37,12 +38,14 @@ class AttachedImage(Attachment):
 
 @implementer(IAttachmentFolder)
 class AttachmentFolder(OrderedFolder, Implicit):
-    """
+    """ Attachment folder
     """
 
     def getPhysicalPath(self):
-        # override, to be able to provide a fake name for the physical path
-        # should probably set this as folder id
+        ''' return physical path
+        override, to be able to provide a fake name for the physical path
+        should probably set this as folder id
+        '''
         path = super(AttachmentFolder, self).getPhysicalPath()
 
         res = tuple([''] + [bit for bit in path[1:] if bit])

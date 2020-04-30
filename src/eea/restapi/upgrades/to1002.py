@@ -1,5 +1,8 @@
+''' upgrade to 1002 '''
+
+
 def run_upgrade(setup_context):
-    """
+    """ run upgrade to 1002
     """
 
     setup_context.runImportStepFromProfile(

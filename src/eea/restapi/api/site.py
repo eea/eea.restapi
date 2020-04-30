@@ -1,3 +1,5 @@
+''' site module '''
+import json
 from eea.restapi.interfaces import IEEARestapiLayer
 from plone.restapi.batching import HypermediaBatch
 from plone.restapi.interfaces import ISerializeToJson
@@ -10,12 +12,11 @@ from zope.component import getMultiAdapter
 from zope.interface import implementer
 from zope.interface import providedBy
 
-import json
-
 
 @implementer(ISerializeToJson)
 @adapter(IPloneSiteRoot, IEEARestapiLayer)
 class SerializeSiteRootToJson(object):
+    ''' serialize site root to json '''
     def __init__(self, context, request):
         self.context = context
         self.request = request

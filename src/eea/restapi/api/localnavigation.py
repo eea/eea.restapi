@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from ..interfaces import ILocalSectionMarker
+''' local navigation '''
 from Acquisition import aq_base
 from Acquisition import aq_inner
 from Acquisition import aq_parent
@@ -22,6 +22,8 @@ from zope.component.hooks import getSite
 from zope.interface import implementer
 from zope.interface import Interface
 
+from ..interfaces import ILocalSectionMarker
+
 
 class NavigationTreeQueryBuilder(NavtreeQueryBuilder):
     """Build a folder tree query
@@ -37,11 +39,12 @@ class NavigationTreeQueryBuilder(NavtreeQueryBuilder):
 
 
 def getNavigationRoot(context):
+    ''' get navigation root '''
     return "/".join(context.getPhysicalPath())
 
 
-# nothing is customized here, just this getNavigationRoot method
 class CustomNavtreeStrategy(SitemapNavtreeStrategy):
+    ''' nothing is customized here, just this getNavigationRoot method '''
 
     def __init__(self, context):
         SitemapNavtreeStrategy.__init__(self, context, None)
@@ -50,6 +53,7 @@ class CustomNavtreeStrategy(SitemapNavtreeStrategy):
         self.rootPath = self.getRootPath()
 
     def subtreeFilter(self, node):
+        ''' subtree filter '''
         sitemapDecision = SitemapNavtreeStrategy.subtreeFilter(self, node)
 
         if sitemapDecision is False:
@@ -58,10 +62,10 @@ class CustomNavtreeStrategy(SitemapNavtreeStrategy):
 
         if depth > 0 and self.bottomLevel > 0 and depth >= self.bottomLevel:
             return False
-        else:
-            return True
+        return True
 
     def getRootPath(self, topLevel=1):
+        ''' get root path '''
         rootPath = getNavigationRoot(self.context)
 
         rootPath = contextPath = "/".join(self.context.getPhysicalPath())
@@ -87,12 +91,14 @@ class CustomNavtreeStrategy(SitemapNavtreeStrategy):
 @implementer(IExpandableElement)
 @adapter(Interface, Interface)
 class LocalNavigation(object):
+    ''' local navigation '''
     def __init__(self, context, request):
         self.context = context
         self.request = request
         self.portal = getSite()
 
     def get_section_root(self, context):
+        ''' get section root '''
         original = context
 
         while not IApplication.providedBy(context):
@@ -147,6 +153,7 @@ class LocalNavigation(object):
         return result
 
     def getTabSubTree(self, tabUrl="", tabPath=None):
+        ''' get tab subtree '''
         if tabPath is None:
             # get path for current tab's object
             tabPath = tabUrl.split(self.portal.absolute_url())[-1]
@@ -180,6 +187,7 @@ class LocalNavigation(object):
         return self.recurse(children=data.get("children", []), level=1)
 
     def recurse(self, children=None, level=0, bottomLevel=0):
+        ''' recurse '''
         li = []
 
         for node in children:
@@ -198,13 +206,16 @@ class LocalNavigation(object):
 
 
 class LocalNavigationGet(Service):
+    ''' local navigation - get '''
     def reply(self):
+        ''' reply '''
         navigation = LocalNavigation(self.context, self.request)
 
         return navigation(expand=True)["localnavigation"]
 
 
 def get_url(item):
+    ''' get url '''
     if not item:
         return None
 
@@ -217,19 +228,20 @@ def get_url(item):
 
 
 def get_id(item):
+    ''' get id '''
     if not item:
         return None
     getId = getattr(item, 'getId')
 
     if not utils.safe_callable(getId):
         # Looks like a brain
-
         return getId
 
     return getId()
 
 
 def get_view_url(context):
+    ''' get view url '''
     registry = getUtility(IRegistry)
     view_action_types = registry.get(
         'plone.types_use_view_action_in_listings', [])
@@ -245,9 +257,10 @@ def get_view_url(context):
 
 @implementer(INavigationTabs)
 class CatalogNavigationTabs(BrowserView):
+    ''' catalog navigation tabs '''
 
     def _getNavQuery(self):
-                # check whether we only want actions
+        ''' check whether we only want actions '''
         registry = getUtility(IRegistry)
         navigation_settings = registry.forInterface(
             INavigationSchema,
@@ -283,7 +296,9 @@ class CatalogNavigationTabs(BrowserView):
 
         return query
 
+    # pylint: disable=too-many-locals
     def topLevelTabs(self, actions=None, category='portal_tabs'):
+        ''' top level tabs '''
         context = aq_inner(self.context)
         registry = getUtility(IRegistry)
         navigation_settings = registry.forInterface(
@@ -328,6 +343,7 @@ class CatalogNavigationTabs(BrowserView):
 
         # now add the content to results
 
+        # pylint: disable=unused-variable
         for item in rawresult:
             # if item.exclude_from_nav:
             #     continue

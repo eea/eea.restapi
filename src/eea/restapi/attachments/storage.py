@@ -1,3 +1,4 @@
+''' storage module '''
 from persistent.mapping import PersistentMapping
 from zope.annotation.factory import factory
 from zope.component import adapter

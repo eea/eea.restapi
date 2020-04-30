@@ -1,3 +1,4 @@
+''' collection module '''
 from eea.restapi.interfaces import IEEARestapiLayer
 from plone.app.contenttypes.interfaces import ICollection
 from plone.restapi.batching import HypermediaBatch
@@ -22,7 +23,7 @@ class SerializeCollectionToJson(SerializeToJson):
         collection_metadata = super(SerializeCollectionToJson, self).__call__(
             version=version
         )
-        custom_query = {}       # TODO: needs to read custom query from body
+        custom_query = {}       # TO DO: needs to read custom query from body
         results = self.context.results(batch=False, custom_query=custom_query)
         batch = HypermediaBatch(self.request, results)
 

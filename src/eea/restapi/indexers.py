@@ -1,11 +1,11 @@
+''' indexers module '''
+import logging
+import six
 from plone import api
 from plone.app.contenttypes.behaviors.leadimage import ILeadImage
 from plone.app.contenttypes.indexers import SearchableText
 from plone.indexer.decorator import indexer
 from plone.restapi.behaviors import IBlocks
-
-import logging
-import six
 
 
 logger = logging.getLogger('eea.restapi')
@@ -13,10 +13,12 @@ logger = logging.getLogger('eea.restapi')
 
 @indexer(ILeadImage)
 def lead_image(obj):
+    ''' lead image '''
     return obj.image and obj.image.filename
 
 
 def get_bytestring(text):
+    ''' get bytestring '''
     if six.PY2:
         if isinstance(text, six.text_type):
             text = text.encode("utf-8", "replace")
@@ -25,6 +27,7 @@ def get_bytestring(text):
 
 
 def transform_text(text, portal_transforms=None):
+    ''' transform text '''
     if not text:
         return ''
 
@@ -59,6 +62,8 @@ def _extract_text(block):
 
 @indexer(IBlocks)
 def custom_SearchableText_blocks(obj):
+    """custom_SearchableText_blocks
+    """
 
     std_text = SearchableText(obj)
     portal_transforms = api.portal.get_tool(name='portal_transforms')

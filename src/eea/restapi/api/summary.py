@@ -1,3 +1,4 @@
+''' summary module '''
 from eea.restapi.interfaces import IEEARestapiLayer
 from plone.app.contentlisting.interfaces import IContentListingObject
 from plone.restapi.interfaces import IExpandableElement
@@ -20,12 +21,13 @@ class DefaultJSONSummarySerializer(summary.DefaultJSONSummarySerializer):
 
         if self.request.get('is_search') and \
                 IContentListingObject.providedBy(self.context):
-            adapter = getMultiAdapter((self.context.getObject(), self.request),
-                                      IExpandableElement, name='breadcrumbs')
+            breadcrumb_adapter = getMultiAdapter(
+                (self.context.getObject(), self.request),
+                IExpandableElement, name='breadcrumbs')
 
             if '@components' not in res:
                 res['@components'] = {}
 
-            res['@components'].update(adapter(expand=True))
+            res['@components'].update(breadcrumb_adapter(expand=True))
 
         return res

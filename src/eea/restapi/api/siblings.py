@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+''' siblings module '''
 
 from plone import api
 from plone.restapi.interfaces import IExpandableElement
@@ -11,6 +12,7 @@ from zope.interface import Interface
 @implementer(IExpandableElement)
 @adapter(Interface, Interface)
 class Siblings(object):
+    ''' siblings object '''
     def __init__(self, context, request):
         self.context = context
         self.request = request
@@ -42,7 +44,9 @@ class Siblings(object):
 
 
 class SiblingsGet(Service):
+    ''' siblings - get '''
     def reply(self):
+        ''' reply '''
         siblings = Siblings(self.context, self.request)
 
         return siblings(expand=True)["siblings"]

@@ -13,6 +13,7 @@ from zope.interface import implementer
 @implementer(ISerializeToJson)
 @adapter(IDexterityContent, IEEARestapiLayer)
 class SerializeToJson(dxcontent.SerializeToJson):
+    ''' serialize to json '''
     def __call__(self, version=None, include_items=True):
         res = super(SerializeToJson, self).__call__(version, include_items)
 
@@ -33,6 +34,7 @@ class SerializeToJson(dxcontent.SerializeToJson):
 @implementer(ISerializeToJson)
 @adapter(IDexterityContainer, IEEARestapiLayer)
 class SerializeFolderToJson(dxcontent.SerializeFolderToJson):
+    ''' serialize folder to json '''
     def __call__(self, version=None, include_items=True):
         res = super(SerializeFolderToJson, self).__call__(
             version, include_items)

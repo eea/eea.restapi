@@ -10,8 +10,10 @@ from zope.component import getAdapters
 
 
 class ControlpanelFallbackGet(Service):
+    ''' control panel fallback '''
 
     def get_controlpanel_adapters(self):
+        ''' get controlpanel adapters '''
         adapters = getAdapters(
             (self.context, self.request), provided=IControlpanel)
 
@@ -20,6 +22,7 @@ class ControlpanelFallbackGet(Service):
             yield name, panel
 
     def available_controlpanels(self):
+        ''' get available controlpanels '''
         panels = dict(self.get_controlpanel_adapters())
         panels_by_configlet = dict(
             [(p.configlet_id, name) for name, p in panels.items()]
@@ -37,6 +40,7 @@ class ControlpanelFallbackGet(Service):
                     }
 
     def reply(self):
+        ''' reply '''
         panels = self.available_controlpanels()
 
         return IJsonCompatible(list(panels))
