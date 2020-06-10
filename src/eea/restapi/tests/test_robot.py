@@ -1,14 +1,15 @@
 # -*- coding: utf-8 -*-
+''' robot tests '''
+import os
+import unittest
+import robotsuite
 from eea.restapi.testing import EEA_RESTAPI_ACCEPTANCE_TESTING  # noqa: E501
 from plone.app.testing import ROBOT_TEST_LEVEL
 from plone.testing import layered
 
-import os
-import robotsuite
-import unittest
-
 
 def test_suite():
+    ''' test suite '''
     suite = unittest.TestSuite()
     current_dir = os.path.abspath(os.path.dirname(__file__))
     robot_dir = os.path.join(current_dir, 'robot')

@@ -1,3 +1,4 @@
+''' deserializer module '''
 from zope.component import adapter, queryMultiAdapter  # , queryUtility
 from zope.interface import Interface, implementer
 from zope.schema import getFields
@@ -15,6 +16,7 @@ from .interfaces import IAttachedFile, IAttachedImage, IAttachment
 @implementer(IDeserializeFromJson)
 @adapter(IAttachment, Interface)
 class DeserializeFromJson(OrderingMixin, object):
+    ''' deserialize from json '''
     def __init__(self, context, request):
         self.context = context
         self.request = request
@@ -45,7 +47,9 @@ class DeserializeFromJson(OrderingMixin, object):
 
         return self.context
 
+    # pylint: disable=too-many-branches
     def get_schema_data(self, data, validate_all):
+        ''' get_schema_data '''
         schema = IAttachment
 
         if IAttachedFile.providedBy(self.context):

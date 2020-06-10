@@ -1,3 +1,4 @@
+''' defaultpage module '''
 from plone.restapi.interfaces import IExpandableElement
 from plone.restapi.interfaces import ISerializeToJson
 from Products.CMFDynamicViewFTI.interfaces import ISelectableBrowserDefault

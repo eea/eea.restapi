@@ -22,7 +22,7 @@
 # class DexterityContainerSerializer(SerializeFolderToJson):
 #     def __call__(self, version=None, include_items=True):
 #         res = super(DexterityContainerSerializer, self).__call__(version,
-#                                                                  include_items)
+#                                                                include_items)
 #         res['@provides'] = ['{}.{}'.format(I.__module__, I.__name__)
 #                             for I in providedBy(self.context)]
 #

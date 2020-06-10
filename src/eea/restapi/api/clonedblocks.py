@@ -1,6 +1,9 @@
+''' cloned blocks '''
+import logging
 from eea.restapi.interfaces import IClonedBlocks
 from eea.restapi.interfaces import IEEARestapiLayer
 from plone import api
+import plone.protect.interfaces
 from plone.dexterity.fti import DexterityFTI
 from plone.registry import field
 from plone.registry.record import Record
@@ -13,9 +16,6 @@ from zope.interface import alsoProvides
 from zope.interface import implementer
 from zope.security import checkPermission
 
-import logging
-import plone.protect.interfaces
-
 
 logger = logging.getLogger('eea.restapi')
 
@@ -23,6 +23,7 @@ logger = logging.getLogger('eea.restapi')
 @implementer(ISerializeToJson)
 @adapter(IClonedBlocks, IEEARestapiLayer)
 class SerializeClonedBlocksToJson(SerializeToJson):
+    ''' serialize cloned blocks to json '''
     def __call__(self, version=None, include_items=True):
         res = super(SerializeClonedBlocksToJson, self).__call__(version,
                                                                 include_items)
@@ -57,6 +58,7 @@ class CreateCloneTemplate(Service):
     """
 
     def reply(self):
+        ''' reply '''
         # Disable CSRF protection
 
         if "IDisableCSRFProtection" in dir(plone.protect.interfaces):
@@ -84,7 +86,7 @@ class CreateCloneTemplate(Service):
         fti = DexterityFTI(type_id, **props)
         types_tool._setObject(fti.id, fti)
 
-        id = '{}/@types/{}'.format(api.portal.get().portal_url(), fti.id)
+        r_id = '{}/@types/{}'.format(api.portal.get().portal_url(), fti.id)
 
         uid = self.context.UID()
 
@@ -92,4 +94,4 @@ class CreateCloneTemplate(Service):
         record = Record(field.TextLine(title=u"UID"), uid)
         registry.records['eea.clonedblocks.' + fti.id] = record
 
-        return {'name': type_title, '@id': id}
+        return {'name': type_title, '@id': r_id}

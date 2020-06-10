@@ -1,6 +1,7 @@
-from eea.restapi.interfaces import IDataProvider
+''' data provider '''
 from io import BytesIO
 from Products.Five.browser import BrowserView
+from eea.restapi.interfaces import IDataProvider
 
 import xlsxwriter
 
@@ -10,6 +11,7 @@ class DataProviderView(BrowserView):
     """
 
     def data(self):
+        ''' return data from data provider '''
         dataprovider = IDataProvider(self.context)
 
         return dataprovider.provided_data
@@ -20,6 +22,7 @@ class DataProviderDownload(BrowserView):
     """
 
     def data_to_xls(self, data):
+        ''' convert data to xls '''
         out = BytesIO()
         workbook = xlsxwriter.Workbook(out, {'in_memory': True})
 
@@ -28,7 +31,7 @@ class DataProviderDownload(BrowserView):
         headers = data.keys()
 
         for i, label in enumerate(headers):
-            worksheet.write(0, i,  label)
+            worksheet.write(0, i, label)
 
         for i, col in enumerate(headers):
             coldata = data[col]
@@ -48,6 +51,7 @@ class DataProviderDownload(BrowserView):
         return self.download(data)
 
     def download(self, data):
+        ''' download '''
         xlsio = self.data_to_xls(data)
         sh = self.request.response.setHeader
 
