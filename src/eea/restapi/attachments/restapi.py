@@ -1,10 +1,11 @@
+''' restapi module '''
 from random import randint
 
+from DateTime import DateTime
 from zope.component import queryMultiAdapter
 from zope.interface import alsoProvides
 
 import plone.protect.interfaces
-from DateTime import DateTime
 from plone.restapi.deserializer import json_body
 from plone.restapi.exceptions import DeserializationError
 from plone.restapi.interfaces import IDeserializeFromJson, ISerializeToJson
@@ -20,6 +21,7 @@ class AttachmentsPOST(Service):
     """
 
     def reply(self):
+        ''' reply '''
         data = json_body(self.request)
         container = str(data['@container'])
 
@@ -100,6 +102,7 @@ class AttachmentsGET(Service):
     """
 
     def reply(self):
+        ''' reply '''
         storage = IAttachmentStorage(self.context)
         storage = storage.__of__(self.context)
 

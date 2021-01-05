@@ -1,6 +1,6 @@
-from Products.Five.browser import BrowserView
-
+''' mosaic module '''
 import json
+from Products.Five.browser import BrowserView
 
 
 class MosaicTilesView(BrowserView):
@@ -8,6 +8,7 @@ class MosaicTilesView(BrowserView):
     """
 
     def blocks(self):
+        ''' load blocks from json '''
         blocks = getattr(self.context.aq_inner.aq_self, 'blocks', '{}')
 
         return json.loads(blocks)

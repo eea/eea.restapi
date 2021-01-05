@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """Module where all interfaces, events and exceptions live."""
 
-from eea.restapi import _
+import json
 from plone.app.z3cform.widget import QueryStringFieldWidget
 from plone.autoform import directives as form
 from plone.autoform.interfaces import IFormFieldProvider
@@ -13,7 +13,7 @@ from zope.interface import Interface
 from zope.interface import provider
 from zope.publisher.interfaces.browser import IDefaultBrowserLayer
 
-import json
+from eea.restapi import _
 
 
 class IEEARestapiLayer(IDefaultBrowserLayer):
@@ -123,6 +123,8 @@ class IFacetedCollection(model.Schema):
 
 @provider(IFormFieldProvider)
 class ISimpleFacetedCollection(model.Schema):
+    """ISimpleFacetedCollection."""
+
     filter = schema.Choice(
         title=u"Collection facet",
         vocabulary='plone.app.contenttypes.metadatafields',
@@ -195,7 +197,8 @@ class IClonedBlocks(Interface):
 
 
 class IBlockValidator(Interface):
+    """IBlockValidator."""
 
-    def clean(value):
+    def clean(self, value):
         """ Returns a cleaned value
         """

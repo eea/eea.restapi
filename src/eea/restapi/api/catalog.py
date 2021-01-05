@@ -1,3 +1,4 @@
+''' catalog module '''
 from plone.api import portal
 from plone.restapi.deserializer import json_body
 from plone.restapi.services import Service
@@ -8,6 +9,7 @@ class IndexValues(Service):
     """
 
     def reply(self):
+        ''' reply '''
         data = json_body(self.request)
 
         name = data.get('name')

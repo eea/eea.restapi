@@ -1,3 +1,20 @@
+''' behavior module '''
+from collections import defaultdict
+from io import StringIO
+import csv
+import logging
+import requests
+
+from plone.app.dexterity.behaviors.metadata import DCFieldProperty
+from plone.app.dexterity.behaviors.metadata import MetadataBase
+from plone.dexterity.interfaces import IDexterityContent
+from plone.memoize import ram
+from plone.rfc822.interfaces import IPrimaryFieldInfo
+from zope.component import adapter
+from zope.interface import implementer
+
+from eea.restapi.utils import timing
+
 from .interfaces import IConnectorDataParameters
 from .interfaces import IConnectorDataProvider
 from .interfaces import IDataConnector
@@ -7,21 +24,6 @@ from .interfaces import IFacetedCollection
 from .interfaces import IFileDataProvider
 from .interfaces import IHTMLEmbed
 from .interfaces import ISimpleFacetedCollection
-from collections import defaultdict
-from eea.restapi.utils import timing
-from io import StringIO
-from plone.app.dexterity.behaviors.metadata import DCFieldProperty
-from plone.app.dexterity.behaviors.metadata import MetadataBase
-from plone.dexterity.interfaces import IDexterityContent
-from plone.memoize import ram
-from plone.rfc822.interfaces import IPrimaryFieldInfo
-from zope.component import adapter
-from zope.interface import implementer
-
-import csv
-import logging
-import requests
-
 
 logger = logging.getLogger(__name__)
 
@@ -41,11 +43,13 @@ class DataConnector(MetadataBase):
 @adapter(IConnectorDataProvider)
 @implementer(IDataProvider)
 class DataProviderForConnectors(object):
+    ''' data provider for connectors '''
     def __init__(self, context):
         self.context = context
 
     @timing
     def _get_data(self):
+        """_get_data."""
         # query = urllib.parse.quote_plus(self.query)
 
         try:
@@ -62,6 +66,7 @@ class DataProviderForConnectors(object):
         return res
 
     def change_orientation(self, data):
+        ''' change orientation '''
         res = {}
 
         if not data:
@@ -69,16 +74,17 @@ class DataProviderForConnectors(object):
 
         keys = data[0].keys()
 
-        # TODO: in-memory built, should optimize
+        # TO DO: in-memory built, should optimize
 
         for k in keys:
             res[k] = [row[k] for row in data]
 
         return res
 
-    # TODO: persistent caching, periodical refresh, etc
+    # TO DO: persistent caching, periodical refresh, etc
     @ram.cache(lambda func, self: self.context.modified())
     def _provided_data(self):
+        ''' provided data '''
         if not self.context.sql_query:
             return []
 
@@ -88,6 +94,7 @@ class DataProviderForConnectors(object):
 
     @property
     def provided_data(self):
+        ''' provided data '''
         return self._provided_data()
 
 
@@ -102,6 +109,7 @@ class DataProviderForFiles(object):
 
     @property
     def provided_data(self):
+        ''' provided data '''
         field = IPrimaryFieldInfo(self.context)
 
         if not field.value:
@@ -111,7 +119,7 @@ class DataProviderForFiles(object):
         f = StringIO(text.decode('utf-8'))
         try:
             reader = csv.reader(f)
-        except:
+        except Exception:
             return []
 
         rows = list(reader)
@@ -144,14 +152,14 @@ class FacetedCollection(MetadataBase):
 
 
 class SimpleFacetedCollection(MetadataBase):
-    """
+    """ Simple Faceted Collection
     """
 
     filter = DCFieldProperty(ISimpleFacetedCollection['filter'])
 
 
 class HTMLEmbed(MetadataBase):
-    """
+    """ HTML Embed
     """
 
     embed_code = DCFieldProperty(IHTMLEmbed['embed_code'])

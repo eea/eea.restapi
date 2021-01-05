@@ -1,19 +1,22 @@
+''' traversing '''
+from six.moves import urllib
+from zExceptions import NotFound
 from zope.traversing.namespace import SimpleHandler
 
 from plone.rest.traverse import RESTWrapper
-from six.moves import urllib
-from zExceptions import NotFound
 
 from .interfaces import IAttachmentStorage
 
 
 class AttachmentTraversing(SimpleHandler):
+    ''' attachment traversing '''
     name = None
 
     def __init__(self, context, request=None):
         self.context = context
 
     def traverse(self, name, remaining):
+        ''' traverse '''
 
         # Note: also fixes possible unicode problems
         attach_name = urllib.parse.quote(name)
@@ -27,12 +30,14 @@ class AttachmentTraversing(SimpleHandler):
 
 
 class RestAttachmentTraversing(SimpleHandler):
+    ''' rest attachment traversing '''
     name = None
 
     def __init__(self, context, request=None):
         self.context = context
 
     def traverse(self, name, remaining):
+        ''' traverse '''
 
         # Note: also fixes possible unicode problems
         attach_name = urllib.parse.quote(name)

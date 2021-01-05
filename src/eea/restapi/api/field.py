@@ -1,3 +1,4 @@
+''' field module '''
 from plone.restapi.deserializer import json_body
 from plone.restapi.interfaces import ISerializeToJson
 from plone.restapi.services import Service
@@ -9,6 +10,7 @@ class FieldGet(Service):
     """
 
     def reply(self):
+        ''' reply '''
         data = json_body(self.request)
 
         name = data.get('name') or self.request.form.get('name')

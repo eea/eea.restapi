@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
+''' dataconnector '''
 
-
+import logging
 from eea.restapi.interfaces import IBasicDataProvider
 from eea.restapi.interfaces import IDataProvider
 from plone.restapi.deserializer import json_body
@@ -10,20 +11,18 @@ from zope.component import adapter
 from zope.interface import implementer
 from zope.interface import Interface
 
-import logging
-
 
 logger = logging.getLogger()
 
 
 def handle_any(data, iov):
-    # data is a dictionary of lists; we need to find which indexes in those
-    # lists to keep
+    ''' data is a dictionary of lists; we need to find which indexes in those
+    lists to keep
 
-    # query is like  :
-    # [{u'i': u'NUTS_CODE',
-    #       u'o': # u'plone.app.querystring.operation.selection.any',
-    #       u'v': [u'enp4do4qw8']
+    query is like  :
+    [{u'i': u'NUTS_CODE',
+      u'o': # u'plone.app.querystring.operation.selection.any',
+      u'v': [u'enp4do4qw8'] '''
 
     column = iov['i']
 
@@ -47,6 +46,7 @@ HANDLERS = {
 
 
 def handle_filter(data, _filter):
+    ''' handle filter '''
     handler = HANDLERS.get(_filter['o'])
 
     if handler is None:
@@ -56,8 +56,9 @@ def handle_filter(data, _filter):
 
 
 def filter_data(data, query):
-    # this is a simple, uncomplete and limited implementation of a query parser
-    # See plone.app.querystring.queryparser for some details on querystrings
+    '''this is a simple, uncomplete and limited implementation of a query
+    parser.
+    See plone.app.querystring.queryparser for some details on querystrings '''
 
     if not query:
         return data
@@ -71,6 +72,7 @@ def filter_data(data, query):
 @implementer(IExpandableElement)
 @adapter(IBasicDataProvider, Interface)
 class ConnectorData(object):
+    ''' connector data '''
     def __init__(self, context, request):
         self.context = context
         self.request = request
@@ -92,14 +94,18 @@ class ConnectorData(object):
 
 
 class ConnectorDataGet(Service):
+    ''' connector data - get '''
     def reply(self):
+        ''' reply '''
         data = ConnectorData(self.context, self.request)
 
         return data(expand=True)["connector-data"]
 
 
 class ConnectorDataPost(Service):
+    ''' connector data - post '''
     def reply(self):
+        ''' reply '''
         result = ConnectorData(self.context, self.request)(expand=True)
         qs = json_body(self.request)['query']
 

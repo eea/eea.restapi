@@ -1,3 +1,4 @@
+''' serializer module '''
 from zope.component import adapter, getMultiAdapter, queryMultiAdapter
 from zope.interface import Interface, implementer
 from zope.schema import getFields
@@ -17,6 +18,7 @@ from .interfaces import (IAttachedFile, IAttachedImage, IAttachment,
 @implementer(ISerializeToJson)
 @adapter(IAttachmentStorage, Interface)
 class SerializeStorageToJson(SerializeToJson):
+    '''serialize storage to json '''
 
     def __call__(self, version=None, include_items=True):
         result = {}
@@ -39,6 +41,7 @@ class SerializeStorageToJson(SerializeToJson):
 @implementer(ISerializeToJson)
 @adapter(IAttachmentFolder, Interface)
 class SerializeAttachmentFolderToJson(SerializeToJson):
+    ''' serialize attachment folder to json '''
 
     def __call__(self, version=None, include_items=True):
         result = {}
@@ -55,6 +58,7 @@ class SerializeAttachmentFolderToJson(SerializeToJson):
 @implementer(ISerializeToJson)
 @adapter(IAttachment, Interface)
 class SerializeAttachmentToJson(object):
+    ''' serialize attachment to json '''
     def __init__(self, context, request):
         self.context = context
         self.request = request
@@ -90,6 +94,7 @@ class SerializeAttachmentToJson(object):
 @adapter(INamedFileField, IAttachment, Interface)
 @implementer(IFieldSerializer)
 class AttachmentFieldSerializer(DefaultFieldSerializer):
+    ''' attachment field serializer '''
 
     def __call__(self):
         namedfile = self.field.get(self.context)

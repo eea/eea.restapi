@@ -14,15 +14,14 @@ from zope.interface import implementer
 # from Products.BTreeFolder2.BTreeFolder2 import BTreeFolder2
 
 
-ATTACHMENTS_KEY = 'restapi.attachments'
-SLIDER_KEY = 'slider.images.storage'
+ATTACHMENTS_KEY = "restapi.attachments"
+SLIDER_KEY = "slider.images.storage"
 
 
 @adapter(IHasSliderImages)
 @implementer(ISliderImagesStorage)
 class SliderImages(PersistentMapping):
-    """ Slider images stored in a persistent mapping
-    """
+    """Slider images stored in a persistent mapping"""
 
 
 slides_annotation_storage = factory(SliderImages, key=SLIDER_KEY)
@@ -30,11 +29,9 @@ slides_annotation_storage = factory(SliderImages, key=SLIDER_KEY)
 
 @adapter(IHasAttachments)
 @implementer(IAttachmentStorage)
-class AttachmentStorage(CMFOrderedBTreeFolderBase):     # BTreeFolder2,
-                                                        # Implicit
-    """ Slider images stored in a persistent mapping
-    """
+class AttachmentStorage(CMFOrderedBTreeFolderBase):  # BTreeFolder2,
+    # Implicit
+    """Slider images stored in a persistent mapping"""
 
 
-attachments_annotation_storage = factory(AttachmentStorage,
-                                         key=ATTACHMENTS_KEY)
+attachments_annotation_storage = factory(AttachmentStorage, key=ATTACHMENTS_KEY)
