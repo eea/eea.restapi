@@ -5,6 +5,6 @@
     xmlns:plone="http://namespaces.plone.org/plone"
     i18n_domain="eea.restapi">
 
-  <adapter name="SearchableText" factory=".indexers.custom_SearchableText_blocks" />
+  <!-- <adapter name="SearchableText" factory=".indexers.custom_SearchableText_blocks" /> -->
 
 </configure>

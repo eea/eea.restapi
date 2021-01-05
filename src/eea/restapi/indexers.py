@@ -1,24 +1,28 @@
-''' indexers module '''
-import logging
-import six
+""" indexers module """
 from plone import api
 from plone.app.contenttypes.behaviors.leadimage import ILeadImage
-from plone.app.contenttypes.indexers import SearchableText
 from plone.indexer.decorator import indexer
 from plone.restapi.behaviors import IBlocks
+from plone.restapi.interfaces import IBlockSearchableText
+from zope.component import adapter
+from zope.interface import implementer
+from zope.publisher.interfaces.browser import IBrowserRequest
+
+import logging
+import six
 
 
-logger = logging.getLogger('eea.restapi')
+logger = logging.getLogger("eea.restapi")
 
 
 @indexer(ILeadImage)
 def lead_image(obj):
-    ''' lead image '''
+    """ lead image """
     return obj.image and obj.image.filename
 
 
 def get_bytestring(text):
-    ''' get bytestring '''
+    """ get bytestring """
     if six.PY2:
         if isinstance(text, six.text_type):
             text = text.encode("utf-8", "replace")
@@ -27,19 +31,18 @@ def get_bytestring(text):
 
 
 def transform_text(text, portal_transforms=None):
-    ''' transform text '''
+    """ transform text """
     if not text:
-        return ''
+        return ""
 
     if not portal_transforms:
-        portal_transforms = api.portal.get_tool(name='portal_transforms')
+        portal_transforms = api.portal.get_tool(name="portal_transforms")
 
     # Output here is a single <p> which contains <br /> for newline
-    data = portal_transforms.convertTo('text/plain', text,
-                                       mimetype='text/html')
+    data = portal_transforms.convertTo("text/plain", text, mimetype="text/html")
     converted = data.getData()
 
-    return converted or ''
+    return converted or ""
 
 
 def _extract_text(block):
@@ -64,26 +67,16 @@ def _extract_text(block):
     return result
 
 
-@indexer(IBlocks)
-def custom_SearchableText_blocks(obj):
-    """custom_SearchableText_blocks
-    """
+@implementer(IBlockSearchableText)
+@adapter(IBlocks, IBrowserRequest)
+class CKTextIndexer(object):
+    def __init__(self, context, request):
+        self.context = context
+        self.request = request
 
-    std_text = SearchableText(obj)
-    portal_transforms = api.portal.get_tool(name='portal_transforms')
-
-    obj = obj.aq_inner.aq_self
-    ck_blocks = [transform_text(b.get('cktext', ''), portal_transforms)
-                 for b in obj.blocks.values()
-
-                 if b and b.get('@type') == u'cktext']
-    txt_blocks = [_extract_text(b)
-                  for b in obj.blocks.values()
-
-                  if b and b.get('@type') == u'text']
-
-    blocks_text = [std_text] + ck_blocks + txt_blocks
-
-    text = " ".join([get_bytestring(t) for t in blocks_text])
-
-    return text
+    def __call__(self, block):
+        raw = block.get("cktext", None)
+        portal_transforms = api.portal.get_tool(name="portal_transforms")
+        if raw:
+            text = transform_text(raw, portal_transforms)
+            return six.safe_text(text)
