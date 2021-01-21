@@ -76,18 +76,24 @@ class ConnectorData(object):
     def __init__(self, context, request):
         self.context = context
         self.request = request
+        self.parameters = {
+            "where": request.get("where"),
+            "p": request.get("p"),
+            "nrOfHits": request.get("nrOfHits")
+        }
 
     def __call__(self, expand=False):
         result = {
             "connector-data": {
-                "@id": "{}/@connector-data".format(self.context.absolute_url())
+                "@id": "{}/@connector-data".format(self.context.absolute_url()),
+                "query_parameters": self.parameters
             }
         }
 
         if not expand:
             return result
-
         connector = IDataProvider(self.context)
+        connector.init_parameters(self.parameters)
         result['connector-data']["data"] = connector.provided_data
 
         return result

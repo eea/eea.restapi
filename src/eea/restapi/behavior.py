@@ -46,6 +46,33 @@ class DataProviderForConnectors(object):
     ''' data provider for connectors '''
     def __init__(self, context):
         self.context = context
+        self.parameters = {"where": None, "p" : None, "nrOfHits": None}
+
+    def init_parameters(self, parameters):
+        self.parameters = parameters
+
+    def _get_sql_query(self):
+        """_get_sql_query."""
+        sql_query = self.context.sql_query
+        if self.parameters["where"]:
+            if ":where" in sql_query:
+                sql_query = sql_query.replace(":where", "WHERE " + self.parameters["where"])
+            elif ":where-options" in sql_query:
+                sql_query = sql_query.replace(":where_options", self.parameters["where"])
+        else:
+            if ":where" in sql_query:
+                sql_query = sql_query.replace(":where", "") 
+            if ":where-options" in sql_query:
+                sql_query = sql_query.replace(":where-options", "") 
+        return sql_query
+    
+    def _get_request_data(self):
+        data = {}
+        data["query"] = self._get_sql_query()
+        if self.parameters["p"] and self.parameters["nrOfHits"]:
+            data["p"] = self.parameters["p"]
+            data["nrOfHits"] = self.parameters["nrOfHits"]
+        return data
 
     @timing
     def _get_data(self):
@@ -53,8 +80,10 @@ class DataProviderForConnectors(object):
         # query = urllib.parse.quote_plus(self.query)
 
         try:
-            req = requests.post(self.context.endpoint_url,
-                                data={'query': self.context.sql_query})
+            req = requests.post(
+                self.context.endpoint_url,
+                data=self._get_request_data()
+            )
             res = req.json()
         except Exception:
             logger.exception("Error in requestion data")
@@ -82,7 +111,7 @@ class DataProviderForConnectors(object):
         return res
 
     # TO DO: persistent caching, periodical refresh, etc
-    @ram.cache(lambda func, self: self.context.modified())
+    # @ram.cache(lambda func, self: self.context.modified())
     def _provided_data(self):
         ''' provided data '''
         if not self.context.sql_query:
