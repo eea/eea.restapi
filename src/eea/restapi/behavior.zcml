@@ -10,6 +10,7 @@
   <interface interface=".interfaces.IFileDataProvider" />
 
   <adapter factory=".behavior.DataProviderForConnectors" />
+  <adapter factory=".behavior.DataProviderForFiles" />
 
   <plone:behavior
     name="discodata.connector"
