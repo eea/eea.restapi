@@ -13,7 +13,7 @@
       <strong>Query:</strong>
       <pre tal:content="context/sql_query">Query definition here</pre>
 
-      <div tal:replace="structure context/@@provided_data" />
+      <!-- <div tal:replace="structure context/@@provided_data" /> -->
 
     </metal:main>
   </body>

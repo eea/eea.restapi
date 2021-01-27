@@ -11,6 +11,8 @@ from .interfaces import ISimpleFacetedCollection
 from collections import defaultdict
 from eea.restapi.utils import timing
 from io import StringIO
+from moz_sql_parser import format
+from moz_sql_parser import parse
 from plone.app.dexterity.behaviors.metadata import DCFieldProperty
 from plone.app.dexterity.behaviors.metadata import MetadataBase
 from plone.dexterity.interfaces import IDexterityContent
@@ -38,6 +40,8 @@ class DataConnector(MetadataBase):
 
     endpoint_url = DCFieldProperty(IDataConnector["endpoint_url"])
     sql_query = DCFieldProperty(IDataConnector["sql_query"])
+    parameters = DCFieldProperty(IDataConnector["parameters"])
+    namespace = DCFieldProperty(IDataConnector["namespace"])
 
 
 @adapter(IConnectorDataProvider, IBrowserRequest)
@@ -53,10 +57,32 @@ class DataProviderForConnectors(object):
     def _get_data(self):
         """_get_data."""
         # query = urllib.parse.quote_plus(self.query)
+        form = self.request.form
+
+        wheres = []
+
+        for param in self.context.parameters:
+            value = None
+            if self.context.namespace:
+                value = form.get("{}:{}".format(self.context.namespace, param))
+            if not value:
+                value = form.get(param)
+
+            if value:  # TODO: convert value with str(value) ?
+                wheres.append({"eq": [param, {"literal": value}]})
+
+        query = parse(self.context.sql_query)
+        if wheres:
+            if len(wheres) == 1:
+                query["where"] = wheres[0]
+            else:
+                query["where"] = {"and": wheres}
+
+        formatted_query = format(query)
 
         try:
             req = requests.post(
-                self.context.endpoint_url, data={"query": self.context.sql_query}
+                self.context.endpoint_url, data={"query": formatted_query}
             )
             res = req.json()
         except Exception:
@@ -85,7 +111,7 @@ class DataProviderForConnectors(object):
         return res
 
     # TO DO: persistent caching, periodical refresh, etc
-    @ram.cache(lambda func, self: self.context.modified())
+    # @ram.cache(lambda func, self: (self.context.modified(), self.request.form))
     def _provided_data(self):
         """ provided data """
         if not self.context.sql_query:
