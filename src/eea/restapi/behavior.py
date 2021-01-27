@@ -57,9 +57,18 @@ class DataProviderForConnectors(object):
     def _get_data(self):
         """_get_data."""
         # query = urllib.parse.quote_plus(self.query)
-        form = self.request.form
 
-        wheres = []
+        def getWhere(wheres, operator = "and"):
+            if wheres:
+                if len(wheres) == 1:
+                    return wheres[0]
+                return {operator: wheres}
+            return False
+
+        form = self.request.form
+        query = parse(self.context.sql_query)
+        wheres_list = []
+        data = {}
 
         for param in self.context.parameters:
             value = None
@@ -67,22 +76,33 @@ class DataProviderForConnectors(object):
                 value = form.get("{}:{}".format(self.context.namespace, param))
             if not value:
                 value = form.get(param)
+            if isinstance(value, list):
+                or_wheres_list = []
+                for item in value:
+                    or_wheres_list.append({"eq": [param, {"literal": str(item)}]})
+                or_wheres = getWhere(or_wheres_list, "or")
+                or_wheres and wheres_list.append(or_wheres)
+            elif value:
+                wheres_list.append({"eq": [param, {"literal": str(value)}]})
 
-            if value:  # TODO: convert value with str(value) ?
-                wheres.append({"eq": [param, {"literal": value}]})
+        wheres = getWhere(wheres_list, "and")
 
-        query = parse(self.context.sql_query)
-        if wheres:
-            if len(wheres) == 1:
-                query["where"] = wheres[0]
-            else:
-                query["where"] = {"and": wheres}
+        if query["where"] and wheres:
+            query["where"] = {"and": [query["where"], wheres]}
+        elif not(query["where"]) and wheres:
+            query["where"] = wheres
 
         formatted_query = format(query)
 
+        data["query"] = formatted_query
+        if form.get("p"):
+            data["p"] = form.get("p")
+        if (form.get("nrOfHits")):
+            data["nrOfHits"] = form.get("nrOfHits")
+
         try:
             req = requests.post(
-                self.context.endpoint_url, data={"query": formatted_query}
+                self.context.endpoint_url, data
             )
             res = req.json()
         except Exception:
