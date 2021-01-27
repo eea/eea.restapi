@@ -29,6 +29,13 @@ import requests
 
 logger = logging.getLogger(__name__)
 
+def getWhere(wheres, operator = "and"):
+    if wheres:
+        if len(wheres) == 1:
+            return wheres[0]
+        return {operator: wheres}
+    return False
+
 
 @implementer(IDataConnector)
 @adapter(IDexterityContent)
@@ -57,13 +64,6 @@ class DataProviderForConnectors(object):
     def _get_data(self):
         """_get_data."""
         # query = urllib.parse.quote_plus(self.query)
-
-        def getWhere(wheres, operator = "and"):
-            if wheres:
-                if len(wheres) == 1:
-                    return wheres[0]
-                return {operator: wheres}
-            return False
 
         form = self.request.form
         query = parse(self.context.sql_query)
