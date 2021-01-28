@@ -29,7 +29,8 @@ import requests
 
 logger = logging.getLogger(__name__)
 
-def getWhere(wheres, operator = "and"):
+
+def build_where_statement(wheres, operator="and"):
     if wheres:
         if len(wheres) == 1:
             return wheres[0]
@@ -72,38 +73,41 @@ class DataProviderForConnectors(object):
 
         for param in self.context.parameters:
             value = None
+
             if self.context.namespace:
                 value = form.get("{}:{}".format(self.context.namespace, param))
+
             if not value:
                 value = form.get(param)
+
             if isinstance(value, list):
-                or_wheres_list = []
-                for item in value:
-                    or_wheres_list.append({"eq": [param, {"literal": str(item)}]})
-                or_wheres = getWhere(or_wheres_list, "or")
+                or_wheres_list = [
+                    {"eq": [param, {"literal": str(item)}]} for item in value
+                ]
+                or_wheres = build_where_statement(or_wheres_list, "or")
                 or_wheres and wheres_list.append(or_wheres)
             elif value:
                 wheres_list.append({"eq": [param, {"literal": str(value)}]})
 
-        wheres = getWhere(wheres_list, "and")
+        wheres = build_where_statement(wheres_list, "and")
 
         if query["where"] and wheres:
             query["where"] = {"and": [query["where"], wheres]}
-        elif not(query["where"]) and wheres:
+        elif not (query["where"]) and wheres:
             query["where"] = wheres
 
         formatted_query = format(query)
 
         data["query"] = formatted_query
+
         if form.get("p"):
             data["p"] = form.get("p")
-        if (form.get("nrOfHits")):
+
+        if form.get("nrOfHits"):
             data["nrOfHits"] = form.get("nrOfHits")
 
         try:
-            req = requests.post(
-                self.context.endpoint_url, data
-            )
+            req = requests.post(self.context.endpoint_url, data)
             res = req.json()
         except Exception:
             logger.exception("Error in requestion data")
@@ -131,7 +135,7 @@ class DataProviderForConnectors(object):
         return res
 
     # TO DO: persistent caching, periodical refresh, etc
-    # @ram.cache(lambda func, self: (self.context.modified(), self.request.form))
+    @ram.cache(lambda func, self: (self.context.modified(), self.request.form))
     def _provided_data(self):
         """ provided data """
         if not self.context.sql_query:
