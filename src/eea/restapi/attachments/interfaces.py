@@ -1,9 +1,10 @@
 ''' interfaces module '''
+from plone.app.textfield import RichText
+from plone.namedfile.field import NamedBlobFile
+from plone.namedfile.field import NamedBlobImage
+from plone.supermodel import model
 from zope.interface import Interface
 
-from plone.app.textfield import RichText
-from plone.namedfile.field import NamedBlobFile, NamedBlobImage
-from plone.supermodel import model
 
 # class ISliderImagesBehavior(Interface):
 #     """ Behavior for slider images

@@ -1,18 +1,23 @@
 ''' serializer module '''
-from zope.component import adapter, getMultiAdapter, queryMultiAdapter
-from zope.interface import Interface, implementer
-from zope.schema import getFields
-
+from .interfaces import IAttachedFile
+from .interfaces import IAttachedImage
+from .interfaces import IAttachment
+from .interfaces import IAttachmentFolder
+from .interfaces import IAttachmentStorage
 from plone.namedfile.interfaces import INamedFileField
-from plone.restapi.interfaces import IFieldSerializer, ISerializeToJson
+from plone.restapi.interfaces import IFieldSerializer
+from plone.restapi.interfaces import ISerializeToJson
 from plone.restapi.serializer.converters import json_compatible
 from plone.restapi.serializer.dxcontent import SerializeToJson
-from plone.restapi.serializer.dxfields import (DefaultFieldSerializer,
-                                               FileFieldSerializer,
-                                               ImageFieldSerializer)
-
-from .interfaces import (IAttachedFile, IAttachedImage, IAttachment,
-                         IAttachmentFolder, IAttachmentStorage)
+from plone.restapi.serializer.dxfields import DefaultFieldSerializer
+from plone.restapi.serializer.dxfields import FileFieldSerializer
+from plone.restapi.serializer.dxfields import ImageFieldSerializer
+from zope.component import adapter
+from zope.component import getMultiAdapter
+from zope.component import queryMultiAdapter
+from zope.interface import implementer
+from zope.interface import Interface
+from zope.schema import getFields
 
 
 @implementer(ISerializeToJson)

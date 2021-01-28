@@ -2,8 +2,7 @@
 
 # from plone.app.linkintegrity.utils import referencedRelationship
 
-import json
-import logging
+from .interfaces import IBlockValidator
 from Acquisition import aq_base
 from plone import api
 from plone.api.exc import CannotGetPortalError
@@ -14,7 +13,9 @@ from zope.component import getUtility
 from zope.component import queryAdapter
 from zope.intid.interfaces import IIntIds
 
-from .interfaces import IBlockValidator
+import json
+import logging
+
 
 logger = logging.getLogger('eea.restapi')
 

@@ -1,4 +1,5 @@
 """ behavior module """
+
 from .interfaces import IConnectorDataParameters
 from .interfaces import IConnectorDataProvider
 from .interfaces import IDataConnector
@@ -11,7 +12,7 @@ from .interfaces import ISimpleFacetedCollection
 from collections import defaultdict
 from eea.restapi.utils import timing
 from io import StringIO
-from moz_sql_parser import format
+from moz_sql_parser import format as sql_format
 from moz_sql_parser import parse
 from plone.app.dexterity.behaviors.metadata import DCFieldProperty
 from plone.app.dexterity.behaviors.metadata import MetadataBase
@@ -96,9 +97,7 @@ class DataProviderForConnectors(object):
         elif not (query["where"]) and wheres:
             query["where"] = wheres
 
-        formatted_query = format(query)
-
-        data["query"] = formatted_query
+        data["query"] = sql_format(query)
 
         if form.get("p"):
             data["p"] = form.get("p")

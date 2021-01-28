@@ -1,9 +1,7 @@
 ''' cloned blocks '''
-import logging
 from eea.restapi.interfaces import IClonedBlocks
 from eea.restapi.interfaces import IEEARestapiLayer
 from plone import api
-import plone.protect.interfaces
 from plone.dexterity.fti import DexterityFTI
 from plone.registry import field
 from plone.registry.record import Record
@@ -15,6 +13,9 @@ from zope.component import adapter
 from zope.interface import alsoProvides
 from zope.interface import implementer
 from zope.security import checkPermission
+
+import logging
+import plone.protect.interfaces
 
 
 logger = logging.getLogger('eea.restapi')
