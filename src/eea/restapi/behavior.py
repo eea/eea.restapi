@@ -70,30 +70,31 @@ class DataProviderForConnectors(object):
         query = parse(self.context.sql_query)
         wheres_list = []
         data = {}
+        
+        if self.context.parameters:
+            for param in self.context.parameters:
+                value = None
 
-        for param in self.context.parameters:
-            value = None
+                if self.context.namespace:
+                    value = form.get("{}:{}".format(self.context.namespace, param))
 
-            if self.context.namespace:
-                value = form.get("{}:{}".format(self.context.namespace, param))
+                if not value:
+                    value = form.get(param)
 
-            if not value:
-                value = form.get(param)
-
-            if isinstance(value, list):
-                or_wheres_list = [
-                    {"eq": [param, {"literal": str(item)}]} for item in value
-                ]
-                or_wheres = build_where_statement(or_wheres_list, "or")
-                or_wheres and wheres_list.append(or_wheres)
-            elif value:
-                wheres_list.append({"eq": [param, {"literal": str(value)}]})
+                if isinstance(value, list):
+                    or_wheres_list = [
+                        {"eq": [param, {"literal": str(item)}]} for item in value
+                    ]
+                    or_wheres = build_where_statement(or_wheres_list, "or")
+                    or_wheres and wheres_list.append(or_wheres)
+                elif value:
+                    wheres_list.append({"eq": [param, {"literal": str(value)}]})
 
         wheres = build_where_statement(wheres_list, "and")
 
-        if query["where"] and wheres:
+        if "where" in query and wheres:
             query["where"] = {"and": [query["where"], wheres]}
-        elif not (query["where"]) and wheres:
+        elif "where" not in query and wheres:
             query["where"] = wheres
 
         formatted_query = format(query)
