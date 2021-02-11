@@ -1,14 +1,14 @@
 ''' content module '''
-from .interfaces import IAttachedFile
-from .interfaces import IAttachedImage
-from .interfaces import IAttachment
-from .interfaces import IAttachmentFolder
 from Acquisition import Implicit
 from OFS.OrderedFolder import OrderedFolder
 from OFS.SimpleItem import SimpleItem
 from Products.CMFCore.interfaces import IContentish
 from zope.interface import implementer
 from zope.schema.fieldproperty import FieldProperty
+from .interfaces import IAttachedFile
+from .interfaces import IAttachedImage
+from .interfaces import IAttachment
+from .interfaces import IAttachmentFolder
 
 
 @implementer(IAttachment, IContentish)

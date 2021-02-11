@@ -1,4 +1,5 @@
 ''' cloned blocks '''
+import logging
 from eea.restapi.interfaces import IClonedBlocks
 from eea.restapi.interfaces import IEEARestapiLayer
 from plone import api
@@ -9,13 +10,11 @@ from plone.restapi.deserializer import json_body
 from plone.restapi.interfaces import ISerializeToJson
 from plone.restapi.serializer.dxcontent import SerializeToJson
 from plone.restapi.services import Service
+import plone.protect.interfaces
 from zope.component import adapter
 from zope.interface import alsoProvides
 from zope.interface import implementer
 from zope.security import checkPermission
-
-import logging
-import plone.protect.interfaces
 
 
 logger = logging.getLogger('eea.restapi')

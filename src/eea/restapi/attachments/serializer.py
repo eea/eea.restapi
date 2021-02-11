@@ -1,9 +1,4 @@
 ''' serializer module '''
-from .interfaces import IAttachedFile
-from .interfaces import IAttachedImage
-from .interfaces import IAttachment
-from .interfaces import IAttachmentFolder
-from .interfaces import IAttachmentStorage
 from plone.namedfile.interfaces import INamedFileField
 from plone.restapi.interfaces import IFieldSerializer
 from plone.restapi.interfaces import ISerializeToJson
@@ -18,6 +13,11 @@ from zope.component import queryMultiAdapter
 from zope.interface import implementer
 from zope.interface import Interface
 from zope.schema import getFields
+from .interfaces import IAttachedFile
+from .interfaces import IAttachedImage
+from .interfaces import IAttachment
+from .interfaces import IAttachmentFolder
+from .interfaces import IAttachmentStorage
 
 
 @implementer(ISerializeToJson)

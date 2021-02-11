@@ -1,7 +1,4 @@
 ''' deserializer module '''
-from .interfaces import IAttachedFile
-from .interfaces import IAttachedImage
-from .interfaces import IAttachment
 from plone.restapi.deserializer import json_body
 from plone.restapi.deserializer.mixins import OrderingMixin
 from plone.restapi.interfaces import IDeserializeFromJson
@@ -15,6 +12,9 @@ from zope.interface import implementer
 from zope.interface import Interface
 from zope.schema import getFields
 from zope.schema.interfaces import ValidationError
+from .interfaces import IAttachedFile
+from .interfaces import IAttachedImage
+from .interfaces import IAttachment
 
 
 @implementer(IDeserializeFromJson)

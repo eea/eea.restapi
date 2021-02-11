@@ -2,8 +2,8 @@
 # -*- coding: utf-8 -*-
 
 import os
-import pkg_resources
 import subprocess
+import pkg_resources
 
 
 domain = 'eea.restapi'
