@@ -34,4 +34,5 @@ class AttachmentStorage(CMFOrderedBTreeFolderBase):  # BTreeFolder2,
     """Slider images stored in a persistent mapping"""
 
 
-attachments_annotation_storage = factory(AttachmentStorage, key=ATTACHMENTS_KEY)
+attachments_annotation_storage = factory(
+    AttachmentStorage, key=ATTACHMENTS_KEY)

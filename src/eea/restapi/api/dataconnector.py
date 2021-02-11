@@ -89,7 +89,8 @@ class ConnectorData(object):
             return result
 
         # connector = IDataProvider(self.context)
-        connector = getMultiAdapter((self.context, self.request), IDataProvider)
+        connector = getMultiAdapter(
+            (self.context, self.request), IDataProvider)
         result["connector-data"]["data"] = connector.provided_data
 
         return result
