@@ -100,9 +100,7 @@ class DataProviderForConnectors(object):
         elif "where" not in query and wheres:
             query["where"] = wheres
 
-        formatted_query = sql_format(query)
-
-        data["query"] = formatted_query
+        data["query"] = sql_format(query)
 
         if form.get("p"):
             data["p"] = form.get("p")

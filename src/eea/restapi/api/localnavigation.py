@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 ''' local navigation '''
+from ..interfaces import ILocalSectionMarker
 from Acquisition import aq_base
 from Acquisition import aq_inner
 from Acquisition import aq_parent
@@ -21,8 +22,6 @@ from zope.component import getUtility
 from zope.component.hooks import getSite
 from zope.interface import implementer
 from zope.interface import Interface
-
-from ..interfaces import ILocalSectionMarker
 
 
 class NavigationTreeQueryBuilder(NavtreeQueryBuilder):

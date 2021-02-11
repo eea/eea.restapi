@@ -9,11 +9,6 @@ from .interfaces import IHasAttachments
 from .interfaces import IHasSliderImages
 from .interfaces import ISliderImagesStorage
 
-# from Acquisition import Implicit
-# from OFS.Folder import Folder
-# from Products.BTreeFolder2.BTreeFolder2 import BTreeFolder2
-
-
 ATTACHMENTS_KEY = "restapi.attachments"
 SLIDER_KEY = "slider.images.storage"
 

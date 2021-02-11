@@ -1,16 +1,20 @@
 ''' deserializer module '''
-from zope.component import adapter, queryMultiAdapter  # , queryUtility
-from zope.interface import Interface, implementer
-from zope.schema import getFields
-from zope.schema.interfaces import ValidationError
-
+from .interfaces import IAttachedFile
+from .interfaces import IAttachedImage
+from .interfaces import IAttachment
 from plone.restapi.deserializer import json_body
 from plone.restapi.deserializer.mixins import OrderingMixin
-from plone.restapi.interfaces import IDeserializeFromJson, IFieldDeserializer
-from z3c.form.interfaces import IDataManager, IManagerValidator
+from plone.restapi.interfaces import IDeserializeFromJson
+from plone.restapi.interfaces import IFieldDeserializer
+from z3c.form.interfaces import IDataManager
+from z3c.form.interfaces import IManagerValidator
 from zExceptions import BadRequest
-
-from .interfaces import IAttachedFile, IAttachedImage, IAttachment
+from zope.component import adapter  # , queryUtility
+from zope.component import queryMultiAdapter
+from zope.interface import implementer
+from zope.interface import Interface
+from zope.schema import getFields
+from zope.schema.interfaces import ValidationError
 
 
 @implementer(IDeserializeFromJson)

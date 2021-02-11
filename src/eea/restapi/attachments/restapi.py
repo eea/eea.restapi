@@ -1,19 +1,20 @@
 ''' restapi module '''
-from random import randint
-
+from .content import AttachedFile
+from .content import AttachedImage
+from .content import AttachmentFolder
+from .interfaces import IAttachmentStorage
 from DateTime import DateTime
+from plone.restapi.deserializer import json_body
+from plone.restapi.exceptions import DeserializationError
+from plone.restapi.interfaces import IDeserializeFromJson
+from plone.restapi.interfaces import ISerializeToJson
+from plone.restapi.services import Service
+from plone.restapi.services.content.get import ContentGet
+from random import randint
 from zope.component import queryMultiAdapter
 from zope.interface import alsoProvides
 
 import plone.protect.interfaces
-from plone.restapi.deserializer import json_body
-from plone.restapi.exceptions import DeserializationError
-from plone.restapi.interfaces import IDeserializeFromJson, ISerializeToJson
-from plone.restapi.services import Service
-from plone.restapi.services.content.get import ContentGet
-
-from .content import AttachedFile, AttachedImage, AttachmentFolder
-from .interfaces import IAttachmentStorage
 
 
 class AttachmentsPOST(Service):
