@@ -1,17 +1,10 @@
 """ behavior module """
-
-from .interfaces import IConnectorDataParameters
-from .interfaces import IConnectorDataProvider
-from .interfaces import IDataConnector
-from .interfaces import IDataProvider
-from .interfaces import IDataVisualization
-from .interfaces import IFacetedCollection
-from .interfaces import IFileDataProvider
-from .interfaces import IHTMLEmbed
-from .interfaces import ISimpleFacetedCollection
 from collections import defaultdict
-from eea.restapi.utils import timing
 from io import StringIO
+import csv
+import logging
+import requests
+from eea.restapi.utils import timing
 from moz_sql_parser import format as sql_format
 from moz_sql_parser import parse
 from plone.app.dexterity.behaviors.metadata import DCFieldProperty
@@ -22,16 +15,21 @@ from plone.rfc822.interfaces import IPrimaryFieldInfo
 from zope.component import adapter
 from zope.interface import implementer
 from zope.publisher.interfaces.browser import IBrowserRequest
-
-import csv
-import logging
-import requests
-
+from .interfaces import IConnectorDataParameters
+from .interfaces import IConnectorDataProvider
+from .interfaces import IDataConnector
+from .interfaces import IDataProvider
+from .interfaces import IDataVisualization
+from .interfaces import IFacetedCollection
+from .interfaces import IFileDataProvider
+from .interfaces import IHTMLEmbed
+from .interfaces import ISimpleFacetedCollection
 
 logger = logging.getLogger(__name__)
 
 
 def build_where_statement(wheres, operator="and"):
+    """make where statement for moz_sql_parser"""
     if wheres:
         if len(wheres) == 1:
             return wheres[0]
@@ -72,29 +70,34 @@ class DataProviderForConnectors(object):
         wheres_list = []
         data = {}
 
-        for param in self.context.parameters:
-            value = None
+        if self.context.parameters:
+            for param in self.context.parameters:
+                value = None
 
-            if self.context.namespace:
-                value = form.get("{}:{}".format(self.context.namespace, param))
+                if self.context.namespace:
+                    value = form.get(
+                        "{}:{}".sql_format(
+                            self.context.namespace, param))
 
-            if not value:
-                value = form.get(param)
+                if not value:
+                    value = form.get(param)
 
-            if isinstance(value, list):
-                or_wheres_list = [
-                    {"eq": [param, {"literal": str(item)}]} for item in value
-                ]
-                or_wheres = build_where_statement(or_wheres_list, "or")
-                or_wheres and wheres_list.append(or_wheres)
-            elif value:
-                wheres_list.append({"eq": [param, {"literal": str(value)}]})
+                if isinstance(value, list):
+                    or_wheres_list = [
+                        {"eq": [param, {"literal": str(item)}]} for item in
+                        value]
+                    or_wheres = build_where_statement(or_wheres_list, "or")
+                    if or_wheres:
+                        wheres_list.append(or_wheres)
+                elif value:
+                    wheres_list.append(
+                        {"eq": [param, {"literal": str(value)}]})
 
         wheres = build_where_statement(wheres_list, "and")
 
-        if query["where"] and wheres:
+        if "where" in query and wheres:
             query["where"] = {"and": [query["where"], wheres]}
-        elif not (query["where"]) and wheres:
+        elif "where" not in query and wheres:
             query["where"] = wheres
 
         data["query"] = sql_format(query)

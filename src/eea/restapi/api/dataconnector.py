@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 """ dataconnector """
 
+import logging
 from eea.restapi.interfaces import IBasicDataProvider
 from eea.restapi.interfaces import IDataProvider
 from plone.restapi.deserializer import json_body
@@ -10,8 +11,6 @@ from zope.component import adapter
 from zope.component import getMultiAdapter
 from zope.interface import implementer
 from zope.interface import Interface
-
-import logging
 
 
 logger = logging.getLogger()
