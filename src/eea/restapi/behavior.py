@@ -1,8 +1,11 @@
 """ behavior module """
 from collections import defaultdict
-from eea.restapi.utils import timing
 from io import StringIO
-from moz_sql_parser import format
+import csv
+import logging
+import requests
+from eea.restapi.utils import timing
+from moz_sql_parser import format as sql_format
 from moz_sql_parser import parse
 from plone.app.dexterity.behaviors.metadata import DCFieldProperty
 from plone.app.dexterity.behaviors.metadata import MetadataBase
@@ -22,15 +25,11 @@ from .interfaces import IFileDataProvider
 from .interfaces import IHTMLEmbed
 from .interfaces import ISimpleFacetedCollection
 
-import csv
-import logging
-import requests
-
-
 logger = logging.getLogger(__name__)
 
 
 def build_where_statement(wheres, operator="and"):
+    """make where statement for moz_sql_parser"""
     if wheres:
         if len(wheres) == 1:
             return wheres[0]
@@ -77,7 +76,7 @@ class DataProviderForConnectors(object):
 
                 if self.context.namespace:
                     value = form.get(
-                        "{}:{}".format(
+                        "{}:{}".sql_format(
                             self.context.namespace, param))
 
                 if not value:
@@ -88,7 +87,8 @@ class DataProviderForConnectors(object):
                         {"eq": [param, {"literal": str(item)}]} for item in
                         value]
                     or_wheres = build_where_statement(or_wheres_list, "or")
-                    or_wheres and wheres_list.append(or_wheres)
+                    if or_wheres:
+                        wheres_list.append(or_wheres)
                 elif value:
                     wheres_list.append(
                         {"eq": [param, {"literal": str(value)}]})
@@ -100,7 +100,7 @@ class DataProviderForConnectors(object):
         elif "where" not in query and wheres:
             query["where"] = wheres
 
-        formatted_query = format(query)
+        formatted_query = sql_format(query)
 
         data["query"] = formatted_query
 
