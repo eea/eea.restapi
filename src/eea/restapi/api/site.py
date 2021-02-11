@@ -1,4 +1,5 @@
 ''' site module '''
+import json
 from eea.restapi.interfaces import IEEARestapiLayer
 from plone.restapi.batching import HypermediaBatch
 from plone.restapi.interfaces import ISerializeToJson
@@ -10,8 +11,6 @@ from zope.component import adapter
 from zope.component import getMultiAdapter
 from zope.interface import implementer
 from zope.interface import providedBy
-
-import json
 
 
 @implementer(ISerializeToJson)

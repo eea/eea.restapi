@@ -1,7 +1,6 @@
 ''' mosaic module '''
-from Products.Five.browser import BrowserView
-
 import json
+from Products.Five.browser import BrowserView
 
 
 class MosaicTilesView(BrowserView):
