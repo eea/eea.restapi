@@ -1,4 +1,6 @@
 """ indexers module """
+import logging
+import six
 from plone import api
 from plone.app.contenttypes.behaviors.leadimage import ILeadImage
 from plone.indexer.decorator import indexer
@@ -7,9 +9,6 @@ from plone.restapi.interfaces import IBlockSearchableText
 from zope.component import adapter
 from zope.interface import implementer
 from zope.publisher.interfaces.browser import IBrowserRequest
-
-import logging
-import six
 
 
 logger = logging.getLogger("eea.restapi")
