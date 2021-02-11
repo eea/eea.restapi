@@ -12,6 +12,7 @@ from zope.component import getMultiAdapter
 from zope.interface import implementer
 from zope.interface import Interface
 
+
 logger = logging.getLogger()
 
 
