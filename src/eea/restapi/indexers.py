@@ -39,7 +39,8 @@ def transform_text(text, portal_transforms=None):
         portal_transforms = api.portal.get_tool(name="portal_transforms")
 
     # Output here is a single <p> which contains <br /> for newline
-    data = portal_transforms.convertTo("text/plain", text, mimetype="text/html")
+    data = portal_transforms.convertTo(
+        "text/plain", text, mimetype="text/html")
     converted = data.getData()
 
     return converted or ""

@@ -1,13 +1,4 @@
 """ behavior module """
-from .interfaces import IConnectorDataParameters
-from .interfaces import IConnectorDataProvider
-from .interfaces import IDataConnector
-from .interfaces import IDataProvider
-from .interfaces import IDataVisualization
-from .interfaces import IFacetedCollection
-from .interfaces import IFileDataProvider
-from .interfaces import IHTMLEmbed
-from .interfaces import ISimpleFacetedCollection
 from collections import defaultdict
 from eea.restapi.utils import timing
 from io import StringIO
@@ -21,6 +12,15 @@ from plone.rfc822.interfaces import IPrimaryFieldInfo
 from zope.component import adapter
 from zope.interface import implementer
 from zope.publisher.interfaces.browser import IBrowserRequest
+from .interfaces import IConnectorDataParameters
+from .interfaces import IConnectorDataProvider
+from .interfaces import IDataConnector
+from .interfaces import IDataProvider
+from .interfaces import IDataVisualization
+from .interfaces import IFacetedCollection
+from .interfaces import IFileDataProvider
+from .interfaces import IHTMLEmbed
+from .interfaces import ISimpleFacetedCollection
 
 import csv
 import logging
@@ -85,8 +85,8 @@ class DataProviderForConnectors(object):
 
                 if isinstance(value, list):
                     or_wheres_list = [
-                        {"eq": [param, {"literal": str(item)}]} for item in value
-                    ]
+                        {"eq": [param, {"literal": str(item)}]} for item in
+                        value]
                     or_wheres = build_where_statement(or_wheres_list, "or")
                     or_wheres and wheres_list.append(or_wheres)
                 elif value:
