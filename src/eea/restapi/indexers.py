@@ -70,6 +70,7 @@ def _extract_text(block):
 @implementer(IBlockSearchableText)
 @adapter(IBlocks, IBrowserRequest)
 class CKTextIndexer(object):
+    """text indexer"""
     def __init__(self, context, request):
         self.context = context
         self.request = request
