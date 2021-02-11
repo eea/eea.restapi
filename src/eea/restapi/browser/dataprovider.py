@@ -1,6 +1,6 @@
 ''' data provider '''
-from eea.restapi.interfaces import IDataProvider
 from io import BytesIO
+from eea.restapi.interfaces import IDataProvider
 from Products.Five.browser import BrowserView
 
 import xlsxwriter
