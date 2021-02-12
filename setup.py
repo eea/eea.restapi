@@ -47,7 +47,7 @@ setup(
     },
     license="GPL version 2",
     packages=find_packages("src", exclude=["ez_setup"]),
-    namespace_packages=["eea"],
+    namespace_packages=["eea", "eea.restapi"],
     package_dir={"": "src"},
     include_package_data=True,
     zip_safe=False,
@@ -62,7 +62,6 @@ setup(
         "plone.app.dexterity",
         "requests",
         "xlsxwriter",
-        "moz-sql-parser",
     ],
     extras_require={
         "test": [
