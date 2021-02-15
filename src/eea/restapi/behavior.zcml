@@ -3,93 +3,93 @@
     xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
     xmlns:i18n="http://namespaces.zope.org/i18n"
     xmlns:plone="http://namespaces.plone.org/plone"
-    i18n_domain="eea.restapi">
+    i18n_domain="eea.restapi"
+    >
 
   <interface interface=".interfaces.ILocalSectionMarker" />
   <interface interface=".interfaces.IConnectorDataProvider" />
   <interface interface=".interfaces.IFileDataProvider" />
 
-  <adapter factory=".behavior.DataProviderForConnectors" />
   <adapter factory=".behavior.DataProviderForFiles" />
 
   <plone:behavior
-    name="discodata.connector"
-    title="Discodata connector behavior"
-    description="Adds discodata connector query execution"
-    provides=".interfaces.IDataConnector"
-    factory=".behavior.DataConnector"
-    for="plone.dexterity.interfaces.IDexterityContent"
-    marker=".interfaces.IConnectorDataProvider"
-    />
+      name="discodata.connector"
+      title="Discodata connector behavior"
+      description="Adds discodata connector query execution"
+      factory=".behavior.DataConnector"
+      provides=".interfaces.IDataConnector"
+      for="plone.dexterity.interfaces.IDexterityContent"
+      marker=".interfaces.IConnectorDataProvider"
+      />
 
   <plone:behavior
-    name="dataprovider.files"
-    title="Data provider for files"
-    description="Allows Files to provide remote data"
-    provides=".interfaces.IDataProvider"
-    factory=".behavior.DataProviderForFiles"
-    for="plone.dexterity.interfaces.IDexterityContent"
-    marker=".interfaces.IFileDataProvider"
-    />
+      name="dataprovider.files"
+      title="Data provider for files"
+      description="Allows Files to provide remote data"
+      factory=".behavior.DataProviderForFiles"
+      provides=".interfaces.IDataProvider"
+      for="plone.dexterity.interfaces.IDexterityContent"
+      marker=".interfaces.IFileDataProvider"
+      />
 
   <plone:behavior
-    name="eea.restapi.parameters"
-    title="Parameters for data connections"
-    description="Allow content to preset parameters for connector data"
-    provides=".interfaces.IConnectorDataParameters"
-    factory=".behavior.ConnectorDataParameters"
-    for="plone.dexterity.interfaces.IDexterityContent"
-    marker=".interfaces.IConnectorDataParameters"
-    />
+      name="eea.restapi.parameters"
+      title="Parameters for data connections"
+      description="Allow content to preset parameters for connector data"
+      factory=".behavior.ConnectorDataParameters"
+      provides=".interfaces.IConnectorDataParameters"
+      for="plone.dexterity.interfaces.IDexterityContent"
+      marker=".interfaces.IConnectorDataParameters"
+      />
 
   <plone:behavior
-    name="eea.restapi.visualization"
-    title="Visualization behavior"
-    description="Allows creating a visualization."
-    provides=".interfaces.IDataVisualization"
-    factory=".behavior.DataVisualization"
-    for="plone.dexterity.interfaces.IDexterityContent"
-    marker=".interfaces.IDataVisualization"
-    />
+      name="eea.restapi.visualization"
+      title="Visualization behavior"
+      description="Allows creating a visualization."
+      factory=".behavior.DataVisualization"
+      provides=".interfaces.IDataVisualization"
+      for="plone.dexterity.interfaces.IDexterityContent"
+      marker=".interfaces.IDataVisualization"
+      />
 
   <plone:behavior
-    name="eea.restapi.collection-facets"
-    title="Facets for Collections"
-    description="Allows navigation by facets for collections"
-    provides=".interfaces.IFacetedCollection"
-    factory=".behavior.FacetedCollection"
-    for="plone.app.contenttypes.interfaces.ICollection"
-    marker=".interfaces.IFacetedCollection"
-    />
+      name="eea.restapi.collection-facets"
+      title="Facets for Collections"
+      description="Allows navigation by facets for collections"
+      factory=".behavior.FacetedCollection"
+      provides=".interfaces.IFacetedCollection"
+      for="plone.app.contenttypes.interfaces.ICollection"
+      marker=".interfaces.IFacetedCollection"
+      />
 
   <plone:behavior
-    name="eea.restapi.collection-simplefacetfilter"
-    title="Simple Facet Filter for Collections"
-    description="A simple facet filter for collection results"
-    provides=".interfaces.ISimpleFacetedCollection"
-    factory=".behavior.SimpleFacetedCollection"
-    for="plone.app.contenttypes.interfaces.ICollection"
-    marker=".interfaces.ISimpleFacetedCollection"
-    />
+      name="eea.restapi.collection-simplefacetfilter"
+      title="Simple Facet Filter for Collections"
+      description="A simple facet filter for collection results"
+      factory=".behavior.SimpleFacetedCollection"
+      provides=".interfaces.ISimpleFacetedCollection"
+      for="plone.app.contenttypes.interfaces.ICollection"
+      marker=".interfaces.ISimpleFacetedCollection"
+      />
 
   <plone:behavior
-    name="eea.restapi.embed"
-    title="Embedded field"
-    description="Adds an embed field, for embedded content"
-    provides=".interfaces.IHTMLEmbed"
-    factory=".behavior.HTMLEmbed"
-    for="plone.dexterity.interfaces.IDexterityContent"
-    marker=".interfaces.IHTMLEmbed"
-    />
+      name="eea.restapi.embed"
+      title="Embedded field"
+      description="Adds an embed field, for embedded content"
+      factory=".behavior.HTMLEmbed"
+      provides=".interfaces.IHTMLEmbed"
+      for="plone.dexterity.interfaces.IDexterityContent"
+      marker=".interfaces.IHTMLEmbed"
+      />
 
   <plone:behavior
-    name="eea.restapi.clonedblocks"
-    title="Clones blocks from a content item"
-    description="Volto blocks will be cloned from a specified content"
-    for="plone.dexterity.interfaces.IDexterityContent"
-    marker=".interfaces.IClonedBlocks"
-    provides=".interfaces.IClonedBlocks"
-    />
+      name="eea.restapi.clonedblocks"
+      title="Clones blocks from a content item"
+      description="Volto blocks will be cloned from a specified content"
+      provides=".interfaces.IClonedBlocks"
+      for="plone.dexterity.interfaces.IDexterityContent"
+      marker=".interfaces.IClonedBlocks"
+      />
 
   <interface interface=".interfaces.IClonedBlocks" />
 
