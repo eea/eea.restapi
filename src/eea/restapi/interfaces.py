@@ -67,6 +67,12 @@ class IDataConnector(model.Schema):
         required=False,
         value_type=schema.TextLine(title=u"Parameter"),
     )
+    required_parameters = schema.List(
+        title=u"Required query parameters",
+        description=u"Provider doesn't send data if the reuqired parameter is not set",
+        required=False,
+        value_type=schema.TextLine(title=u"Parameter"),
+    )
     namespace = schema.TextLine(
         title=u"Connector namespace",
         description=u"Optional namespace string, use it in case data in "

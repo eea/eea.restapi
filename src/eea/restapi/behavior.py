@@ -36,6 +36,22 @@ def build_where_statement(wheres, operator="and"):
         return {operator: wheres}
     return False
 
+def has_required_parameters(request, context):
+    """Check if required_parameters exists in form"""
+    if not len(context.required_parameters):
+        return True
+    for param in context.required_parameters:
+        value = None
+        if context.namespace:
+            value = request.form.get(
+                "{}.{}".format(
+                    context.namespace, param))
+        if not value:
+            value = request.form.get(param)
+        if not value:
+            return False
+    return True
+
 
 @implementer(IDataConnector)
 @adapter(IDexterityContent)
@@ -48,6 +64,7 @@ class DataConnector(MetadataBase):
     endpoint_url = DCFieldProperty(IDataConnector["endpoint_url"])
     sql_query = DCFieldProperty(IDataConnector["sql_query"])
     parameters = DCFieldProperty(IDataConnector["parameters"])
+    required_parameters = DCFieldProperty(IDataConnector["required_parameters"])
     namespace = DCFieldProperty(IDataConnector["namespace"])
 
 
@@ -76,7 +93,7 @@ class DataProviderForConnectors(object):
 
                 if self.context.namespace:
                     value = form.get(
-                        "{}:{}".sql_format(
+                        "{}.{}".format(
                             self.context.namespace, param))
 
                 if not value:
@@ -141,6 +158,9 @@ class DataProviderForConnectors(object):
     def _provided_data(self):
         """ provided data """
         if not self.context.sql_query:
+            return []
+
+        if not has_required_parameters(self.request, self.context):
             return []
 
         data = self._get_data()
