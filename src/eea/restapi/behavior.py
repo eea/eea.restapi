@@ -38,7 +38,7 @@ def build_where_statement(wheres, operator="and"):
 
 def has_required_parameters(request, context):
     """Check if required_parameters exists in form"""
-    if not context.required_parameters or not len(context.required_parameters):
+    if not context.required_parameters:
         return True
     for param in context.required_parameters:
         value = None
