@@ -62,6 +62,7 @@ setup(
         "plone.app.dexterity",
         "requests",
         "xlsxwriter",
+        "eea.volto.slate",
     ],
     extras_require={
         "test": [

@@ -1,6 +1,4 @@
 """ indexers module """
-import logging
-import six
 from plone import api
 from plone.app.contenttypes.behaviors.leadimage import ILeadImage
 from plone.indexer.decorator import indexer
@@ -9,6 +7,9 @@ from plone.restapi.interfaces import IBlockSearchableText
 from zope.component import adapter
 from zope.interface import implementer
 from zope.publisher.interfaces.browser import IBrowserRequest
+
+import logging
+import six
 
 
 logger = logging.getLogger("eea.restapi")
@@ -38,39 +39,17 @@ def transform_text(text, portal_transforms=None):
         portal_transforms = api.portal.get_tool(name="portal_transforms")
 
     # Output here is a single <p> which contains <br /> for newline
-    data = portal_transforms.convertTo(
-        "text/plain", text, mimetype="text/html")
+    data = portal_transforms.convertTo("text/plain", text, mimetype="text/html")
     converted = data.getData()
 
     return converted or ""
-
-
-def _extract_text(block):
-    """_extract_text.
-
-    :param block:
-    """
-    result = ""
-
-    for paragraph in block.get("text", {}).get("blocks", []):
-        text = paragraph["text"]
-
-        if six.PY2:
-            if isinstance(text, six.text_type):
-                text = text.encode("utf-8", "replace")
-
-            if text:
-                result = " ".join((result, text))
-        else:
-            result = " ".join((result, text))
-
-    return result
 
 
 @implementer(IBlockSearchableText)
 @adapter(IBlocks, IBrowserRequest)
 class CKTextIndexer(object):
     """text indexer"""
+
     def __init__(self, context, request):
         self.context = context
         self.request = request
