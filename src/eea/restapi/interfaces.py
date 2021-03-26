@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 """Module where all interfaces, events and exceptions live."""
-import json
 from eea.restapi import _
 from plone.app.z3cform.widget import QueryStringFieldWidget
 from plone.autoform import directives as form
@@ -12,6 +11,8 @@ from zope.interface import Attribute
 from zope.interface import Interface
 from zope.interface import provider
 from zope.publisher.interfaces.browser import IDefaultBrowserLayer
+
+import json
 
 
 class IEEARestapiLayer(IDefaultBrowserLayer):
@@ -64,6 +65,12 @@ class IDataConnector(model.Schema):
     parameters = schema.List(
         title=u"Query parameters",
         description=u"Names for potential WHERE SQL filters",
+        required=False,
+        value_type=schema.TextLine(title=u"Parameter"),
+    )
+    required_parameters = schema.List(
+        title=u"Required query parameters",
+        description=u"Provider doesn't send data if the reuqired parameter is not set",
         required=False,
         value_type=schema.TextLine(title=u"Parameter"),
     )
@@ -163,9 +170,7 @@ class IConnectorDataParameters(model.Schema):
     data_query = schema.List(
         title=u"Data query parameters",
         description=u"Define the data query parameters",
-        value_type=schema.Dict(
-            value_type=schema.Field(), key_type=schema.TextLine()
-        ),
+        value_type=schema.Dict(value_type=schema.Field(), key_type=schema.TextLine()),
         required=True,
         missing_value=[],
     )
