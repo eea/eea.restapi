@@ -1,7 +1,4 @@
 ''' deserializer module '''
-from .interfaces import IAttachedFile
-from .interfaces import IAttachedImage
-from .interfaces import IAttachment
 from plone.restapi.deserializer import json_body
 from plone.restapi.deserializer.mixins import OrderingMixin
 from plone.restapi.interfaces import IDeserializeFromJson
@@ -15,12 +12,16 @@ from zope.interface import implementer
 from zope.interface import Interface
 from zope.schema import getFields
 from zope.schema.interfaces import ValidationError
+from .interfaces import IAttachedFile
+from .interfaces import IAttachedImage
+from .interfaces import IAttachment
 
 
 @implementer(IDeserializeFromJson)
 @adapter(IAttachment, Interface)
 class DeserializeFromJson(OrderingMixin, object):
     ''' deserialize from json '''
+
     def __init__(self, context, request):
         self.context = context
         self.request = request
@@ -37,7 +38,7 @@ class DeserializeFromJson(OrderingMixin, object):
         for schema, field_data in schema_data.items():
             validator = queryMultiAdapter(
                 (self.context, self.request, None, schema, None),
-                IManagerValidator
+                IManagerValidator,
             )
 
             for error in validator.validate(field_data):
@@ -107,10 +108,12 @@ class DeserializeFromJson(OrderingMixin, object):
                     value = deserializer(data[name])
                 except ValueError as e:
                     errors.append(
-                        {"message": str(e), "field": name, "error": e})
+                        {"message": str(e), "field": name, "error": e}
+                    )
                 except ValidationError as e:
                     errors.append(
-                        {"message": e.doc(), "field": name, "error": e})
+                        {"message": e.doc(), "field": name, "error": e}
+                    )
                 else:
                     field_data[name] = value
 
@@ -132,6 +135,7 @@ class DeserializeFromJson(OrderingMixin, object):
                     bound.validate(dm.get())
                 except ValidationError as e:
                     errors.append(
-                        {"message": e.doc(), "field": name, "error": e})
+                        {"message": e.doc(), "field": name, "error": e}
+                    )
 
         return schema_data, errors

@@ -1,8 +1,8 @@
 ''' handlers module '''
 
 # from plone.app.linkintegrity.utils import referencedRelationship
-
-from .interfaces import IBlockValidator
+import json
+import logging
 from Acquisition import aq_base
 from plone import api
 from plone.api.exc import CannotGetPortalError
@@ -12,9 +12,7 @@ from z3c.relationfield import RelationValue
 from zope.component import getUtility
 from zope.component import queryAdapter
 from zope.intid.interfaces import IIntIds
-
-import json
-import logging
+from .interfaces import IBlockValidator
 
 
 logger = logging.getLogger('eea.restapi')
@@ -25,7 +23,8 @@ def handle_clonedblock_content_added(obj, event):
 
     portal_type = obj.portal_type
     uid = api.portal.get_registry_record(
-        'eea.clonedblocks.' + portal_type, default=None)
+        'eea.clonedblocks.' + portal_type, default=None
+    )
     source = api.content.get(UID=uid)
     intids = getUtility(IIntIds)
 

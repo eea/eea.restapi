@@ -1,12 +1,6 @@
 """ behavior module """
-from .interfaces import IConnectorDataParameters
-from .interfaces import IDataConnector
-from .interfaces import IDataProvider
-from .interfaces import IDataVisualization
-from .interfaces import IFacetedCollection
-from .interfaces import IFileDataProvider
-from .interfaces import IHTMLEmbed
-from .interfaces import ISimpleFacetedCollection
+import csv
+import logging
 from collections import defaultdict
 from io import StringIO
 from plone.app.dexterity.behaviors.metadata import DCFieldProperty
@@ -16,9 +10,14 @@ from plone.rfc822.interfaces import IPrimaryFieldInfo
 from zope.component import adapter
 from zope.interface import implementer
 from zope.publisher.interfaces.browser import IBrowserRequest
-
-import csv
-import logging
+from .interfaces import IConnectorDataParameters
+from .interfaces import IDataConnector
+from .interfaces import IDataProvider
+from .interfaces import IDataVisualization
+from .interfaces import IFacetedCollection
+from .interfaces import IFileDataProvider
+from .interfaces import IHTMLEmbed
+from .interfaces import ISimpleFacetedCollection
 
 
 logger = logging.getLogger(__name__)

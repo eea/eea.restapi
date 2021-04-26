@@ -1,4 +1,5 @@
 ''' site module '''
+import json
 from eea.restapi.interfaces import IEEARestapiLayer
 from plone.restapi.batching import HypermediaBatch
 from plone.restapi.interfaces import ISerializeToJson
@@ -11,13 +12,12 @@ from zope.component import getMultiAdapter
 from zope.interface import implementer
 from zope.interface import providedBy
 
-import json
-
 
 @implementer(ISerializeToJson)
 @adapter(IPloneSiteRoot, IEEARestapiLayer)
 class SerializeSiteRootToJson(object):
     ''' serialize site root to json '''
+
     def __init__(self, context, request):
         self.context = context
         self.request = request
@@ -62,8 +62,8 @@ class SerializeSiteRootToJson(object):
         if hasattr(self.context, 'blocks'):
             result['blocks'] = json.loads(self.context.blocks)
             result['blocks_layout'] = json.loads(
-                    getattr(self.context, "blocks_layout", "{}")
-                )  # noqa
+                getattr(self.context, "blocks_layout", "{}")
+            )  # noqa
 
         # this is the place where the code is change from the original.
         # We want to expose the layout property
@@ -84,10 +84,11 @@ class SerializeSiteRootToJson(object):
 
         result["items"] = [
             getMultiAdapter((brain, self.request), ISerializeToJsonSummary)()
-
             for brain in batch
         ]
-        result['@provides'] = ['{}.{}'.format(I.__module__, I.__name__)
-                               for I in providedBy(self.context)]
+        result['@provides'] = [
+            '{}.{}'.format(I.__module__, I.__name__)
+            for I in providedBy(self.context)
+        ]
 
         return result

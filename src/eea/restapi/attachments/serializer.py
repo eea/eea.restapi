@@ -1,9 +1,4 @@
 ''' serializer module '''
-from .interfaces import IAttachedFile
-from .interfaces import IAttachedImage
-from .interfaces import IAttachment
-from .interfaces import IAttachmentFolder
-from .interfaces import IAttachmentStorage
 from plone.namedfile.interfaces import INamedFileField
 from plone.restapi.interfaces import IFieldSerializer
 from plone.restapi.interfaces import ISerializeToJson
@@ -18,6 +13,11 @@ from zope.component import queryMultiAdapter
 from zope.interface import implementer
 from zope.interface import Interface
 from zope.schema import getFields
+from .interfaces import IAttachedFile
+from .interfaces import IAttachedImage
+from .interfaces import IAttachment
+from .interfaces import IAttachmentFolder
+from .interfaces import IAttachmentStorage
 
 
 @implementer(ISerializeToJson)
@@ -32,7 +32,8 @@ class SerializeStorageToJson(SerializeToJson):
         # ILocation provided by the adapter locate=true registration
         context = self.context.__of__(self.context.__parent__)
         result['@id'] = '{}/@attachments'.format(
-            self.context.__parent__.absolute_url())
+            self.context.__parent__.absolute_url()
+        )
         result['items'] = []
 
         for folder in context.values():
@@ -64,6 +65,7 @@ class SerializeAttachmentFolderToJson(SerializeToJson):
 @adapter(IAttachment, Interface)
 class SerializeAttachmentToJson(object):
     ''' serialize attachment to json '''
+
     def __init__(self, context, request):
         self.context = context
         self.request = request
@@ -113,11 +115,10 @@ class AttachmentFieldSerializer(DefaultFieldSerializer):
         if 'image' in ctype:
             try:
                 res = ImageFieldSerializer(self.field, obj, self.request)()
-            except AttributeError:      # has been uploaded as file, not image
+            except AttributeError:  # has been uploaded as file, not image
                 res = FileFieldSerializer(self.field, obj, self.request)()
         else:
-            res = FileFieldSerializer(self.field, self.context,
-                                      self.request)()
+            res = FileFieldSerializer(self.field, self.context, self.request)()
         # rewrite urls, they're not generated properly
         path = obj.getPhysicalPath()
         res['@id'] = '{}'.format(self.request.physicalPathToURL(path))

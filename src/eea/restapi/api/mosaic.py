@@ -6,13 +6,10 @@ from zope.component import getUtility  # adapter, getMultiAdapter
 
 
 class MosaicSettingsGet(Service):
-    """ Get the mosaic settings
-    """
+    """Get the mosaic settings"""
 
     def reply(self):
         ''' reply '''
         proxy = getUtility(IRegistry).forInterface(IMosaicSettings)
 
-        return {
-            'styles': list(proxy.styles)
-        }
+        return {'styles': list(proxy.styles)}
