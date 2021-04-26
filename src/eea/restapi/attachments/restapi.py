@@ -1,4 +1,5 @@
 ''' restapi module '''
+from random import randint
 from DateTime import DateTime
 from plone.restapi.deserializer import json_body
 from plone.restapi.exceptions import DeserializationError
@@ -7,7 +8,6 @@ from plone.restapi.interfaces import ISerializeToJson
 from plone.restapi.services import Service
 from plone.restapi.services.content.get import ContentGet
 import plone.protect.interfaces
-from random import randint
 from zope.component import queryMultiAdapter
 from zope.interface import alsoProvides
 from .content import AttachedFile

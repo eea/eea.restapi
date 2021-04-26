@@ -70,7 +70,7 @@ class CustomNavtreeStrategy(SitemapNavtreeStrategy):
 
         if not contextPath.startswith(rootPath):
             return None
-        contextSubPathElements = contextPath[len(rootPath) + 1 :]
+        contextSubPathElements = contextPath[len(rootPath) + 1:]
 
         if contextSubPathElements:
             contextSubPathElements = contextSubPathElements.split("/")

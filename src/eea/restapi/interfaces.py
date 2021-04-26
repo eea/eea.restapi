@@ -69,26 +69,29 @@ class IDataConnector(model.Schema):
     )
     required_parameters = schema.List(
         title="Required query parameters",
-        description="Provider doesn't send data if the reuqired parameter is not set",
+        description=u"Provider doesn't send data if the reuqired parameter is "
+        "not set",
         required=False,
         value_type=schema.TextLine(title="Parameter"),
     )
     required_parameters = schema.List(
         title=u"Required query parameters",
-        description=u"Provider doesn't send data if the reuqired parameter is not set",
+        description=u"Provider doesn't send data if the reuqired parameter is "
+        "not set",
         required=False,
         value_type=schema.TextLine(title=u"Parameter"),
     )
     namespace = schema.TextLine(
         title="Connector namespace",
-        description="Optional namespace string, use it in case data in "
+        description=u"Optional namespace string, use it in case data in "
         "this connector is not uniform across the other datasets",
         required=False,
         default="",
     )
     collate = schema.TextLine(
         title="Collate",
-        description="Optional collate string, use it in case data has a different encoding then utf-8",
+        description=u"Optional collate string, use it in case data has a "
+        "different encoding then utf-8",
         required=False,
         default="",
     )
