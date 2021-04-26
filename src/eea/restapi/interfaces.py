@@ -24,10 +24,10 @@ class IMosaicSettings(model.Schema):
 
     form.widget(styles="z3c.form.browser.textlines.TextLinesFieldWidget")
     styles = schema.Set(
-        title=_(u"Styles"),
+        title=_("Styles"),
         description=_(
-            u"Enter a list of styles to appear in the style pulldown. "
-            u"Format is title|className, one per line."
+            "Enter a list of styles to appear in the style pulldown. "
+            "Format is title|className, one per line."
         ),
         required=False,
         default=set(
@@ -39,7 +39,7 @@ class IMosaicSettings(model.Schema):
                 "Drop Shadow|drop-shadow-tile",
             ]
         ),
-        value_type=schema.ASCIILine(title=_(u"CSS Classes")),
+        value_type=schema.ASCIILine(title=_("CSS Classes")),
     )
 
 
@@ -52,21 +52,27 @@ class IDataConnector(model.Schema):
     """A generic discodata connector"""
 
     endpoint_url = schema.TextLine(
-        title=u"Discodata endpoint URL",
+        title="Discodata endpoint URL",
         required=True,
         # default=u"http://discomap.eea.europa.eu/App/SqlEndpoint/query"
-        default=u"https://discodata.eea.europa.eu/sql",
+        default="https://discodata.eea.europa.eu/sql",
     )
     sql_query = schema.Text(
-        title=u"SQL Query",
+        title="SQL Query",
         required=True,
-        default=u"Select top 10000 * from [FISE].[v1].[CLC]",
+        default="Select top 10000 * from [FISE].[v1].[CLC]",
     )
     parameters = schema.List(
-        title=u"Query parameters",
-        description=u"Names for potential WHERE SQL filters",
+        title="Query parameters",
+        description="Names for potential WHERE SQL filters",
         required=False,
-        value_type=schema.TextLine(title=u"Parameter"),
+        value_type=schema.TextLine(title="Parameter"),
+    )
+    required_parameters = schema.List(
+        title="Required query parameters",
+        description="Provider doesn't send data if the reuqired parameter is not set",
+        required=False,
+        value_type=schema.TextLine(title="Parameter"),
     )
     required_parameters = schema.List(
         title=u"Required query parameters",
@@ -75,11 +81,17 @@ class IDataConnector(model.Schema):
         value_type=schema.TextLine(title=u"Parameter"),
     )
     namespace = schema.TextLine(
-        title=u"Connector namespace",
-        description=u"Optional namespace string, use it in case data in "
-        u"this connector is not uniform across the other datasets",
+        title="Connector namespace",
+        description="Optional namespace string, use it in case data in "
+        "this connector is not uniform across the other datasets",
         required=False,
-        default=u"",
+        default="",
+    )
+    collate = schema.TextLine(
+        title="Collate",
+        description="Optional collate string, use it in case data has a different encoding then utf-8",
+        required=False,
+        default="",
     )
 
     # directives.fieldset('dataconnector', label="Data connector", fields=[
@@ -94,7 +106,7 @@ class IBasicDataProvider(Interface):
 class IDataProvider(IBasicDataProvider):
     """An export of data for remote purposes"""
 
-    provided_data = Attribute(u"Data made available by this data provider")
+    provided_data = Attribute("Data made available by this data provider")
 
 
 class IFileDataProvider(IBasicDataProvider):
@@ -113,7 +125,7 @@ class IDataVisualization(model.Schema):
     """A data visualization (chart)"""
 
     visualization = JSONField(
-        title=u"Visualization", required=False, default={}, schema=VIZ_SCHEMA
+        title="Visualization", required=False, default={}, schema=VIZ_SCHEMA
     )
 
 
@@ -125,8 +137,8 @@ class IFacetedCollection(model.Schema):
     """Can specify indexes to be shown as facets on a collection"""
 
     facets = JSONField(
-        title=_(u"Facets"),
-        description=u"Facets configuration",
+        title=_("Facets"),
+        description="Facets configuration",
         schema=GENERIC_LIST_SCHEMA,
         # value_type=schema.Choice(
         #     vocabulary='plone.app.contenttypes.metadatafields'),
@@ -139,7 +151,7 @@ class ISimpleFacetedCollection(model.Schema):
     """ISimpleFacetedCollection."""
 
     filter = schema.Choice(
-        title=u"Collection facet",
+        title="Collection facet",
         vocabulary="plone.app.contenttypes.metadatafields",
         required=False,
     )
@@ -150,8 +162,8 @@ class IHTMLEmbed(model.Schema):
     """A generic HTML embed field"""
 
     embed_code = schema.Text(
-        title=u"Embed code",
-        description=u"Any HTML code, typically an IFRAME tag",
+        title="Embed code",
+        description="Any HTML code, typically an IFRAME tag",
         required=True,
     )
 
@@ -168,9 +180,11 @@ class IConnectorDataParameters(model.Schema):
     # )
 
     data_query = schema.List(
-        title=u"Data query parameters",
-        description=u"Define the data query parameters",
-        value_type=schema.Dict(value_type=schema.Field(), key_type=schema.TextLine()),
+        title="Data query parameters",
+        description="Define the data query parameters",
+        value_type=schema.Dict(
+            value_type=schema.Field(), key_type=schema.TextLine()
+        ),
         required=True,
         missing_value=[],
     )
@@ -202,8 +216,8 @@ class IClonedBlocks(Interface):
 
     """
 
-    cloned_blocks = Attribute(u"Cloned blocks property")
-    cloned_blocks_layout = Attribute(u"Cloned blocks_layout property")
+    cloned_blocks = Attribute("Cloned blocks property")
+    cloned_blocks_layout = Attribute("Cloned blocks_layout property")
 
 
 class IBlockValidator(Interface):

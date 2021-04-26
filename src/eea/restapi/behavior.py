@@ -36,7 +36,10 @@ class DataConnector(MetadataBase):
     sql_query = DCFieldProperty(IDataConnector["sql_query"])
     parameters = DCFieldProperty(IDataConnector["parameters"])
     namespace = DCFieldProperty(IDataConnector["namespace"])
-    required_parameters = DCFieldProperty(IDataConnector["required_parameters"])
+    required_parameters = DCFieldProperty(
+        IDataConnector["required_parameters"]
+    )
+    collate = DCFieldProperty(IDataConnector["collate"])
 
 
 @implementer(IDataProvider)
