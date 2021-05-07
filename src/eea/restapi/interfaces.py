@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """Module where all interfaces, events and exceptions live."""
-
 import json
+from eea.restapi import _
 from plone.app.z3cform.widget import QueryStringFieldWidget
 from plone.autoform import directives as form
 from plone.autoform.interfaces import IFormFieldProvider
@@ -13,54 +13,87 @@ from zope.interface import Interface
 from zope.interface import provider
 from zope.publisher.interfaces.browser import IDefaultBrowserLayer
 
-from eea.restapi import _
-
 
 class IEEARestapiLayer(IDefaultBrowserLayer):
     """Marker interface that defines a browser layer."""
 
 
 class IMosaicSettings(model.Schema):
-    """ Settings for mosaic tiles
-    """
+    """Settings for mosaic tiles"""
 
-    form.widget(styles='z3c.form.browser.textlines.TextLinesFieldWidget')
+    form.widget(styles="z3c.form.browser.textlines.TextLinesFieldWidget")
     styles = schema.Set(
-        title=_(u'Styles'),
+        title=_("Styles"),
         description=_(
-            u'Enter a list of styles to appear in the style pulldown. '
-            u'Format is title|className, one per line.'),
+            "Enter a list of styles to appear in the style pulldown. "
+            "Format is title|className, one per line."
+        ),
         required=False,
-        default=set([
-            "default|default-tile",
-            "Border|border-tile",
-            "Green border|green-border-tile",
-            "Filled|filled-tile",
-            "Drop Shadow|drop-shadow-tile",
-        ]),
-        value_type=schema.ASCIILine(title=_(u'CSS Classes')),
+        default=set(
+            [
+                "default|default-tile",
+                "Border|border-tile",
+                "Green border|green-border-tile",
+                "Filled|filled-tile",
+                "Drop Shadow|drop-shadow-tile",
+            ]
+        ),
+        value_type=schema.ASCIILine(title=_("CSS Classes")),
     )
 
 
 class ILocalSectionMarker(Interface):
-    """ A local section marker. To be used with @localnavigation.
-    """
+    """A local section marker. To be used with @localnavigation."""
 
 
 @provider(IFormFieldProvider)
 class IDataConnector(model.Schema):
-    """ A generic discodata connector
-    """
+    """A generic discodata connector"""
 
     endpoint_url = schema.TextLine(
-        title=u"Discodata endpoint URL", required=True,
+        title="Discodata endpoint URL",
+        required=True,
         # default=u"http://discomap.eea.europa.eu/App/SqlEndpoint/query"
-        default=u"https://discodata.eea.europa.eu/sql"
+        default="https://discodata.eea.europa.eu/sql",
     )
     sql_query = schema.Text(
-        title=u"SQL Query",
+        title="SQL Query",
         required=True,
-        default=u"Select top 10000 * from [FISE].[v1].[CLC]"
+        default="Select top 10000 * from [FISE].[v1].[CLC]",
+    )
+    parameters = schema.List(
+        title="Query parameters",
+        description="Names for potential WHERE SQL filters",
+        required=False,
+        value_type=schema.TextLine(title="Parameter"),
+    )
+    required_parameters = schema.List(
+        title="Required query parameters",
+        description=u"Provider doesn't send data if the reuqired parameter is "
+        "not set",
+        required=False,
+        value_type=schema.TextLine(title="Parameter"),
+    )
+    required_parameters = schema.List(
+        title=u"Required query parameters",
+        description=u"Provider doesn't send data if the reuqired parameter is "
+        "not set",
+        required=False,
+        value_type=schema.TextLine(title=u"Parameter"),
+    )
+    namespace = schema.TextLine(
+        title="Connector namespace",
+        description=u"Optional namespace string, use it in case data in "
+        "this connector is not uniform across the other datasets",
+        required=False,
+        default="",
+    )
+    collate = schema.TextLine(
+        title="Collate",
+        description=u"Optional collate string, use it in case data has a "
+        "different encoding then utf-8",
+        required=False,
+        default="",
     )
 
     # directives.fieldset('dataconnector', label="Data connector", fields=[
@@ -69,25 +102,21 @@ class IDataConnector(model.Schema):
 
 
 class IBasicDataProvider(Interface):
-    """ A data provider concept
-    """
+    """A data provider concept"""
 
 
 class IDataProvider(IBasicDataProvider):
-    """ An export of data for remote purposes
-    """
+    """An export of data for remote purposes"""
 
-    provided_data = Attribute(u'Data made available by this data provider')
+    provided_data = Attribute("Data made available by this data provider")
 
 
 class IFileDataProvider(IBasicDataProvider):
-    """ Marker interface for objects that provide data to visualizations
-    """
+    """Marker interface for objects that provide data to visualizations"""
 
 
 class IConnectorDataProvider(IBasicDataProvider):
-    """ Marker interface for objects that provide data to visualizations
-    """
+    """Marker interface for objects that provide data to visualizations"""
 
 
 VIZ_SCHEMA = json.dumps({"type": "object", "properties": {}})
@@ -95,25 +124,23 @@ VIZ_SCHEMA = json.dumps({"type": "object", "properties": {}})
 
 @provider(IFormFieldProvider)
 class IDataVisualization(model.Schema):
-    """ A data visualization (chart)
-    """
+    """A data visualization (chart)"""
 
-    visualization = JSONField(title=u"Visualization", required=False,
-                              default={},
-                              schema=VIZ_SCHEMA)
+    visualization = JSONField(
+        title="Visualization", required=False, default={}, schema=VIZ_SCHEMA
+    )
 
 
-GENERIC_LIST_SCHEMA = json.dumps({'type': 'list'})
+GENERIC_LIST_SCHEMA = json.dumps({"type": "list"})
 
 
 @provider(IFormFieldProvider)
 class IFacetedCollection(model.Schema):
-    """ Can specify indexes to be shown as facets on a collection
-    """
+    """Can specify indexes to be shown as facets on a collection"""
 
     facets = JSONField(
-        title=_(u'Facets'),
-        description=u"Facets configuration",
+        title=_("Facets"),
+        description="Facets configuration",
         schema=GENERIC_LIST_SCHEMA,
         # value_type=schema.Choice(
         #     vocabulary='plone.app.contenttypes.metadatafields'),
@@ -126,28 +153,26 @@ class ISimpleFacetedCollection(model.Schema):
     """ISimpleFacetedCollection."""
 
     filter = schema.Choice(
-        title=u"Collection facet",
-        vocabulary='plone.app.contenttypes.metadatafields',
+        title="Collection facet",
+        vocabulary="plone.app.contenttypes.metadatafields",
         required=False,
     )
 
 
 @provider(IFormFieldProvider)
 class IHTMLEmbed(model.Schema):
-    """ A generic HTML embed field
-    """
+    """A generic HTML embed field"""
 
     embed_code = schema.Text(
-        title=u"Embed code",
-        description=u"Any HTML code, typically an IFRAME tag",
+        title="Embed code",
+        description="Any HTML code, typically an IFRAME tag",
         required=True,
     )
 
 
 @provider(IFormFieldProvider)
 class IConnectorDataParameters(model.Schema):
-    """ Allow content to preset parameters for connector data
-    """
+    """Allow content to preset parameters for connector data"""
 
     # data_parameters = JSONField(
     #     title=_(u'Parameter values'),
@@ -157,18 +182,19 @@ class IConnectorDataParameters(model.Schema):
     # )
 
     data_query = schema.List(
-        title=u'Data query parameters',
-        description=u'Define the data query parameters',
-        value_type=schema.Dict(value_type=schema.Field(),
-                               key_type=schema.TextLine()),
+        title="Data query parameters",
+        description="Define the data query parameters",
+        value_type=schema.Dict(
+            value_type=schema.Field(), key_type=schema.TextLine()
+        ),
         required=True,
-        missing_value=[]
+        missing_value=[],
     )
-    form.widget('data_query', QueryStringFieldWidget)
+    form.widget("data_query", QueryStringFieldWidget)
 
 
 class IClonedBlocks(Interface):
-    """ Content that reuses blocks from a template
+    """Content that reuses blocks from a template
 
     The general architecture is the following:
 
@@ -192,13 +218,12 @@ class IClonedBlocks(Interface):
 
     """
 
-    cloned_blocks = Attribute(u"Cloned blocks property")
-    cloned_blocks_layout = Attribute(u"Cloned blocks_layout property")
+    cloned_blocks = Attribute("Cloned blocks property")
+    cloned_blocks_layout = Attribute("Cloned blocks_layout property")
 
 
 class IBlockValidator(Interface):
     """IBlockValidator."""
 
     def clean(self, value):
-        """ Returns a cleaned value
-        """
+        """Returns a cleaned value"""

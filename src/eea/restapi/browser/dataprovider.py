@@ -1,14 +1,12 @@
 ''' data provider '''
 from io import BytesIO
-from Products.Five.browser import BrowserView
-from eea.restapi.interfaces import IDataProvider
-
 import xlsxwriter
+from eea.restapi.interfaces import IDataProvider
+from Products.Five.browser import BrowserView
 
 
 class DataProviderView(BrowserView):
-    """ Basic view for the DataConnector
-    """
+    """Basic view for the DataConnector"""
 
     def data(self):
         ''' return data from data provider '''
@@ -18,8 +16,7 @@ class DataProviderView(BrowserView):
 
 
 class DataProviderDownload(BrowserView):
-    """ Basic view for the DataConnector
-    """
+    """Basic view for the DataConnector"""
 
     def data_to_xls(self, data):
         ''' convert data to xls '''
@@ -55,9 +52,14 @@ class DataProviderDownload(BrowserView):
         xlsio = self.data_to_xls(data)
         sh = self.request.response.setHeader
 
-        sh('Content-Type', 'application/vnd.openxmlformats-officedocument.'
-           'spreadsheetml.sheet')
-        sh('Content-Disposition',
-           'attachment; filename=%s.xlsx' % self.context.getId())
+        sh(
+            'Content-Type',
+            'application/vnd.openxmlformats-officedocument.'
+            'spreadsheetml.sheet',
+        )
+        sh(
+            'Content-Disposition',
+            'attachment; filename=%s.xlsx' % self.context.getId(),
+        )
 
         return xlsio.read()

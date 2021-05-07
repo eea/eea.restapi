@@ -52,4 +52,6 @@
     name="html"
     />
 
+  <adapter name="cktext" factory=".indexers.CKTextIndexer" />
+
 </configure>

@@ -1,24 +1,23 @@
 ''' restapi module '''
 from random import randint
-
 from DateTime import DateTime
-from zope.component import queryMultiAdapter
-from zope.interface import alsoProvides
-
-import plone.protect.interfaces
 from plone.restapi.deserializer import json_body
 from plone.restapi.exceptions import DeserializationError
-from plone.restapi.interfaces import IDeserializeFromJson, ISerializeToJson
+from plone.restapi.interfaces import IDeserializeFromJson
+from plone.restapi.interfaces import ISerializeToJson
 from plone.restapi.services import Service
 from plone.restapi.services.content.get import ContentGet
-
-from .content import AttachedFile, AttachedImage, AttachmentFolder
+import plone.protect.interfaces
+from zope.component import queryMultiAdapter
+from zope.interface import alsoProvides
+from .content import AttachedFile
+from .content import AttachedImage
+from .content import AttachmentFolder
 from .interfaces import IAttachmentStorage
 
 
 class AttachmentsPOST(Service):
-    """ Creates a new content object.
-    """
+    """Creates a new content object."""
 
     def reply(self):
         ''' reply '''
@@ -42,7 +41,8 @@ class AttachmentsPOST(Service):
 
         if "IDisableCSRFProtection" in dir(plone.protect.interfaces):
             alsoProvides(
-                self.request, plone.protect.interfaces.IDisableCSRFProtection)
+                self.request, plone.protect.interfaces.IDisableCSRFProtection
+            )
 
         if 'image' in data['file']['content-type']:
             obj = AttachedImage()
@@ -54,8 +54,9 @@ class AttachmentsPOST(Service):
         now = DateTime()
 
         # # Update fields
-        deserializer = queryMultiAdapter((obj, self.request),
-                                         IDeserializeFromJson)
+        deserializer = queryMultiAdapter(
+            (obj, self.request), IDeserializeFromJson
+        )
 
         if deserializer is None:
             self.request.response.setStatus(501)
@@ -68,8 +69,9 @@ class AttachmentsPOST(Service):
         except DeserializationError as e:
             self.request.response.setStatus(400)
 
-            return dict(error=dict(type="DeserializationError",
-                                   message=str(e)))
+            return dict(
+                error=dict(type="DeserializationError", message=str(e))
+            )
 
         _id = "f.{}.{}{:04d}".format(
             now.strftime("%Y-%m-%d"),
@@ -89,8 +91,11 @@ class AttachmentsPOST(Service):
         if not serializer:
             self.request.response.setStatus(400)
 
-            return dict(error=dict(type="SerializationError",
-                                   message=u'No serializer found'))
+            return dict(
+                error=dict(
+                    type="SerializationError", message=u'No serializer found'
+                )
+            )
 
         serialized_obj = serializer()
 
@@ -98,8 +103,7 @@ class AttachmentsPOST(Service):
 
 
 class AttachmentsGET(Service):
-    """ Get the available transactions
-    """
+    """Get the available transactions"""
 
     def reply(self):
         ''' reply '''

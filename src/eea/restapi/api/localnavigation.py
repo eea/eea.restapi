@@ -21,13 +21,11 @@ from zope.component import getUtility
 from zope.component.hooks import getSite
 from zope.interface import implementer
 from zope.interface import Interface
-
 from ..interfaces import ILocalSectionMarker
 
 
 class NavigationTreeQueryBuilder(NavtreeQueryBuilder):
-    """Build a folder tree query
-    """
+    """Build a folder tree query"""
 
     def __init__(self, context, depth):
         NavtreeQueryBuilder.__init__(self, context)
@@ -92,6 +90,7 @@ class CustomNavtreeStrategy(SitemapNavtreeStrategy):
 @adapter(Interface, Interface)
 class LocalNavigation(object):
     ''' local navigation '''
+
     def __init__(self, context, request):
         self.context = context
         self.request = request
@@ -115,16 +114,18 @@ class LocalNavigation(object):
             self.depth = 1
 
         result = {
-            "localnavigation": {"@id": "{}/@localnavigation".format(
-                self.context.absolute_url())}
+            "localnavigation": {
+                "@id": "{}/@localnavigation".format(
+                    self.context.absolute_url()
+                )
+            }
         }
 
         if not expand:
             return result
 
         context = self.get_section_root(self.context)
-        tabs = getMultiAdapter((context, self.request),
-                               name="localtabs_view")
+        tabs = getMultiAdapter((context, self.request), name="localtabs_view")
         items = []
 
         for tab in tabs.topLevelTabs():
@@ -182,7 +183,8 @@ class LocalNavigation(object):
         queryBuilder = NavigationTreeQueryBuilder(tabObj, self.depth)
         query = queryBuilder()
         data = buildFolderTree(
-            tabObj, obj=tabObj, query=query, strategy=strategy)
+            tabObj, obj=tabObj, query=query, strategy=strategy
+        )
 
         return self.recurse(children=data.get("children", []), level=1)
 
@@ -207,6 +209,7 @@ class LocalNavigation(object):
 
 class LocalNavigationGet(Service):
     ''' local navigation - get '''
+
     def reply(self):
         ''' reply '''
         navigation = LocalNavigation(self.context, self.request)
@@ -244,7 +247,8 @@ def get_view_url(context):
     ''' get view url '''
     registry = getUtility(IRegistry)
     view_action_types = registry.get(
-        'plone.types_use_view_action_in_listings', [])
+        'plone.types_use_view_action_in_listings', []
+    )
     item_url = get_url(context)
     name = get_id(context)
 
@@ -263,9 +267,7 @@ class CatalogNavigationTabs(BrowserView):
         ''' check whether we only want actions '''
         registry = getUtility(IRegistry)
         navigation_settings = registry.forInterface(
-            INavigationSchema,
-            prefix="plone",
-            check=False
+            INavigationSchema, prefix="plone", check=False
         )
         customQuery = getattr(self.context, 'getCustomNavQuery', False)
 
@@ -274,10 +276,7 @@ class CatalogNavigationTabs(BrowserView):
         else:
             query = {}
 
-        query['path'] = {
-            'query': getNavigationRoot(self.context),
-            'depth': 1
-        }
+        query['path'] = {'query': getNavigationRoot(self.context), 'depth': 1}
         query['portal_type'] = [t for t in navigation_settings.displayed_types]
         query['sort_on'] = navigation_settings.sort_tabs_on
 
@@ -302,9 +301,7 @@ class CatalogNavigationTabs(BrowserView):
         context = aq_inner(self.context)
         registry = getUtility(IRegistry)
         navigation_settings = registry.forInterface(
-            INavigationSchema,
-            prefix="plone",
-            check=False
+            INavigationSchema, prefix="plone", check=False
         )
         mtool = getToolByName(context, 'portal_membership')
         member = mtool.getAuthenticatedMember().id
@@ -312,8 +309,7 @@ class CatalogNavigationTabs(BrowserView):
 
         if actions is None:
             context_state = getMultiAdapter(
-                (context, self.request),
-                name=u'plone_context_state'
+                (context, self.request), name=u'plone_context_state'
             )
             actions = context_state.actions(category)
 
@@ -357,7 +353,7 @@ class CatalogNavigationTabs(BrowserView):
                 'id': item.getId,
                 'url': item_url,
                 'description': item.Description,
-                'review_state': item.review_state
+                'review_state': item.review_state,
             }
             result.append(data)
 

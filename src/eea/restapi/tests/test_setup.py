@@ -29,17 +29,14 @@ class TestSetup(unittest.TestCase):
 
     def test_product_installed(self):
         """Test if eea.restapi is installed."""
-        self.assertTrue(self.installer.isProductInstalled(
-            'eea.restapi'))
+        self.assertTrue(self.installer.isProductInstalled('eea.restapi'))
 
     def test_browserlayer(self):
         """Test that IEEARestapiLayer is registered."""
-        from eea.restapi.interfaces import (
-            IEEARestapiLayer)
+        from eea.restapi.interfaces import IEEARestapiLayer
         from plone.browserlayer import utils
-        self.assertIn(
-            IEEARestapiLayer,
-            utils.registered_layers())
+
+        self.assertIn(IEEARestapiLayer, utils.registered_layers())
 
 
 class TestUninstall(unittest.TestCase):
@@ -61,14 +58,11 @@ class TestUninstall(unittest.TestCase):
 
     def test_product_uninstalled(self):
         """Test if eea.restapi is cleanly uninstalled."""
-        self.assertFalse(self.installer.isProductInstalled(
-            'eea.restapi'))
+        self.assertFalse(self.installer.isProductInstalled('eea.restapi'))
 
     def test_browserlayer_removed(self):
         """Test that IEEARestapiLayer is removed."""
-        from eea.restapi.interfaces import \
-            IEEARestapiLayer
+        from eea.restapi.interfaces import IEEARestapiLayer
         from plone.browserlayer import utils
-        self.assertNotIn(
-            IEEARestapiLayer,
-            utils.registered_layers())
+
+        self.assertNotIn(IEEARestapiLayer, utils.registered_layers())
