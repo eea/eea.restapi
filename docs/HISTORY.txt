@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.5-dev0 - (unreleased)
+1.5 - (2021-05-07)
 ---------------------------
 * Move Discodata connector adapter to eea.api.dataconnector
   [tiberiuichim, razvanMiu]
