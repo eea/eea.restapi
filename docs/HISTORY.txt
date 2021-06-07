@@ -3,6 +3,7 @@ Changelog
 
 1.6-dev0 - (unreleased)
 ---------------------------
+* Remove eea.volto.slate dependency @tiberiuichim
 
 1.5 - (2021-05-07)
 ---------------------------
