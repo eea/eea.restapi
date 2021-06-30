@@ -4,7 +4,7 @@ pipeline {
   environment {
         GIT_NAME = "eea.restapi"
         GIT_HISTORYFILE = "docs/HISTORY.txt"
-        SONARQUBE_TAGS = "forest.eea.europa.eu,demo-energy-union.eea.europa.eu"
+        SONARQUBE_TAGS = "forest.eea.europa.eu,climate-energy.eea.europa.eu"
     }
 
   stages {
