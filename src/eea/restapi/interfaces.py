@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 """Module where all interfaces, events and exceptions live."""
-import json
 from eea.restapi import _
 from plone.app.z3cform.widget import QueryStringFieldWidget
 from plone.autoform import directives as form
@@ -12,6 +11,8 @@ from zope.interface import Attribute
 from zope.interface import Interface
 from zope.interface import provider
 from zope.publisher.interfaces.browser import IDefaultBrowserLayer
+
+import json
 
 
 class IEEARestapiLayer(IDefaultBrowserLayer):
@@ -185,7 +186,8 @@ class IConnectorDataParameters(model.Schema):
         title="Data query parameters",
         description="Define the data query parameters",
         value_type=schema.Dict(
-            value_type=schema.Field(), key_type=schema.TextLine()
+            value_type=schema.TextLine(title=u"Value"),
+            key_type=schema.TextLine(title=u"Key")
         ),
         required=True,
         missing_value=[],
