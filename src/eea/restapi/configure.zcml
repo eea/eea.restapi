@@ -53,5 +53,6 @@
     />
 
   <adapter name="cktext" factory=".indexers.CKTextIndexer" />
+  <adapter factory=".adapters.GenericSchemaValueAdapter" />
 
 </configure>
