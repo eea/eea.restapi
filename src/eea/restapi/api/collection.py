@@ -4,6 +4,7 @@ from plone.app.contenttypes.interfaces import ICollection
 from plone.restapi.batching import HypermediaBatch
 from plone.restapi.interfaces import ISerializeToJson
 from plone.restapi.interfaces import ISerializeToJsonSummary
+from plone.restapi.deserializer import boolean_value
 from plone.restapi.serializer.dxcontent import SerializeToJson
 from zope.component import adapter
 from zope.component import getMultiAdapter
@@ -15,34 +16,37 @@ from zope.interface import implementer
 class SerializeCollectionToJson(SerializeToJson):
     """ Override the default serializer to include custom query
     """
-
     def __call__(self, version=None, include_items=True):
+        result = super().__call__(version=version)
+
+        include_items = self.request.form.get("include_items", include_items)
+        include_items = boolean_value(include_items)
         # {u'i': u'portal_type',
         #         u'o': u'plone.app.querystring.operation.selection.any',
         #         u'v': [u'Document']
-        collection_metadata = super(SerializeCollectionToJson, self).__call__(
-            version=version
-        )
         custom_query = {}       # TO DO: needs to read custom query from body
-        results = self.context.results(batch=False, custom_query=custom_query)
-        batch = HypermediaBatch(self.request, results)
+        if include_items:
+            results = self.context.results(batch=False, custom_query=custom_query)
+            batch = HypermediaBatch(self.request, results)
 
-        results = collection_metadata
+            # This is a bug in plone.restapi. See
+            # https://github.com/plone/plone.restapi/issues/837
+            # if not self.request.form.get("fullobjects"):
+                # result["@id"] = batch.canonical_url
+            result["items_total"] = batch.items_total
+            if batch.links:
+                result["batching"] = batch.links
 
-        # This is a bug in plone.restapi. See
-        # https://github.com/plone/plone.restapi/issues/837
-        # if not self.request.form.get("fullobjects"):
-        #     results["@id"] = batch.canonical_url
-
-        results["items_total"] = batch.items_total
-
-        if batch.links:
-            results["batching"] = batch.links
-
-        results["items"] = [
-            getMultiAdapter((brain, self.request), ISerializeToJsonSummary)()
-
-            for brain in batch
-        ]
-
-        return results
+            if "fullobjects" in list(self.request.form):
+                result["items"] = [
+                    getMultiAdapter(
+                        (brain.getObject(), self.request), ISerializeToJson
+                    )()
+                    for brain in batch
+                ]
+            else:
+                result["items"] = [
+                    getMultiAdapter((brain, self.request), ISerializeToJsonSummary)()
+                    for brain in batch
+                ]
+        return result
