@@ -1,6 +1,6 @@
 ''' traversing '''
-from plone.rest.traverse import RESTWrapper
 from six.moves import urllib
+from plone.rest.traverse import RESTWrapper
 from zExceptions import NotFound
 from zope.traversing.namespace import SimpleHandler
 from .interfaces import IAttachmentStorage

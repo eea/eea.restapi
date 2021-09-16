@@ -18,7 +18,7 @@ class SerializeCollectionToJson(SerializeToJson):
     """
     def __call__(self, version=None, include_items=True):
         result = super(SerializeCollectionToJson,
-                        self).__call__(version=version)
+                       self).__call__(version=version)
 
         include_items = self.request.form.get("include_items", include_items)
         include_items = boolean_value(include_items)
