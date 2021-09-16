@@ -1,8 +1,10 @@
 Changelog
 =========
 
-1.7-dev0 - (unreleased)
+1.7 - (2021-09-16)
 ---------------------------
+* Change: Collection fullobject
+  [razvanMiu]
 
 1.6 - (2021-06-29)
 ---------------------------
