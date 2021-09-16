@@ -26,13 +26,10 @@ class SerializeCollectionToJson(SerializeToJson):
         #         u'v': [u'Document']
         custom_query = {}       # TO DO: needs to read custom query from body
         if include_items:
-            results = self.context.results(batch=False, custom_query=custom_query)
+            results = self.context.results(batch=False,
+                                           custom_query=custom_query)
             batch = HypermediaBatch(self.request, results)
 
-            # This is a bug in plone.restapi. See
-            # https://github.com/plone/plone.restapi/issues/837
-            # if not self.request.form.get("fullobjects"):
-                # result["@id"] = batch.canonical_url
             result["items_total"] = batch.items_total
             if batch.links:
                 result["batching"] = batch.links
@@ -46,7 +43,8 @@ class SerializeCollectionToJson(SerializeToJson):
                 ]
             else:
                 result["items"] = [
-                    getMultiAdapter((brain, self.request), ISerializeToJsonSummary)()
+                    getMultiAdapter(
+                        (brain, self.request), ISerializeToJsonSummary)()
                     for brain in batch
                 ]
         return result
