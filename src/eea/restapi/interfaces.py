@@ -185,7 +185,8 @@ class IConnectorDataParameters(model.Schema):
         title="Data query parameters",
         description="Define the data query parameters",
         value_type=schema.Dict(
-            value_type=schema.Field(), key_type=schema.TextLine()
+            value_type=schema.TextLine(title=u"Value"),
+            key_type=schema.TextLine(title=u"Key")
         ),
         required=True,
         missing_value=[],
