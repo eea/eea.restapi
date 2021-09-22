@@ -88,7 +88,6 @@ pipeline {
           "PloneSaaS": {
             node(label: 'docker') {
               script {
-               catchError(buildResult: 'SUCCESS', stageResult: 'UNSTABLE') {
                try {
                   sh '''docker pull eeacms/plonesaas-devel; docker run -i --name="$BUILD_TAG-plonesaas" -e GIT_NAME="$GIT_NAME" -e GIT_BRANCH="$BRANCH_NAME" -e GIT_CHANGE_ID="$CHANGE_ID" eeacms/plonesaas-devel /debug.sh coverage'''
                   sh '''mkdir -p xunit-reports; docker cp $BUILD_TAG-plonesaas:/plone/instance/parts/xmltestreport/testreports/. xunit-reports/'''
@@ -97,7 +96,6 @@ pipeline {
                   stash name: "coverage.xml", includes: "coverage.xml"
                 } finally {
                   sh '''docker rm -v $BUILD_TAG-plonesaas'''
-                }
                 }
                 junit 'xunit-reports/*.xml'
               }

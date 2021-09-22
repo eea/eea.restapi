@@ -58,7 +58,7 @@ setup(
         "z3c.jbot",
         "collective.folderishtypes",
         "plone.api>=1.8.4",
-        "plone.restapi>=8.9.1",
+        "plone.restapi",
         "plone.app.dexterity",
         "requests",
         "xlsxwriter",
