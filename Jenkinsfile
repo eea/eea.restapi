@@ -98,8 +98,8 @@ pipeline {
                 } finally {
                   sh '''docker rm -v $BUILD_TAG-plonesaas'''
                 }
-                junit 'xunit-reports/*.xml'
                 }
+                junit 'xunit-reports/*.xml'
               }
             }
           },
