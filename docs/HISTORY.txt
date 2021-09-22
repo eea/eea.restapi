@@ -3,6 +3,8 @@ Changelog
 
 1.8-dev0 - (unreleased)
 ---------------------------
+* Change: remove dependency on eea.volto.slate [valipod]
+* Change: add minimum version on plone.restapi [valipod]
 
 1.7 - (2021-09-16)
 ---------------------------

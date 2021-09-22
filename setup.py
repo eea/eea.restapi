@@ -58,11 +58,10 @@ setup(
         "z3c.jbot",
         "collective.folderishtypes",
         "plone.api>=1.8.4",
-        "plone.restapi",
+        "plone.restapi>=8.9.1",
         "plone.app.dexterity",
         "requests",
         "xlsxwriter",
-        "eea.volto.slate",
     ],
     extras_require={
         "test": [
