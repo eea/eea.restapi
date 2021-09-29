@@ -27,6 +27,8 @@
   <include package=".api" />
   <include package=".attachments" />
   <include package=".browser" />
+  <include package=".services" />
+  <include package=".serializer" />
 
   <adapter name="lead_image" factory=".indexers.lead_image" />
 
