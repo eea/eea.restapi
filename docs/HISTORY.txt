@@ -1,6 +1,11 @@
 Changelog
 =========
 
+1.9 - (2021-09-29)
+---------------------------
+* Reinstate porlets service from older plone.restapi
+  [razvanMiu]
+
 1.8 - (2021-09-22)
 ---------------------------
 * Change: remove dependency on eea.volto.slate [valipod]
