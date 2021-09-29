@@ -1,9 +1,11 @@
-from . import PortletSerializer
+""" events module """
+
 from DateTime import DateTime
 from plone.app.event.portlets.portlet_events import Renderer
 from plone.restapi.interfaces import ISerializeToJsonSummary
 from plone.restapi.serializer.converters import json_compatible
 from zope.component import getMultiAdapter
+from . import PortletSerializer
 
 
 class EventsPortletSerializer(PortletSerializer):
@@ -25,15 +27,19 @@ class EventsPortletSerializer(PortletSerializer):
 
 
 class EventsPortletRenderer(Renderer):
+    """ Events portlet renderer """
 
     def as_date(self, value):
+        """ return value as date time """
         if value:
             if isinstance(value, DateTime):
                 value = value.asdatetime()
 
             return json_compatible(value)
+        return None
 
     def render(self):
+        """ Render """
         items = []
 
         for event in self.events:

@@ -1,5 +1,7 @@
-from . import PortletSerializer
+""" static module """
+
 from plone.portlet.static.static import Renderer
+from . import PortletSerializer
 
 
 class StaticTextPortletSerializer(PortletSerializer):
@@ -22,7 +24,9 @@ class StaticTextPortletSerializer(PortletSerializer):
 
 
 class StaticTextPortletRenderer(Renderer):
+    """ Static text portlet renderer """
     def render(self):
+        """ render """
         res = {
             'text': self.transformed(),
         }

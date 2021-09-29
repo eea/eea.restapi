@@ -1,5 +1,7 @@
-from . import PortletSerializer
+""" actions module """
+
 from plone.app.portlets.portlets.actions import Renderer
+from . import PortletSerializer
 
 
 class ActionsPortletSerializer(PortletSerializer):

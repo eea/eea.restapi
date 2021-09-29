@@ -1,5 +1,7 @@
-from . import PortletSerializer
+""" Classic module """
+
 from plone.app.portlets.portlets.classic import Renderer
+from . import PortletSerializer
 
 
 class ClassicPortletSerializer(PortletSerializer):

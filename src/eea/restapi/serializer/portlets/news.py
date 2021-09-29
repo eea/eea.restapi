@@ -1,9 +1,11 @@
-from . import PortletSerializer
+""" news module """
+
 from DateTime import DateTime
 from plone.app.portlets.portlets.news import Renderer
 from plone.restapi.interfaces import ISerializeToJsonSummary
 from plone.restapi.serializer.converters import json_compatible
 from zope.component import getMultiAdapter
+from . import PortletSerializer
 
 
 class NewsPortletSerializer(PortletSerializer):
@@ -25,20 +27,20 @@ class NewsPortletSerializer(PortletSerializer):
 
 
 class NewsPortletRenderer(Renderer):
+    """ News Portlet Renderer """
     def as_date(self, value):
+        """ return value as date time """
         if value:
             if isinstance(value, DateTime):
                 value = value.asdatetime()
 
             return json_compatible(value)
+        return None
 
     def render(self):
+        """ render """
         items = []
         brains = self.published_news_items()
-
-        # ploneview = getMultiAdapter(
-        #     (self.context, self.request), name='plone')
-        # item['date'] = ploneview.toLocalizedTime(brain.Date)
 
         for brain in brains:
             item = getMultiAdapter(

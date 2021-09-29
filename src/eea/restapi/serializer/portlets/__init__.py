@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+""" portlets init """
 
 from plone import api
 from plone.app.portlets.interfaces import IPortletTypeInterface
@@ -40,6 +41,7 @@ SERVICE_ID = '@portlets'
 @implementer(ISerializeToJsonSummary)
 @adapter(IPortletManager, Interface, IRequest)
 class PortletManagerSummarySerializer(object):
+    """ Portlet manager summary serializer """
 
     def __init__(self, manager, context, request):
         self.manager = manager
@@ -61,6 +63,7 @@ class PortletManagerSummarySerializer(object):
 @implementer(ISerializeToJson)
 @adapter(IPortletManager, Interface, IRequest)
 class PortletManagerSerializer(object):
+    """ Portlet manager serializer """
 
     def __init__(self, manager, context, request):
         self.manager = manager
@@ -68,12 +71,12 @@ class PortletManagerSerializer(object):
         self.request = request
 
     def filter(self, portlets):
-        # Check available of the assignment.
-        # TODO: We currently
-        # do not use the renderer, but
-        # this frequently have an available property too,
-        # hiding lists if they have no items.
-        # What can we do about that? Get hold of the renderer?
+        """ Check available of the assignment.
+        We currently
+        do not use the renderer, but
+        this frequently have an available property too,
+        hiding lists if they have no items.
+        What can we do about that? Get hold of the renderer? """
         filtered = []
 
         for p in portlets:
@@ -85,8 +88,8 @@ class PortletManagerSerializer(object):
             except Exception as e:
                 logger.exception(
                     'Error while determining assignment availability of '
-                    'portlet (%r %r %r): %s' % (
-                        p['category'], p['key'], p['name'], str(e)))
+                    'portlet (%r %r %r): %s' %, p['category'], p['key'],
+                    p['name'], str(e))
 
         return filtered
 
@@ -261,12 +264,12 @@ class PortletSerializer(object):
                 except Exception as e:
                     logger.exception(
                         'Error while serializing '
-                        'portlet (%r %r %r), field %s: %s' % (
-                            portlet_metadata['category'],
-                            portlet_metadata['key'],
-                            portlet_metadata['name'],
-                            str(name),
-                            str(e)))
+                        'portlet (%r %r %r), field %s: %s',
+                        portlet_metadata['category'],
+                        portlet_metadata['key'],
+                        portlet_metadata['name'],
+                        str(name),
+                        str(e))
 
         return result
 
@@ -280,6 +283,7 @@ class PortletSerializer(object):
 @adapter(IField, IPortletDataProvider, Interface, Interface)
 @implementer(IFieldSerializer)
 class DefaultPortletFieldSerializer(DefaultFieldSerializer):
+    """ default portlet field serializer """
 
     def __init__(self, field, portletdata, context, request):
         self.field = field
@@ -288,6 +292,7 @@ class DefaultPortletFieldSerializer(DefaultFieldSerializer):
         self.request = request
 
     def get_value(self, default=None):
+        """ get value """
         return getattr(self.field.interface(self.portletdata),
                        self.field.__name__,
                        default)
@@ -295,11 +300,9 @@ class DefaultPortletFieldSerializer(DefaultFieldSerializer):
 
 @adapter(IRichText, IPortletDataProvider, Interface, Interface)
 class RichttextPortletFieldSerializer(DefaultPortletFieldSerializer):
+    """ Rich text portlet field serializer """
     def __call__(self):
         value = self.get_value()
         # self.context is the transform context of the portlet:
 
         return json_compatible(value, self.context)
-
-
-# TODO: extension of file and image serializers from dxfields.py

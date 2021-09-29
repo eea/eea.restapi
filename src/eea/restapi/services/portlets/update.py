@@ -17,11 +17,13 @@ class PortletPatch(Service):
     """
 
     def reply(self):
+        """ reply """
         data = json_body(self.request)
 
         # Disable CSRF protection
         if "IDisableCSRFProtection" in dir(plone.protect.interfaces):
-            alsoProvides(self.request, plone.protect.interfaces.IDisableCSRFProtection)
+            alsoProvides(self.request,
+                         plone.protect.interfaces.IDisableCSRFProtection)
 
         portletmanagers = dict(get_portletmanagers())
 
@@ -34,23 +36,27 @@ class PortletPatch(Service):
         if portlet_manager not in portletmanagers:
             self.request.response.setStatus(501)
             return dict(
-                error=dict(message="Invalid manager {}".format(portlet_manager))
+                error=dict(
+                    message="Invalid manager {}".format(portlet_manager))
             )
 
         pm = portletmanagers.get(portlet_manager)
 
-        deserializer = queryMultiAdapter((self.context, pm, self.request), IDeserializeFromJson)
+        deserializer = queryMultiAdapter((self.context, pm, self.request),
+                                         IDeserializeFromJson)
         if deserializer is None:
             self.request.response.setStatus(501)
             return dict(
-                error=dict(message="Cannot deserialize configuration for manager {}".format(portlet_manager))
+                error=dict(message="Cannot deserialize configuration for "
+                           "manager {}".format(portlet_manager))
             )
 
         try:
             deserializer(data)
         except DeserializationError as e:
             self.request.response.setStatus(400)
-            return dict(error=dict(type="DeserializationError", message=str(e)))
+            return dict(error=dict(type="DeserializationError",
+                                   message=str(e)))
 
         results = list()
         for name, manager in portletmanagers.items():

@@ -1,7 +1,7 @@
-from . import PortletSerializer
+""" rss module """
+
 from plone.app.portlets.portlets.rss import Renderer
-from plone.restapi.interfaces import ISerializeToJsonSummary
-from zope.component import getMultiAdapter
+from . import PortletSerializer
 
 
 class RssPortletSerializer(PortletSerializer):
@@ -23,7 +23,9 @@ class RssPortletSerializer(PortletSerializer):
 
 
 class RssPortletRenderer(Renderer):
+    """ RSS portlet renderer """
     def render(self):
+        """ render """
         self.update()
         items = []
 

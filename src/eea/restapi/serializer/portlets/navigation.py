@@ -1,10 +1,12 @@
-from . import PortletSerializer
+""" navigation module """
+
 from Acquisition import aq_base
 from plone import api
 from plone.app.portlets.portlets.navigation import Renderer
 from plone.registry.interfaces import IRegistry
 from Products.CMFPlone import utils
 from zope.component import getUtility
+from . import PortletSerializer
 
 
 class NavigationPortletSerializer(PortletSerializer):
@@ -27,6 +29,7 @@ class NavigationPortletSerializer(PortletSerializer):
 
 
 def get_url(item):
+    """ get url """
     if not item:
         return None
 
@@ -39,6 +42,7 @@ def get_url(item):
 
 
 def get_id(item):
+    """ get id """
     if not item:
         return None
     getId = getattr(item, 'getId')
@@ -52,6 +56,7 @@ def get_id(item):
 
 
 def get_view_url(context):
+    """ get view url """
     registry = getUtility(IRegistry)
     view_action_types = registry.get(
         'plone.types_use_view_action_in_listings', [])
@@ -66,7 +71,9 @@ def get_view_url(context):
 
 
 class NavtreePortletRenderer(Renderer):
+    """ Navtree Portlet Renderer """
     def render(self):
+        """ renderer """
         res = {
             'title': self.title(),
             'url': self.heading_link_target(),
@@ -85,7 +92,7 @@ class NavtreePortletRenderer(Renderer):
             if utils.safe_hasattr(self.context, 'getRemoteUrl'):
                 root_url = root.getRemoteUrl()
             else:
-                cid, root_url = get_view_url(root)
+                root_url = get_view_url(root)[1]
 
             root_title = ('Home'
                           if root_is_portal else root.pretty_title_or_id())
@@ -120,9 +127,8 @@ class NavtreePortletRenderer(Renderer):
         return res
 
     def recurse(self, children, level, bottomLevel):
-        # TODO: we should avoid recursion. This is just a rewrite of the TAL
-        # template, but ideally we should use a dequeue structure to avoid
-        # recursion problems.
+        """ This is just a rewrite of the TAL template, but ideally we
+        should use a dequeue structure to avoid recursion problems. """
 
         res = []
 
@@ -137,7 +143,7 @@ class NavtreePortletRenderer(Renderer):
             icon = ''
 
             if show_icons:
-                if (node['portal_type'] == 'File'):
+                if node['portal_type'] == 'File':
                     icon = self.getMimeTypeIcon(node)
 
             has_thumb = brain.getIcon

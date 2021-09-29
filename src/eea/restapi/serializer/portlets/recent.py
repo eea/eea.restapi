@@ -1,7 +1,9 @@
-from . import PortletSerializer
+""" recent module """
+
 from zope.component import getMultiAdapter
 from plone.restapi.interfaces import ISerializeToJsonSummary
 from plone.app.portlets.portlets.recent import Renderer
+from . import PortletSerializer
 
 
 class RecentPortletSerializer(PortletSerializer):
@@ -23,12 +25,14 @@ class RecentPortletSerializer(PortletSerializer):
 
 
 class RecentPortletRenderer(Renderer):
+    """ Recent Portlet Renderer """
     def render(self):
+        """ render  """
         items = []
         news = self.recent_items()
         for new in news:
-            itemList = getMultiAdapter((new, self.request), ISerializeToJsonSummary)()
-            #itemList['icon'] = self.getMimeTypeIcon(new)
+            itemList = getMultiAdapter((new, self.request),
+                                       ISerializeToJsonSummary)()
             itemList['date'] = new.ModificationDate
             items.append(itemList)
         res = {

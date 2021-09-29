@@ -1,5 +1,7 @@
-from . import PortletSerializer
+""" search module """
+
 from plone.app.portlets.portlets.search import Renderer
+from . import PortletSerializer
 
 
 class SearchPortletSerializer(PortletSerializer):
@@ -22,7 +24,9 @@ class SearchPortletSerializer(PortletSerializer):
 
 
 class SearchPortletRenderer(Renderer):
+    """ search portlet renderer """
     def render(self):
+        """ render """
         res = {
             'enable_livesearch': self.enable_livesearch()
         }

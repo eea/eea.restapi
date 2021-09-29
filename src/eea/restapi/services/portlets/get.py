@@ -15,12 +15,14 @@ class PortletsGet(Service):
     portletmanager_id = None
 
     def publishTraverse(self, request, name):  # noqa
+        """ publish traverse """
         if name:
             self.portletmanager_id = name
 
         return self
 
     def reply(self):
+        """ reply """
         if self.portletmanager_id:
             return self.reply_portletmanager()
 
@@ -36,6 +38,7 @@ class PortletsGet(Service):
         return IJsonCompatible(list(serialize(portletmanagers)))
 
     def reply_portletmanager(self):
+        """ reply portletmanager """
         manager = manager_by_name(self.context, self.portletmanager_id)
 
         if manager is None:
