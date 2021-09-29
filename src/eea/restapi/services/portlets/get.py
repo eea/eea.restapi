@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+""" get module """
 from plone.restapi.interfaces import IJsonCompatible
 from plone.restapi.interfaces import ISerializeToJson
 from plone.restapi.interfaces import ISerializeToJsonSummary
@@ -12,6 +13,7 @@ from zope.publisher.interfaces import IPublishTraverse
 
 @implementer(IPublishTraverse)
 class PortletsGet(Service):
+    """ Portlets Get service """
     portletmanager_id = None
 
     def publishTraverse(self, request, name):  # noqa
@@ -27,9 +29,10 @@ class PortletsGet(Service):
             return self.reply_portletmanager()
 
         def serialize(portletmanagers):
-            for name, manager in portletmanagers:
+            """ serialize """
+            for manager in portletmanagers:
                 serializer = queryMultiAdapter(
-                    (manager, self.context, self.request),
+                    (manager[1], self.context, self.request),
                     ISerializeToJsonSummary)
                 yield serializer()
 
@@ -43,14 +46,12 @@ class PortletsGet(Service):
 
         if manager is None:
             self.request.response.setStatus(404)
-
             return
         serializer = queryMultiAdapter((manager, self.context, self.request),
                                        ISerializeToJson)
 
         if serializer is None:
             self.request.response.setStatus(501)
-
             return dict(error=dict(message='No serializer available.'))
 
         return serializer()

@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+""" update module """
+import plone.protect.interfaces
 from plone.restapi.deserializer import json_body
 from plone.restapi.exceptions import DeserializationError
 from plone.restapi.interfaces import IDeserializeFromJson
@@ -9,7 +11,6 @@ from eea.restapi.services.portlets.utils import get_portletmanagers
 from zExceptions import BadRequest
 from zope.component import queryMultiAdapter
 from zope.interface import alsoProvides
-import plone.protect.interfaces
 
 
 class PortletPatch(Service):
@@ -59,9 +60,9 @@ class PortletPatch(Service):
                                    message=str(e)))
 
         results = list()
-        for name, manager in portletmanagers.items():
+        for manager in portletmanagers.items():
             serializer = queryMultiAdapter(
-                (manager, self.context, self.request),
+                (manager[1], self.context, self.request),
                 ISerializeToJson)
             results.append(serializer())
 

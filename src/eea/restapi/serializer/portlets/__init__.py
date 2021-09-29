@@ -88,7 +88,7 @@ class PortletManagerSerializer(object):
             except Exception as e:
                 logger.exception(
                     'Error while determining assignment availability of '
-                    'portlet (%r %r %r): %s' %, p['category'], p['key'],
+                    'portlet (%r %r %r): %s', p['category'], p['key'],
                     p['name'], str(e))
 
         return filtered
@@ -151,8 +151,8 @@ class PortletManagerSerializer(object):
 
             if not serializer:
                 logger.warn(
-                    'No serializer for portlet (%r %r %r)' % (
-                        portlet['category'], portlet['key'], portlet['name']))
+                    'No serializer for portlet (%r %r %r)',
+                    portlet['category'], portlet['key'], portlet['name'])
 
                 continue
 
