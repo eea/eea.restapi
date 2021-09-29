@@ -46,7 +46,7 @@ class PortletsGet(Service):
 
         if manager is None:
             self.request.response.setStatus(404)
-            return
+            return None
         serializer = queryMultiAdapter((manager, self.context, self.request),
                                        ISerializeToJson)
 

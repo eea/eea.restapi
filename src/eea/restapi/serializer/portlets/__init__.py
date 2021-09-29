@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 """ portlets init """
 
+import logging
 from plone import api
 from plone.app.portlets.interfaces import IPortletTypeInterface
 from plone.app.textfield.interfaces import IRichText
@@ -26,8 +27,6 @@ from zope.interface import providedBy
 from zope.publisher.interfaces import IRequest
 from zope.schema import getFields
 from zope.schema.interfaces import IField
-
-import logging
 
 
 # import six
@@ -133,10 +132,10 @@ class PortletManagerSerializer(object):
             # To be able to customize serializers per portlet type, we try to
             # lookup for a named adapter first. The name is the portlet type
 
-            # TODO: the serializer should ideally have the same discriminators
+            # the serializer should ideally have the same discriminators
             # as the portlet renderer: context, request, view=service, manager,
             # data.
-            type_, schema = get_portlet_info(assignment)
+            type_ = get_portlet_info(assignment)[0]
             serializer = queryMultiAdapter(
                 (assignment, self.context, self.request),
                 ISerializeToJson,
@@ -165,6 +164,7 @@ class PortletManagerSerializer(object):
 
 @forever.memoize
 def getPortletSchemata():  # noqa
+    """ get portlet schemata """
     return dict([(iface, name)
                  for name, iface
                  in getUtilitiesFor(IPortletTypeInterface)])
@@ -192,6 +192,7 @@ def get_portlet_info(assignment):
 @implementer(ISerializeToJson)
 @adapter(IPortletAssignment, Interface, IRequest)
 class PortletSerializer(object):
+    """ portlet serializer """
 
     def __init__(self, assignment, context, request):
         self.assignment = assignment
@@ -245,7 +246,7 @@ class PortletSerializer(object):
 
             transformer_context = api.portal.get()
 
-            if (portlet_metadata['category'] == 'context'):
+            if portlet_metadata['category'] == 'context':
                 assignment_context_path = portlet_metadata['key']
                 assignment_context = self.context.unrestrictedTraverse(
                     assignment_context_path)
