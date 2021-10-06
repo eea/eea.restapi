@@ -1,6 +1,11 @@
 Changelog
 =========
 
+2.0 - (2021-10-06)
+---------------------------
+* Change: Fix interface for data_query field
+  [razvanMiu]
+
 1.9 - (2021-09-29)
 ---------------------------
 * Reinstate porlets service from older plone.restapi

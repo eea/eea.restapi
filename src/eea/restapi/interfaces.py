@@ -46,6 +46,11 @@ class ILocalSectionMarker(Interface):
     """A local section marker. To be used with @localnavigation."""
 
 
+class NotGiven(Interface):
+    """Just pass"""
+    pass
+
+
 @provider(IFormFieldProvider)
 class IDataConnector(model.Schema):
     """A generic discodata connector"""
@@ -184,10 +189,10 @@ class IConnectorDataParameters(model.Schema):
     data_query = schema.List(
         title="Data query parameters",
         description="Define the data query parameters",
-        value_type=schema.Dict(
-            value_type=schema.TextLine(title=u"Value"),
-            key_type=schema.TextLine(title=u"Key")
-        ),
+        # value_type=schema.Dict(
+        #     value_type=schema.Object(title=u"Value", schema=NotGiven),
+        #     key_type=schema.TextLine(title=u"Key")
+        # ),
         required=True,
         missing_value=[],
     )
