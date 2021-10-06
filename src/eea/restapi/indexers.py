@@ -61,3 +61,4 @@ class CKTextIndexer(object):
         if raw:
             text = transform_text(raw, portal_transforms)
             return six.safe_text(text)
+        return None

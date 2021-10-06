@@ -1,9 +1,20 @@
 Changelog
 =========
 
-1.7-dev0 - (unreleased)
+1.9 - (2021-09-29)
 ---------------------------
-* Remove eea.volto.slate dependency @tiberiuichim
+* Reinstate porlets service from older plone.restapi
+  [razvanMiu]
+
+1.8 - (2021-09-22)
+---------------------------
+* Change: remove dependency on eea.volto.slate [valipod]
+* Change: add minimum version on plone.restapi [valipod]
+
+1.7 - (2021-09-16)
+---------------------------
+* Change: Collection fullobject
+  [razvanMiu]
 
 1.6 - (2021-06-29)
 ---------------------------
