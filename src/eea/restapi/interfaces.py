@@ -46,7 +46,8 @@ class ILocalSectionMarker(Interface):
     """A local section marker. To be used with @localnavigation."""
 
 
-class NotGiven (Interface):
+class NotGiven(Interface):
+    """Just pass"""
     pass
 
 
