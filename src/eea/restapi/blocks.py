@@ -29,6 +29,7 @@ class SlateBlockDeserializer(SlateBlockTransformer):
     def handle_dataentity(self, child):
         if child.get('data', {}).get('provider_url'):
             child['data']['provider_url'] = path2uid(
+                self.context,
                 child['data']['provider_url'])
 
 
