@@ -23,6 +23,7 @@
   <include file="behavior.zcml" />
   <include file="profiles.zcml" />
   <include file="upgrades.zcml" />
+  <include file="blocks.zcml" />
 
   <include package=".api" />
   <include package=".attachments" />
