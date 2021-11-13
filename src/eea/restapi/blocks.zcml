@@ -24,4 +24,22 @@
       provides="plone.restapi.interfaces.IBlockFieldSerializationTransformer"
       />
 
+  <subscriber
+      factory=".blocks.PlotlySerializer"
+      provides="plone.restapi.interfaces.IBlockFieldSerializationTransformer"
+      />
+  <subscriber
+      factory=".blocks.FilteredPlotlySerializer"
+      provides="plone.restapi.interfaces.IBlockFieldSerializationTransformer"
+      />
+
+  <subscriber
+      factory=".blocks.PlotlyDeserializer"
+      provides="plone.restapi.interfaces.IBlockFieldDeserializationTransformer"
+      />
+  <subscriber
+      factory=".blocks.FilteredPlotlyDeserializer"
+      provides="plone.restapi.interfaces.IBlockFieldDeserializationTransformer"
+      />
+
 </configure>
