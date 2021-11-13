@@ -8,7 +8,18 @@ import logging
 
 logger = logging.getLogger('eea.restapi.migration')
 
-# from plone.restapi.deserializer.blocks import ResolveUIDSerializerBase
+
+def clean_url(url):
+    if not url:
+        return url
+
+    hosts = [
+        'http://localhost:8080'
+        'http://backend:8080'
+    ]
+    for bit in hosts:
+        url.replace(bit, '')
+    return url
 
 
 def iterate_children(value):
@@ -45,7 +56,8 @@ class SlateBlockTransformer(object):
             for link in internal_link:
                 if 'resolveuid' not in link['@id']:
                     old = link['@id']
-                    link["@id"] = path2uid(self.context, link["@id"])
+                    link["@id"] = path2uid(self.context,
+                                           clean_url(link["@id"]))
                     logger.info(
                         "fixing type:'internal_link' in %s (%s) => (%s)",
                         self.context.absolute_url(), old, link["@id"]
@@ -59,7 +71,7 @@ class SlateBlockTransformer(object):
             if 'resolveuid' not in child["data"]["url"]:
                 old = child["data"]["url"]
                 child["data"]["url"] = path2uid(
-                    self.context, child["data"]["url"])
+                    self.context, clean_url(child["data"]["url"]))
                 logger.info("fixing type:'link' in %s (%s) => (%s)",
                             self.context.absolute_url(),
                             old, child["data"]["url"])
@@ -71,7 +83,7 @@ class SlateBlockTransformer(object):
                 old = child['data']['provider_url']
                 child['data']['provider_url'] = path2uid(
                     self.context,
-                    child['data']['provider_url'])
+                    clean_url(child['data']['provider_url']))
 
                 logger.info("fixing type:'dataentity' in %s (%s) => (%s)",
                             self.context.absolute_url(), old,
@@ -175,7 +187,8 @@ class ResolveUIDDeserializerBase(object):
             link = block.get(field, "")
             if link and isinstance(link, str):
                 if 'resolveuid' not in link:
-                    block[field] = path2uid(context=self.context, link=link)
+                    block[field] = path2uid(context=self.context,
+                                            link=clean_url(link))
                     logger.info("fixing block field:'%s' in %s (%s) => (%s)",
                                 field, self.context.absolute_url(), link,
                                 block[field])
@@ -188,7 +201,8 @@ class ResolveUIDDeserializerBase(object):
                         if 'resolveuid' not in item['@id']:
                             old = item['@id']
                             item["@id"] = path2uid(
-                                context=self.context, link=item["@id"]
+                                context=self.context,
+                                link=clean_url(item["@id"])
                             )
                             dirty = True
                             logger.info(
@@ -199,7 +213,8 @@ class ResolveUIDDeserializerBase(object):
                     dirty = any(
                         ['resolveuid' not in bit for bit in link]) or dirty
                     block[field] = [
-                        path2uid(context=self.context, link=item)
+                        path2uid(context=self.context, link=clean_url(bit))
+                        for bit in link
                     ]
 
         return dirty
@@ -229,3 +244,5 @@ def run_upgrade(setup_context):
 
         if i % 200 == 0:
             transaction.savepoint()
+
+    transaction.abort()
