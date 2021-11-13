@@ -1,4 +1,6 @@
 ''' upgrade to 1003 '''
+import json
+from plone import api
 import transaction
 from plone.restapi.deserializer.utils import path2uid
 from collections import deque
@@ -23,11 +25,11 @@ def iterate_children(value):
             queue.extend(child["children"] or [])
 
 
-class SlateBlockTransformer:
+class SlateBlockTransformer(object):
     """SlateBlockTransformer."""
 
     def __init__(self, context):
-        self.context = self.context
+        self.context = context
 
     def handle_a(self, child):
         """Convert absolute links to resolveuid
@@ -77,6 +79,10 @@ class SlateBlockTransformer:
                 return True
 
     def __call__(self, block):
+        if (block or {}).get('@type') != 'slate':
+            return
+        if 'value' not in block:        # avoid empty blocks
+            return
         value = block['value']
         children = iterate_children(value or [])
         status = []
@@ -93,8 +99,23 @@ class SlateBlockTransformer:
 
 def get_blocks(obj):
     blocks_layout = getattr(obj, 'blocks_layout', {})
+
+    if isinstance(blocks_layout, str):
+        blocks_layout = json.loads(blocks_layout)
+        obj.blocks_layout = blocks_layout
+        obj._p_changed = True
+        logger.info('Converted str blocks_layout for % s',
+                    obj.absolute_url())
+
     order = blocks_layout.get('items', [])
+
     blocks = getattr(obj, 'blocks', {})
+    if isinstance(blocks, str):
+        blocks = json.loads(blocks)
+        obj.blocks = blocks
+        obj._p_changed = True
+        logger.info('Converted str blocks for % s',
+                    obj.absolute_url())
 
     out = []
     for id in order:
@@ -103,7 +124,7 @@ def get_blocks(obj):
     return out
 
 
-class BlocksTraverser:
+class BlocksTraverser(object):
     def __init__(self, context):
         self.context = context
 
@@ -123,17 +144,17 @@ class BlocksTraverser:
                 if visitor(block):
                     self.context._p_changed = True
 
-                self.handle_subblocks(block_value, visitor)
+                self.handle_subblocks(block, visitor)
 
         if "blocks" in block_value:
-            for block_value in block_value['blocks'].values():
-                if visitor(block_value):
+            for block in block_value['blocks'].values():
+                if visitor(block):
                     self.context._p_changed = True
 
-                self.handle_subblocks(block_value, visitor)
+                self.handle_subblocks(block, visitor)
 
 
-class ResolveUIDDeserializerBase:
+class ResolveUIDDeserializerBase(object):
     """The "url" smart block field.
 
     This is a generic handler. In all blocks, it converts any "url"
@@ -144,9 +165,8 @@ class ResolveUIDDeserializerBase:
     block_type = None
     fields = ["url", "href", "provider_url"]
 
-    def __init__(self, context, request):
+    def __init__(self, context):
         self.context = context
-        self.request = request
 
     def __call__(self, block):
         dirty = False
@@ -191,8 +211,9 @@ def run_upgrade(setup_context):
 
     # fixes = [migrate_slate_elements, migrate_provider_url]
 
-    site = setup_context.getSite()
-    brains = site.portal_catalog.unrestrictedSearchResults(_nonsense=True)
+    catalog = api.portal.get_tool("portal_catalog")
+
+    brains = catalog(_nonsense=True)
 
     for i, brain in enumerate(brains):
         obj = brain.getObject()
@@ -203,11 +224,8 @@ def run_upgrade(setup_context):
             slate_fixer = SlateBlockTransformer(obj)
             traverser(slate_fixer)
 
-            resolveuid_fixer = ResolveUIDDeserializerBase(obj, site.REQUEST)
+            resolveuid_fixer = ResolveUIDDeserializerBase(obj)
             traverser(resolveuid_fixer)
 
         if i % 200 == 0:
             transaction.savepoint()
-
-    import pdb
-    pdb.set_trace()

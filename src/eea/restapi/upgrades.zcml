@@ -34,10 +34,10 @@
   <genericsetup:upgradeStep
     title="Migrate provider URLs to resolveuid"
     description=""
-    source="1002"
+    profile="eea.restapi:default"
+    source="*"
     destination="1003"
     handler=".upgrades.to1003.run_upgrade"
-    profile="eea.restapi:default"
     />
 
 </configure>
