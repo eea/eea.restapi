@@ -1,12 +1,15 @@
 ''' upgrade to 1003 '''
+# import transaction
+
 import json
 from plone import api
-import transaction
 from plone.restapi.deserializer.utils import path2uid
 from collections import deque
 import logging
 
 logger = logging.getLogger('eea.restapi.migration')
+
+chart_block_types = ['filteredConnectedPlotlyChart',  'connected_plotly_chart']
 
 
 def clean_url(url):
@@ -14,7 +17,7 @@ def clean_url(url):
         return url
 
     hosts = [
-        'http://localhost:8080'
+        'http://localhost:8080',
         'http://backend:8080'
     ]
     for bit in hosts:
@@ -133,42 +136,12 @@ def get_blocks(obj):
     for id in order:
         if id not in blocks:
             obj.blocks_layout['items'] = [b for b in order if b in blocks]
-            obj._p_changed
+            obj._p_changed = True
             logger.info("Object with incomplete blocks %s", obj.absolute_url())
             continue
         out.append((id, blocks[id]))
 
     return out
-
-
-class BlocksTraverser(object):
-    def __init__(self, context):
-        self.context = context
-
-    def __call__(self, visitor):
-
-        for (bid, block_value) in get_blocks(self.context):
-
-            if visitor(block_value):
-                self.context._p_changed = True
-
-            self.handle_subblocks(block_value, visitor)
-
-    def handle_subblocks(self, block_value, visitor):
-        if "data" in block_value and isinstance(block_value["data"], dict) \
-                and "blocks" in block_value["data"]:
-            for block in block_value["data"]["blocks"].values():
-                if visitor(block):
-                    self.context._p_changed = True
-
-                self.handle_subblocks(block, visitor)
-
-        if "blocks" in block_value:
-            for block in block_value['blocks'].values():
-                if visitor(block):
-                    self.context._p_changed = True
-
-                self.handle_subblocks(block, visitor)
 
 
 class ResolveUIDDeserializerBase(object):
@@ -225,11 +198,42 @@ class ResolveUIDDeserializerBase(object):
         return dirty
 
 
+class BlocksTraverser(object):
+    def __init__(self, context):
+        self.context = context
+
+    def __call__(self, visitor):
+
+        for (bid, block_value) in get_blocks(self.context):
+
+            if visitor(block_value):
+                self.context._p_changed = True
+
+            self.handle_subblocks(block_value, visitor)
+
+    def handle_subblocks(self, block_value, visitor):
+        if "data" in block_value and isinstance(block_value["data"], dict) \
+                and "blocks" in block_value["data"]:
+            for block in block_value["data"]["blocks"].values():
+                if visitor(block):
+                    self.context._p_changed = True
+
+                self.handle_subblocks(block, visitor)
+
+        if "blocks" in block_value:
+            for block in block_value['blocks'].values():
+                if visitor(block):
+                    self.context._p_changed = True
+
+                self.handle_subblocks(block, visitor)
+
+        if block_value.get('@type') in chart_block_types:
+            visitor(block_value.get('chartData', {}))
+
+
 def run_upgrade(setup_context):
     """ run upgrade to 1003
     """
-
-    # fixes = [migrate_slate_elements, migrate_provider_url]
 
     catalog = api.portal.get_tool("portal_catalog")
 
@@ -248,7 +252,9 @@ def run_upgrade(setup_context):
             resolveuid_fixer = ResolveUIDDeserializerBase(obj)
             traverser(resolveuid_fixer)
 
-        if i % 200 == 0:
-            transaction.savepoint()
+            dumped = json.dumps(obj.blocks)
+            assert 'backend' not in dumped
+            assert 'localhost' not in dumped
 
-    transaction.abort()
+        # if i % 200 == 0:
+        #     transaction.savepoint()
