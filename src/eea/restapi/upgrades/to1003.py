@@ -18,7 +18,7 @@ def clean_url(url):
         'http://backend:8080'
     ]
     for bit in hosts:
-        url.replace(bit, '')
+        url = url.replace(bit, '')
     return url
 
 
@@ -59,7 +59,7 @@ class SlateBlockTransformer(object):
                     link["@id"] = path2uid(self.context,
                                            clean_url(link["@id"]))
                     logger.info(
-                        "fixing type:'internal_link' in %s (%s) => (%s)",
+                        "fixed type:'internal_link' in %s (%s) => (%s)",
                         self.context.absolute_url(), old, link["@id"]
                     )
                 dirty = True
@@ -72,7 +72,7 @@ class SlateBlockTransformer(object):
                 old = child["data"]["url"]
                 child["data"]["url"] = path2uid(
                     self.context, clean_url(child["data"]["url"]))
-                logger.info("fixing type:'link' in %s (%s) => (%s)",
+                logger.info("fixed type:'link' in %s (%s) => (%s)",
                             self.context.absolute_url(),
                             old, child["data"]["url"])
                 return True
@@ -85,7 +85,7 @@ class SlateBlockTransformer(object):
                     self.context,
                     clean_url(child['data']['provider_url']))
 
-                logger.info("fixing type:'dataentity' in %s (%s) => (%s)",
+                logger.info("fixed type:'dataentity' in %s (%s) => (%s)",
                             self.context.absolute_url(), old,
                             child['data']['provider_url'])
                 return True
@@ -131,6 +131,11 @@ def get_blocks(obj):
 
     out = []
     for id in order:
+        if id not in blocks:
+            obj.blocks_layout['items'] = [b for b in order if b in blocks]
+            obj._p_changed
+            logger.info("Object with incomplete blocks %s", obj.absolute_url())
+            continue
         out.append((id, blocks[id]))
 
     return out
@@ -189,7 +194,7 @@ class ResolveUIDDeserializerBase(object):
                 if 'resolveuid' not in link:
                     block[field] = path2uid(context=self.context,
                                             link=clean_url(link))
-                    logger.info("fixing block field:'%s' in %s (%s) => (%s)",
+                    logger.info("fixed block field:'%s' in %s (%s) => (%s)",
                                 field, self.context.absolute_url(), link,
                                 block[field])
             elif link and isinstance(link, list):
@@ -206,7 +211,7 @@ class ResolveUIDDeserializerBase(object):
                             )
                             dirty = True
                             logger.info(
-                                "fixing block field:'%s' in %s (%s) => (%s)",
+                                "fixed block field:'%s' in %s (%s) => (%s)",
                                 field, self.context.absolute_url(), old,
                                 item['@id'])
                 elif len(link) > 0 and isinstance(link[0], str):
@@ -233,7 +238,8 @@ def run_upgrade(setup_context):
     for i, brain in enumerate(brains):
         obj = brain.getObject()
 
-        if hasattr(obj, 'blocks') and hasattr(obj, 'blocks_layout'):
+        if hasattr(obj.aq_inner.aq_self, 'blocks') and \
+                hasattr(obj.aq_inner.aq_self, 'blocks_layout'):
             traverser = BlocksTraverser(obj)
 
             slate_fixer = SlateBlockTransformer(obj)
