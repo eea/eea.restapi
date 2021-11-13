@@ -15,18 +15,12 @@ def iterate_children(value):
     :param value:
     """
     queue = deque(value)
+
     while queue:
         child = queue.pop()
         yield child
         if child.get("children"):
             queue.extend(child["children"] or [])
-
-
-def transform_links(context, value, transformer):
-    """Convert absolute links to resolveuid
-    http://localhost:55001/plone/link-target
-    ->
-    ../resolveuid/023c61b44e194652804d05a15dc126f4"""
 
 
 class SlateBlockTransformer:
@@ -36,27 +30,50 @@ class SlateBlockTransformer:
         self.context = self.context
 
     def handle_a(self, child):
+        """Convert absolute links to resolveuid
+        http://localhost:55001/plone/link-target
+        ->
+        ../resolveuid/023c61b44e194652804d05a15dc126f4"""
+
+        dirty = False
+
         data = child.get("data", {})
         if data.get("link", {}).get("internal", {}).get("internal_link"):
             internal_link = data["link"]["internal"]["internal_link"]
             for link in internal_link:
-                link["@id"] = path2uid(self.context, link["@id"])
+                if 'resolveuid' not in link['@id']:
+                    old = link['@id']
+                    link["@id"] = path2uid(self.context, link["@id"])
+                    logger.info(
+                        "fixing type:'internal_link' in %s (%s) => (%s)",
+                        self.context.absolute_url(), old, link["@id"]
+                    )
+                dirty = True
+
+        return dirty
 
     def handle_link(self, child):
         if child.get("data", {}).get("url"):
             if 'resolveuid' not in child["data"]["url"]:
-                logger.info("fixing type:'link' in %s",
-                            self.context.absolute_url())
+                old = child["data"]["url"]
                 child["data"]["url"] = path2uid(
                     self.context, child["data"]["url"])
+                logger.info("fixing type:'link' in %s (%s) => (%s)",
+                            self.context.absolute_url(),
+                            old, child["data"]["url"])
                 return True
 
     def handle_dataentity(self, child):
         if child.get('data', {}).get('provider_url'):
             if 'resolveuid' not in child['data']['provider_url']:
+                old = child['data']['provider_url']
                 child['data']['provider_url'] = path2uid(
                     self.context,
                     child['data']['provider_url'])
+
+                logger.info("fixing type:'dataentity' in %s (%s) => (%s)",
+                            self.context.absolute_url(), old,
+                            child['data']['provider_url'])
                 return True
 
     def __call__(self, block):
@@ -116,11 +133,56 @@ class BlocksTraverser:
                 self.handle_subblocks(block_value, visitor)
 
 
-def migrate_provider_url(obj):
-    """ Fixes the 'provider_url' to make it a resolveuid-based link
+class ResolveUIDDeserializerBase:
+    """The "url" smart block field.
+
+    This is a generic handler. In all blocks, it converts any "url"
+    field from using resolveuid to an "absolute" URL
     """
 
-    pass
+    order = 1
+    block_type = None
+    fields = ["url", "href", "provider_url"]
+
+    def __init__(self, context, request):
+        self.context = context
+        self.request = request
+
+    def __call__(self, block):
+        dirty = False
+        # Convert absolute links to resolveuid
+        for field in self.fields:
+            link = block.get(field, "")
+            if link and isinstance(link, str):
+                if 'resolveuid' not in link:
+                    block[field] = path2uid(context=self.context, link=link)
+                    logger.info("fixing block field:'%s' in %s (%s) => (%s)",
+                                field, self.context.absolute_url(), link,
+                                block[field])
+            elif link and isinstance(link, list):
+                # Detect if it has an object inside with an
+                # "@id" key (object_widget)
+                if len(link) > 0 and isinstance(link[0], dict) \
+                        and "@id" in link[0]:
+                    for item in link:
+                        if 'resolveuid' not in item['@id']:
+                            old = item['@id']
+                            item["@id"] = path2uid(
+                                context=self.context, link=item["@id"]
+                            )
+                            dirty = True
+                            logger.info(
+                                "fixing block field:'%s' in %s (%s) => (%s)",
+                                field, self.context.absolute_url(), old,
+                                item['@id'])
+                elif len(link) > 0 and isinstance(link[0], str):
+                    dirty = any(
+                        ['resolveuid' not in bit for bit in link]) or dirty
+                    block[field] = [
+                        path2uid(context=self.context, link=item)
+                    ]
+
+        return dirty
 
 
 def run_upgrade(setup_context):
@@ -141,5 +203,11 @@ def run_upgrade(setup_context):
             slate_fixer = SlateBlockTransformer(obj)
             traverser(slate_fixer)
 
+            resolveuid_fixer = ResolveUIDDeserializerBase(obj, site.REQUEST)
+            traverser(resolveuid_fixer)
+
         if i % 200 == 0:
             transaction.savepoint()
+
+    import pdb
+    pdb.set_trace()
