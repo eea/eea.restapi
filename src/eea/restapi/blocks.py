@@ -3,9 +3,11 @@
 
 from Products.CMFPlone.interfaces import IPloneSiteRoot
 from plone.restapi.behaviors import IBlocks
-from plone.restapi.deserializer.blocks import SlateBlockTransformer, ResolveUIDDeserializerBase
+from plone.restapi.deserializer.blocks import (
+    SlateBlockTransformer, ResolveUIDDeserializerBase)
 from plone.restapi.deserializer.utils import path2uid
-from plone.restapi.interfaces import IBlockFieldDeserializationTransformer, IBlockFieldSerializationTransformer
+from plone.restapi.interfaces import (
+    IBlockFieldDeserializationTransformer, IBlockFieldSerializationTransformer)
 from plone.restapi.serializer.blocks import ResolveUIDSerializerBase
 from plone.restapi.serializer.utils import uid_to_url
 from zope.component import adapter
