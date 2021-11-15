@@ -105,7 +105,7 @@ class SlateBlockTransformer(object):
         for child in children:
             node_type = child.get("type")
             if node_type:
-                handler = getattr(self, f"handle_{node_type}", None)
+                handler = getattr(self, "handle_" + node_type, None)
                 if handler:
                     status.append(handler(child))
 
