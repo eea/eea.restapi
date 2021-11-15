@@ -31,7 +31,7 @@ class SlateBlockDeserializer(SlateBlockTransformer):
     block_type = "slate"
 
     def handle_dataentity(self, child):
-        """ """
+        """ Hande dataentity """
         if child.get('data', {}).get('provider_url'):
             child['data']['provider_url'] = path2uid(
                 self.context,
@@ -41,7 +41,7 @@ class SlateBlockDeserializer(SlateBlockTransformer):
 @adapter(IPloneSiteRoot, IBrowserRequest)
 @implementer(IBlockFieldDeserializationTransformer)
 class SlatePloneRootBlockDeserializer(SlateBlockDeserializer):
-    """" """
+    """" SlatePloneRootBlockDeserializer """
     pass
 
 
@@ -55,7 +55,7 @@ class SlateBlockSerializer(SlateBlockTransformer):
     block_type = "slate"
 
     def handle_dataentity(self, child):
-        """ """
+        """ handle_dataentity """
         if child.get('data', {}).get('provider_url'):
             child['data']['provider_url'] = uid_to_url(
                 child['data']['provider_url'])
@@ -64,7 +64,7 @@ class SlateBlockSerializer(SlateBlockTransformer):
 @adapter(IPloneSiteRoot, IBrowserRequest)
 @implementer(IBlockFieldDeserializationTransformer)
 class SlatePloneRootBlockSerializer(SlateBlockSerializer):
-    """ """
+    """ SlatePloneRootBlockSerializer """
     pass
 
 
@@ -96,7 +96,7 @@ class PlotlyDeserializer(object):
 @adapter(IBlocks, IBrowserRequest)
 @implementer(IBlockFieldDeserializationTransformer)
 class FilteredPlotlyDeserializer(PlotlyDeserializer):
-    """ """
+    """ FilteredPlotlyDeserializer """
     order = 301
     block_type = "filteredConnectedPlotlyChart"
 
@@ -127,6 +127,6 @@ class PlotlySerializer(object):
 @adapter(IBlocks, IBrowserRequest)
 @implementer(IBlockFieldDeserializationTransformer)
 class FilteredPlotlySerializer(PlotlySerializer):
-    """ """
+    """ FilteredPlotlySerializer """
     order = 301
     block_type = "filteredConnectedPlotlyChart"
