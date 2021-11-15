@@ -1,11 +1,12 @@
 ''' upgrade to 1003 '''
 # import transaction
 
+from collections import deque
 import json
+import logging
 from plone import api
 from plone.restapi.deserializer.utils import path2uid
-from collections import deque
-import logging
+
 
 logger = logging.getLogger('eea.restapi.migration')
 
@@ -72,7 +73,7 @@ class SlateBlockTransformer(object):
         return dirty
 
     def handle_link(self, child):
-        """ handle_link """
+        """ handle_dataentity """
         if child.get("data", {}).get("url"):
             if 'resolveuid' not in child["data"]["url"]:
                 old = child["data"]["url"]
@@ -82,7 +83,7 @@ class SlateBlockTransformer(object):
                             self.context.absolute_url(),
                             old, child["data"]["url"])
                 return True
-        
+
         return False
 
     def handle_dataentity(self, child):
@@ -103,9 +104,9 @@ class SlateBlockTransformer(object):
 
     def __call__(self, block):
         if (block or {}).get('@type') != 'slate':
-            return
+            return None
         if 'value' not in block:        # avoid empty blocks
-            return
+            return None
         value = block['value']
         children = iterate_children(value or [])
         status = []
