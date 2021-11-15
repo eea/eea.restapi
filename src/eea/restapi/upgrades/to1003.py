@@ -9,10 +9,12 @@ import logging
 
 logger = logging.getLogger('eea.restapi.migration')
 
-chart_block_types = ['filteredConnectedPlotlyChart',  'connected_plotly_chart']
+chart_block_types = ['filteredConnectedPlotlyChart', 'connected_plotly_chart']
 
 
 def clean_url(url):
+    """ clean_url """
+
     if not url:
         return url
 
@@ -70,6 +72,7 @@ class SlateBlockTransformer(object):
         return dirty
 
     def handle_link(self, child):
+        """ handle_link """
         if child.get("data", {}).get("url"):
             if 'resolveuid' not in child["data"]["url"]:
                 old = child["data"]["url"]
@@ -79,8 +82,11 @@ class SlateBlockTransformer(object):
                             self.context.absolute_url(),
                             old, child["data"]["url"])
                 return True
+        
+        return False
 
     def handle_dataentity(self, child):
+        """ handle_dataentity """
         if child.get('data', {}).get('provider_url'):
             if 'resolveuid' not in child['data']['provider_url']:
                 old = child['data']['provider_url']
@@ -92,6 +98,8 @@ class SlateBlockTransformer(object):
                             self.context.absolute_url(), old,
                             child['data']['provider_url'])
                 return True
+
+        return False
 
     def __call__(self, block):
         if (block or {}).get('@type') != 'slate':
@@ -113,6 +121,7 @@ class SlateBlockTransformer(object):
 
 
 def get_blocks(obj):
+    """ get_blocks """
     blocks_layout = getattr(obj, 'blocks_layout', {})
 
     if isinstance(blocks_layout, str):
@@ -133,13 +142,13 @@ def get_blocks(obj):
                     obj.absolute_url())
 
     out = []
-    for id in order:
-        if id not in blocks:
+    for _id in order:
+        if _id not in blocks:
             obj.blocks_layout['items'] = [b for b in order if b in blocks]
             obj._p_changed = True
             logger.info("Object with incomplete blocks %s", obj.absolute_url())
             continue
-        out.append((id, blocks[id]))
+        out.append((_id, blocks[_id]))
 
     return out
 
@@ -173,7 +182,7 @@ class ResolveUIDDeserializerBase(object):
             elif link and isinstance(link, list):
                 # Detect if it has an object inside with an
                 # "@id" key (object_widget)
-                if len(link) > 0 and isinstance(link[0], dict) \
+                if link and isinstance(link[0], dict) \
                         and "@id" in link[0]:
                     for item in link:
                         if 'resolveuid' not in item['@id']:
@@ -187,7 +196,7 @@ class ResolveUIDDeserializerBase(object):
                                 "fixed block field:'%s' in %s (%s) => (%s)",
                                 field, self.context.absolute_url(), old,
                                 item['@id'])
-                elif len(link) > 0 and isinstance(link[0], str):
+                elif link and isinstance(link[0], str):
                     dirty = any(
                         ['resolveuid' not in bit for bit in link]) or dirty
                     block[field] = [
@@ -199,12 +208,14 @@ class ResolveUIDDeserializerBase(object):
 
 
 class BlocksTraverser(object):
+    """ BlocksTraverser """
+
     def __init__(self, context):
         self.context = context
 
     def __call__(self, visitor):
 
-        for (bid, block_value) in get_blocks(self.context):
+        for (_, block_value) in get_blocks(self.context):
 
             if visitor(block_value):
                 self.context._p_changed = True
@@ -212,6 +223,8 @@ class BlocksTraverser(object):
             self.handle_subblocks(block_value, visitor)
 
     def handle_subblocks(self, block_value, visitor):
+        """ handle_subblocks """
+
         if "data" in block_value and isinstance(block_value["data"], dict) \
                 and "blocks" in block_value["data"]:
             for block in block_value["data"]["blocks"].values():
@@ -239,7 +252,7 @@ def run_upgrade(setup_context):
 
     brains = catalog(_nonsense=True)
 
-    for i, brain in enumerate(brains):
+    for brain in brains:
         obj = brain.getObject()
 
         if hasattr(obj.aq_inner.aq_self, 'blocks') and \
@@ -255,6 +268,3 @@ def run_upgrade(setup_context):
             dumped = json.dumps(obj.blocks)
             assert 'backend' not in dumped
             assert 'localhost' not in dumped
-
-        # if i % 200 == 0:
-        #     transaction.savepoint()
