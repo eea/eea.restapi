@@ -76,10 +76,6 @@
     permission="zope2.View"
     />
 
-  <configure zcml:condition="installed plone.app.contenttypes">
-    <adapter factory=".collection.SerializeCollectionToJson" />
-  </configure>
-
   <plone:service
     method="GET"
     for="zope.interface.Interface"

@@ -5,9 +5,6 @@
     xmlns:plone="http://namespaces.plone.org/plone"
     i18n_domain="eea.restapi">
 
-  <adapter factory=".serializer.SerializeToJson" />
-  <adapter factory=".serializer.SerializeFolderToJson" />
-
     <!-- A fallback view so that pages on the Plone classic site won't break -->
   <include package="plone.app.contentmenu" />
   <configure package="plone.app.contenttypes.browser">
