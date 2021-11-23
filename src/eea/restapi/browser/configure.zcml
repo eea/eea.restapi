@@ -41,26 +41,4 @@
     template="pt/visualization_view.pt"
     />
 
-  <browser:page
-    name="view"
-    for="eea.restapi.interfaces.IConnectorDataProvider"
-    permission="zope2.View"
-    template="pt/data_connector_view.pt"
-    />
-
-  <browser:page
-    name="provided_data"
-    for="eea.restapi.interfaces.IBasicDataProvider"
-    permission="zope2.View"
-    template="pt/provided_data.pt"
-    class=".dataprovider.DataProviderView"
-    />
-
-  <browser:page
-    name="download-provider-data"
-    for="eea.restapi.interfaces.IBasicDataProvider"
-    permission="zope2.View"
-    class=".dataprovider.DataProviderDownload"
-    />
-
 </configure>
