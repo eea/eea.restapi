@@ -3,6 +3,8 @@ Changelog
 
 2.2 - (2021-11-17)
 ---------------------------
+* Change: eea.api.dataconnector
+  [tripon.eugen]
 * Change: Fix resolveuid
   [razvanMiu]
 * Change: Make it work with Plone 6 / pip install
