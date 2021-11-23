@@ -7,18 +7,9 @@
 
   <i18n:registerTranslations directory="locales" />
 
-  <!--
-    Be careful if you use general includeDependencies, it can have sideffects!
-    Better import explicite packages or configurations ;)
-  -->
-  <includeDependencies package="." />
-
-  <!-- -*- extra stuff goes here -*- -->
-
   <include package="Products.CMFCore" file="permissions.zcml" />
   <include package="plone.restapi" />
 
-  <!-- <include package=".compositepage" /> -->
   <include file="permissions.zcml" />
   <include file="behavior.zcml" />
   <include file="profiles.zcml" />

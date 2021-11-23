@@ -5,6 +5,8 @@ Changelog
 ---------------------------
 * Change: Fix resolveuid
   [razvanMiu]
+* Change: Make it work with Plone 6 / pip install
+  [avoinea refs #139557]
 
 2.1 - (2021-11-03)
 ---------------------------
