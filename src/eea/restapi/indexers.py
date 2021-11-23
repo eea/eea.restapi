@@ -3,6 +3,7 @@ import logging
 import six
 from plone import api
 from plone.app.contenttypes.behaviors.leadimage import ILeadImage
+from plone.autoform.interfaces import IFormFieldProvider
 from plone.indexer.decorator import indexer
 from plone.restapi.behaviors import IBlocks
 from plone.restapi.interfaces import IBlockSearchableText
