@@ -10,7 +10,6 @@ from eea.api.dataconnector.interfaces import IFileDataProvider \
     as IEeaDataConnectorFileDataProvider
 from eea.api.dataconnector.interfaces import IConnectorDataProvider \
     as IEeaDataConnectorConnectorDataProvider
-from plone.app.z3cform.widget import QueryStringFieldWidget
 from plone.autoform import directives as form
 from plone.autoform.interfaces import IFormFieldProvider
 from plone.schema import JSONField
