@@ -34,11 +34,4 @@
     class=".mosaic.MosaicTilesView"
     />
 
-  <browser:page
-    name="view"
-    for="eea.restapi.interfaces.IDataVisualization"
-    permission="zope2.View"
-    template="pt/visualization_view.pt"
-    />
-
 </configure>
