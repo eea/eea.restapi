@@ -1,6 +1,15 @@
 Changelog
 =========
 
+2.2 - (2021-11-17)
+---------------------------
+* Change: eea.api.dataconnector
+  [tripon.eugen]
+* Change: Fix resolveuid
+  [razvanMiu]
+* Change: Make it work with Plone 6 / pip install
+  [avoinea refs #139557]
+
 2.1 - (2021-11-03)
 ---------------------------
 * Change: Removed SerializeSiteRootToJson -> use the serializer from plone.restapi

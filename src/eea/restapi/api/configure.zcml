@@ -16,30 +16,11 @@
     for="Products.CMFDynamicViewFTI.interfaces.ISelectableBrowserDefault eea.restapi.interfaces.IEEARestapiLayer"
     name="defaultpage"/>
 
-  <adapter name="connector-data" factory=".dataconnector.ConnectorData" />
-
-	<!-- TODO: this should be eea.restapi.interfaces.IBasicDataProvider -->
-  <plone:service
-    method="GET"
-    for="*"
-    factory=".dataconnector.ConnectorDataGet"
-    name="@connector-data"
-    permission="zope2.View"
-    />
-
   <plone:service
     method="GET"
     for="*"
     factory=".field.FieldGet"
     name="@field"
-    permission="zope2.View"
-    />
-
-  <plone:service
-    method="POST"
-    for="*"
-    factory=".dataconnector.ConnectorDataPost"
-    name="@connector-data"
     permission="zope2.View"
     />
 
@@ -75,10 +56,6 @@
     name="@index-values"
     permission="zope2.View"
     />
-
-  <configure zcml:condition="installed plone.app.contenttypes">
-    <adapter factory=".collection.SerializeCollectionToJson" />
-  </configure>
 
   <plone:service
     method="GET"
