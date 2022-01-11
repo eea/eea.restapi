@@ -45,7 +45,7 @@ def validate_blocks(obj, event):
     base = aq_base(obj)
     blocks = getattr(base, 'blocks', _marker)
 
-    if blocks is _marker:
+    if blocks in (_marker, None):
         return
 
     res = {}
