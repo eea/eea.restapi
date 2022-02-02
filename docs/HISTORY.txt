@@ -1,8 +1,10 @@
 Changelog
 =========
 
-2.3-dev0 - (unreleased)
+2.3 - (2022-02-02)
 ---------------------------
+* Change: Added api for fetching visualization & visualization layout
+  [razvanMiu]
 
 2.2 - (2021-11-17)
 ---------------------------
