@@ -1,6 +1,9 @@
 Changelog
 =========
 
+2.5-dev0 - (unreleased)
+---------------------------
+
 2.4 - (2022-02-25)
 ---------------------------
 * Change: Bug fix: handle the blocks attribute to be None [erral]
