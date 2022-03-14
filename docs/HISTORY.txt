@@ -1,7 +1,7 @@
 Changelog
 =========
 
-2.5-dev0 - (unreleased)
+2.5 - (2022-03-14)
 ---------------------------
 * Bug fix: fix to1003 upgrade step
   [valipod]
