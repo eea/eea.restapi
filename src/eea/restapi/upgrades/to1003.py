@@ -21,7 +21,8 @@ def clean_url(url):
 
     hosts = [
         'http://localhost:8080',
-        'http://backend:8080'
+        'http://backend:8080',
+        'http://backend:6081'
     ]
     for bit in hosts:
         url = url.replace(bit, '')
