@@ -74,14 +74,6 @@
     permission="plone.app.controlpanel.Overview"
     />
 
-  <!-- <plone:service -->
-  <!--   method="GET" -->
-  <!--   for="Products.CMFPlone.interfaces.IPloneSiteRoot" -->
-  <!--   factory=".dataquerystring.DataQuerystringGet" -->
-  <!--   name="@dataquerystring" -->
-  <!--   permission="zope2.View" -->
-  <!--   /> -->
-
   <adapter factory=".siblings.Siblings" name="siblings"/>
 
   <plone:service
@@ -98,22 +90,6 @@
     factory=".clonedblocks.CreateCloneTemplate"
     name="@clone-as-type"
     permission="cmf.ManagePortal"
-    />
-
-  <plone:service
-    method="GET"
-    for="*"
-    factory=".visualization.VisualizationGet"
-    name="@visualization"
-    permission="zope2.View"
-    />
-
-  <plone:service
-    method="GET"
-    for="*"
-    factory=".visualization.VisualizationLayoutGet"
-    name="@visualization-layout"
-    permission="zope2.View"
     />
 
 </configure>
