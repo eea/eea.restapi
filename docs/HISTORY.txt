@@ -1,6 +1,9 @@
 Changelog
 =========
 
+2.7-dev0 - (unreleased)
+---------------------------
+
 2.6 - (2022-07-05)
 ---------------------------
 * Change: Move visualization logic to eea.api.dataconnector
