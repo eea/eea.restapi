@@ -1,8 +1,10 @@
 Changelog
 =========
 
-2.7-dev0 - (unreleased)
+2.7 - (2022-09-06)
 ---------------------------
+* Change: Remove compositepage content type
+  [alecghica]
 
 2.6 - (2022-07-05)
 ---------------------------
