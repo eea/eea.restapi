@@ -6,8 +6,8 @@
     i18n_domain="eea.restapi">
 
   <!-- <adapter factory=".site.SerializeSiteRootToJson" /> -->
+
   <adapter factory=".summary.DefaultJSONSummarySerializer" />
-  <adapter factory=".clonedblocks.SerializeClonedBlocksToJson" />
 
   <adapter factory=".localnavigation.LocalNavigation" name="localnavigation"/>
 
@@ -82,14 +82,6 @@
     factory=".siblings.SiblingsGet"
     name="@siblings"
     permission="zope2.View"
-    />
-
-  <plone:service
-    method="POST"
-    for="zope.interface.Interface"
-    factory=".clonedblocks.CreateCloneTemplate"
-    name="@clone-as-type"
-    permission="cmf.ManagePortal"
     />
 
 </configure>

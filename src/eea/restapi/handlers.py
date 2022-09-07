@@ -17,27 +17,7 @@ from .interfaces import IBlockValidator
 
 logger = logging.getLogger('eea.restapi')
 
-
-def handle_clonedblock_content_added(obj, event):
-    ''' handle clonedblock content added '''
-
-    portal_type = obj.portal_type
-    uid = api.portal.get_registry_record(
-        'eea.clonedblocks.' + portal_type, default=None
-    )
-    source = api.content.get(UID=uid)
-    intids = getUtility(IIntIds)
-
-    source_id = ensure_intid(source, intids)
-    relation = RelationValue(source_id)
-
-    updateReferences(obj, [relation])
-
-    logger.info("Added clone relationship for %r ", obj)
-
-
 _marker = object()
-
 
 def validate_blocks(obj, event):
     ''' validate blocks '''
