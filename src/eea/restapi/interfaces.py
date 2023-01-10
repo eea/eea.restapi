@@ -115,35 +115,6 @@ class IHTMLEmbed(model.Schema):
     )
 
 
-class IClonedBlocks(Interface):
-    """Content that reuses blocks from a template
-
-    The general architecture is the following:
-
-    - Let's say I have some content that I want to replicate and reuse as a
-    template inside the portal.
-    - I should be able to click a button and this template is saved as a new
-      content type. This content type retains a property that ties it to the
-      original source. This property should be stored in the registry as a key
-      ``eea.clonedblocks.<portal_type_name>`` and
-      value is the UID of the content item.
-    - The content type should not have the IBlocks behavior assigned. This
-      causes Volto to use the regular metadata editor for it. That's fine. We
-      enter the title, the data connector parameters. In its serialization we
-      will receive from the serializer two fields: cloned_blocks and
-      cloned_blocks_layout. The view template will know to fake the real blocks
-      and blocks_layout based on these.
-    - We can have a button that "disconnects" the content type from the
-      template. This will copy the blocks data to the content type. By copying
-      the blocks fields, Volto will show the visual editor (either regular or
-      mosaic).
-
-    """
-
-    cloned_blocks = Attribute("Cloned blocks property")
-    cloned_blocks_layout = Attribute("Cloned blocks_layout property")
-
-
 class IBlockValidator(Interface):
     """IBlockValidator."""
 
