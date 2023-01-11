@@ -2,14 +2,6 @@
 """Module where all interfaces, events and exceptions live."""
 import json
 from eea.restapi import _
-from eea.api.dataconnector.interfaces import IBasicDataProvider \
-    as IEeaDataConnectorBasicDataProvider
-from eea.api.dataconnector.interfaces import IDataProvider \
-    as IEeaDataConnectorDataProvider
-from eea.api.dataconnector.interfaces import IFileDataProvider \
-    as IEeaDataConnectorFileDataProvider
-from eea.api.dataconnector.interfaces import IConnectorDataProvider \
-    as IEeaDataConnectorConnectorDataProvider
 from plone.autoform import directives as form
 from plone.autoform.interfaces import IFormFieldProvider
 from plone.schema import JSONField
@@ -56,24 +48,6 @@ class ILocalSectionMarker(Interface):
 class NotGiven(Interface):
     """Just pass"""
     pass
-
-
-class IBasicDataProvider(IEeaDataConnectorBasicDataProvider):
-    """A data provider concept"""
-
-
-class IDataProvider(IEeaDataConnectorDataProvider):
-    """An export of data for remote purposes"""
-
-    provided_data = Attribute("Data made available by this data provider")
-
-
-class IFileDataProvider(IEeaDataConnectorFileDataProvider):
-    """Marker interface for objects that provide data to visualizations"""
-
-
-class IConnectorDataProvider(IEeaDataConnectorConnectorDataProvider):
-    """Marker interface for objects that provide data to visualizations"""
 
 
 GENERIC_LIST_SCHEMA = json.dumps({"type": "list"})

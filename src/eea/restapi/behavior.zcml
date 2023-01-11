@@ -7,9 +7,6 @@
     >
 
   <interface interface=".interfaces.ILocalSectionMarker" />
-  <interface interface=".interfaces.IConnectorDataProvider" />
-  <interface interface=".interfaces.IFileDataProvider" />
-
 
   <plone:behavior
       name="eea.restapi.collection-facets"
