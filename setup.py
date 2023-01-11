@@ -58,7 +58,6 @@ setup(
         "setuptools",
         # -*- Extra requirements: -*-
         "collective.folderishtypes",
-        "eea.api.dataconnector",
         "plone.api>=1.8.4",
         "plone.restapi",
         "plone.app.dexterity",

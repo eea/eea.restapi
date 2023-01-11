@@ -1,6 +1,12 @@
 Changelog
 =========
 
+2.9 - (2023-01-11)
+---------------------------
+* Change: removed "Discodata Connector" and "Visualization". 
+  This content types will be registered by "eea.api.dataconnector" add-on.
+  [alecghica refs #153056]
+
 2.8 - (2022-09-07)
 ---------------------------
 * Change: Removed Clonable content type, refs #153055
