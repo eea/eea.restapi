@@ -1,6 +1,9 @@
 Changelog
 =========
 
+3.0-dev0 - (unreleased)
+---------------------------
+
 2.9 - (2023-01-11)
 ---------------------------
 * Change: removed "Discodata Connector" and "Visualization". 
